@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Loading.unity
+    path: Assets/_Project/Scenes/Loading.unity
     guid: 9d82799a0c6ade14aae34599ce78c519
   - enabled: 1
-    path: Assets/Scenes/SuperFarm.unity
+    path: Assets/_Project/Scenes/SuperFarm.unity
     guid: 3fa0066d3452be947bbc6ccedf24add9
   m_configObjects: {}
