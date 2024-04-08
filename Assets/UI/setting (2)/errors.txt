@@ -1,0 +1,2 @@
+[2023-8-28 11:01:49] layer "Btn_on.png": Duplicate path: Btn_on.png
+[2023-8-28 11:01:49] layer "Btn_on.png": Duplicate path: Btn_on.png

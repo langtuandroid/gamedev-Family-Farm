@@ -1,0 +1,322 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833c3530e79161440a3c1d56cc7f6249, type: 3}
+  m_Name: ExcelLanguage
+  m_EditorClassIdentifier: 
+  textLanguages:
+  - id: 0
+    eng: WHEAT
+    vni: "L\xDAA M\u1EF2"
+  - id: 1
+    eng: CORN
+    vni: "NG\xD4"
+  - id: 2
+    eng: POTATO
+    vni: "KHOAI T\xC2Y"
+  - id: 3
+    eng: TOMATO
+    vni: "C\xC0 CHUA"
+  - id: 4
+    eng: BROCCOLI
+    vni: "S\xDAP L\u01A0 XANH"
+  - id: 5
+    eng: PINEAPPLE
+    vni: "D\u1EE8A"
+  - id: 6
+    eng: ONION
+    vni: "H\xC0NH T\xC2Y"
+  - id: 7
+    eng: BELL PEPPER
+    vni: "\u1EDAT CHU\xD4NG"
+  - id: 8
+    eng: CUCUMBER
+    vni: "D\u01AFA CHU\u1ED8T"
+  - id: 9
+    eng: STRAWBERRY
+    vni: "D\xC2U T\xC2Y"
+  - id: 10
+    eng: CHICKEN
+    vni: "G\xC0"
+  - id: 11
+    eng: COW
+    vni: "B\xD2"
+  - id: 12
+    eng: SHEEP
+    vni: "C\u1EEAU"
+  - id: 13
+    eng: PIG
+    vni: HEO
+  - id: 14
+    eng: WOOD-FIRED BRICK OVEN
+    vni: "L\xD2 B\xC1NH M\u1EF2"
+  - id: 15
+    eng: FRUIT PRESSES
+    vni: "M\xC1Y \xC9P N\u01AF\u1EDAC TR\xC1I C\xC2Y"
+  - id: 16
+    eng: FABRIC TEXTILE MACHINE
+    vni: "M\xC1Y D\u1EC6T"
+  - id: 17
+    eng: JAM MAKER MACHINE
+    vni: "M\xC1Y L\xC0M M\u1EE8T"
+  - id: 18
+    eng: LEVEL UP
+    vni: "L\xCAN C\u1EA4P"
+  - id: 19
+    eng: Reward
+    vni: "Ph\u1EA7n th\u01B0\u1EDFng"
+  - id: 20
+    eng: SETTING
+    vni: "C\xC0I \u0110\u1EB6T"
+  - id: 21
+    eng: QUIT
+    vni: "THO\xC1T"
+  - id: 22
+    eng: OK
+    vni: "\u0110\u1ED2NG \xDD"
+  - id: 23
+    eng: EXIT GAME
+    vni: "THO\xC1T GAME"
+  - id: 24
+    eng: Are you sure you want to quit?
+    vni: "B\u1EA1n ch\u1EAFc ch\u1EAFn mu\u1ED1n tho\xE1t game?"
+  - id: 25
+    eng: UPGRADE
+    vni: "N\xC2NG C\u1EA4P"
+  - id: 26
+    eng: Farms
+    vni: "C\xE2y tr\u1ED3ng"
+  - id: 27
+    eng: Animals
+    vni: "V\u1EADt nu\xF4i"
+  - id: 28
+    eng: Factories
+    vni: "Nh\xE0 m\xE1y"
+  - id: 29
+    eng: BREAD
+    vni: "B\xC1NH M\u1EF2"
+  - id: 30
+    eng: JUICE
+    vni: "N\u01AF\u1EDAC \xC9P"
+  - id: 31
+    eng: JAM
+    vni: "M\u1EE8T"
+  - id: 32
+    eng: FABRIC
+    vni: "V\u1EA2I"
+  - id: 33
+    eng: Not enough money
+    vni: "B\u1EA1n kh\xF4ng \u0111\u1EE7 ti\u1EC1n"
+  - id: 34
+    eng: FREE
+    vni: "MI\u1EC4N PH\xCD"
+  - id: 35
+    eng: SPIN
+    vni: QUAY
+  - id: 36
+    eng: Back to farm
+    vni: "Tr\u1EDF v\u1EC1 trang tr\u1EA1i"
+  - id: 37
+    eng: Language
+    vni: "Ng\xF4n ng\u1EEF"
+  - id: 38
+    eng: UNLOCK
+    vni: "M\u1EDE KH\xD3A"
+  - id: 39
+    eng: REFUND
+    vni: "HO\xC0N TR\u1EA2"
+  - id: 40
+    eng: YES
+    vni: "C\xD3"
+  - id: 41
+    eng: NO
+    vni: "KH\xD4NG"
+  - id: 42
+    eng: Level
+    vni: "C\u1EA5p"
+  - id: 43
+    eng: Locked
+    vni: "Ch\u01B0a m\u1EDF"
+  - id: 44
+    eng: TRUCK
+    vni: "XE T\u1EA2I"
+  - id: 45
+    eng: 'Time: 3 minutes'
+    vni: "Th\u1EDDi gian: 3 ph\xFAt"
+  - id: 46
+    eng: More capacity and speed
+    vni: "Th\xEAm x\u1EBFp ch\u1ED3ng v\xE0 t\u1ED1c \u0111\u1ED9"
+  - id: 47
+    eng: GET
+    vni: "S\u1EEC D\u1EE4NG"
+  - id: 48
+    eng: No, thanks
+    vni: "Kh\xF4ng, c\u1EA3m \u01A1n"
+  - id: 49
+    eng: ONE TIME OFFER!!
+    vni: "CH\u1EC8 M\xD4T L\u1EA6N DUY NH\u1EA4T!!"
+  - id: 50
+    eng: Chose one which you want
+    vni: "Ch\u1ECDn g\xF3i b\u1EA1n mu\u1ED1n mua"
+  - id: 51
+    eng: Money offer
+    vni: "G\xF3i th\xEAm"
+  - id: 52
+    eng: Simple offer
+    vni: "G\xF3i c\u01A1 b\u1EA3n"
+  - id: 53
+    eng: '"No Ads" will remove all pop-up ads, but rewarded video ads will still
+      be available'
+    vni: "\"Kh\xF4ng qu\u1EA3ng c\xE1o\" s\u1EBD gi\xFAp b\u1EA1n t\u1EAFt h\u1EBFt
+      nh\u1EEFng qu\u1EA3ng c\xE1o kh\xF4ng mong mu\u1ED1n, nh\u01B0ng nh\u1EEFng
+      ph\u1EA7n qu\xE0 nh\u1EADn \u0111\u01B0\u1EE3c t\u1EEB xem video s\u1EBD kh\xF4ng
+      t\u1EAFt."
+  - id: 54
+    eng: USD
+    vni: VND
+  - id: 55
+    eng: Income
+    vni: "Gi\xE1 tr\u1ECB"
+  - id: 56
+    eng: Speed
+    vni: "T\u1ED1c \u0111\u1ED9"
+  - id: 57
+    eng: No Ads
+    vni: "Kh\xF4ng qu\u1EA3ng c\xE1o"
+  - id: 58
+    eng: Claim
+    vni: "Nh\u1EADn"
+  - id: 59
+    eng: Oh no, you don't have enough money?
+    vni: "B\u1EA1n c\xF3 mu\u1ED1n m\u1EDF kh\xF3a ngay?"
+  - id: 60
+    eng: 
+    vni: 
+  - id: 61
+    eng: 
+    vni: 
+  - id: 62
+    eng: 
+    vni: 
+  - id: 63
+    eng: 
+    vni: 
+  - id: 64
+    eng: 
+    vni: 
+  - id: 65
+    eng: 
+    vni: 
+  - id: 66
+    eng: 
+    vni: 
+  - id: 67
+    eng: 
+    vni: 
+  - id: 68
+    eng: 
+    vni: 
+  - id: 69
+    eng: 
+    vni: 
+  - id: 70
+    eng: 
+    vni: 
+  - id: 71
+    eng: 
+    vni: 
+  - id: 72
+    eng: 
+    vni: 
+  - id: 73
+    eng: 
+    vni: 
+  - id: 74
+    eng: 
+    vni: 
+  - id: 75
+    eng: 
+    vni: 
+  - id: 76
+    eng: 
+    vni: 
+  - id: 77
+    eng: 
+    vni: 
+  - id: 78
+    eng: 
+    vni: 
+  - id: 79
+    eng: 
+    vni: 
+  - id: 80
+    eng: 
+    vni: 
+  - id: 81
+    eng: 
+    vni: 
+  - id: 82
+    eng: 
+    vni: 
+  - id: 83
+    eng: 
+    vni: 
+  - id: 84
+    eng: 
+    vni: 
+  - id: 85
+    eng: 
+    vni: 
+  - id: 86
+    eng: 
+    vni: 
+  - id: 87
+    eng: 
+    vni: 
+  - id: 88
+    eng: 
+    vni: 
+  - id: 89
+    eng: 
+    vni: 
+  - id: 90
+    eng: 
+    vni: 
+  - id: 91
+    eng: 
+    vni: 
+  - id: 92
+    eng: 
+    vni: 
+  - id: 93
+    eng: 
+    vni: 
+  - id: 94
+    eng: 
+    vni: 
+  - id: 95
+    eng: 
+    vni: 
+  - id: 96
+    eng: 
+    vni: 
+  - id: 97
+    eng: 
+    vni: 
+  - id: 98
+    eng: 
+    vni: 
+  - id: 99
+    eng: 
+    vni: 
+  - id: 100
+    eng: 
+    vni: 

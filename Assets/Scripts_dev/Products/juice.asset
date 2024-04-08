@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd5ac4ea82832248bc4a4417c9758e4, type: 3}
+  m_Name: juice
+  m_EditorClassIdentifier: 
+  id: 11
+  income: 30
+  productName: Juice
+  prefab: {fileID: 7838003195415511472, guid: 0383697df7d187f42af4c96a1766fe2a, type: 3}
+  exp: 25
