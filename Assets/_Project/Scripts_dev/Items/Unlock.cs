@@ -42,14 +42,14 @@ namespace _Project.Scripts_dev.Items
                 unlockTime += Time.deltaTime;
             if (!_isLoaded)
             {
-                if (_gameManager.load)
+                if (_gameManager.IsLoad)
                 {
-                    if (_gameManager.playTime < 3)
+                    if (_gameManager.PlayTime < 3)
                     {
                    
-                        if (_dataManager.gameData != null)
+                        if (_dataManager.GameData != null)
                         {
-                            remain = _dataManager.gameData.unlockMoney;
+                            remain = _dataManager.GameData.unlockMoney;
                             _isLoaded = true;
                         }
                     }
@@ -59,7 +59,7 @@ namespace _Project.Scripts_dev.Items
                         remain = price;
                     }
 
-                    if (_dataManager.gameData == null) {
+                    if (_dataManager.GameData == null) {
 
                         _isLoaded = true;
                     } 
@@ -70,7 +70,7 @@ namespace _Project.Scripts_dev.Items
             if (_isUnlocked) return;
             if (_minUnlockLevel>0)
             {
-                if (_gameManager.level < _minUnlockLevel)
+                if (_gameManager.Level < _minUnlockLevel)
                 {
                     transform.GetChild(0).gameObject.SetActive(false);
                     _box.enabled = false;
@@ -80,7 +80,7 @@ namespace _Project.Scripts_dev.Items
                     transform.GetChild(0).gameObject.SetActive(true);
                     _box.enabled = true;
                     _minUnlockLevel = 0;
-                    StartCoroutine(_gameManager.DelayFocus(transform.gameObject));
+                    StartCoroutine(_gameManager.FocusRoutine(transform.gameObject));
                 }
             }
             _priceText.text =  _uiManager.FormatNumber(Mathf.Floor( remain));
@@ -98,20 +98,20 @@ namespace _Project.Scripts_dev.Items
         {
             if (_unlockObject.CompareTag("Area"))
             {
-                _soundManager.PlaySound(_soundManager.sounds[2]);
+                _soundManager.PlaySound(_soundManager.Clips[2]);
             }
             else
-                _soundManager.PlaySound(_soundManager.sounds[1]);
+                _soundManager.PlaySound(_soundManager.Clips[1]);
             yield return new WaitForSeconds(0.3f);
         
             _unlockObject.SetActive(true);
             _isUnlocked = true;
             DotweenCodes.instance.PopOut(_unlockObject.transform, new Vector3(1, 2f, 1), 0.4f);
-            Instantiate(_effectManager.rainbowUnlock, transform.position, _effectManager.rainbowUnlock.transform.rotation);
-            if (_gameManager.currentUnlocked < _gameManager.unlockOrder.Length-1)
-                _gameManager.currentUnlocked++;
-            _gameManager.UpdateUnlocked();
-            _gameManager.currentExp += _expirience;
+            Instantiate(_effectManager.RainbowUnlock, transform.position, _effectManager.RainbowUnlock.transform.rotation);
+            if (_gameManager.CurrentUnlocked < _gameManager._unlockOrder.Length-1)
+                _gameManager.CurrentUnlocked++;
+            _gameManager.UpdateLocked();
+            _gameManager.Exp += _expirience;
             _virtualCamera = GameObject.FindGameObjectWithTag("FocusCamera");
             if (_virtualCamera != null)
                 _virtualCamera.SetActive(false);

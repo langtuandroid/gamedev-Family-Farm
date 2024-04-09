@@ -3,6 +3,7 @@ using System.Collections;
 using _Project.Scripts_dev.Animation;
 using _Project.Scripts_dev.Items;
 using _Project.Scripts_dev.Language;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using DG.Tweening;
 using TMPro;
@@ -45,7 +46,7 @@ namespace _Project.Scripts_dev.Additional
         {
             if (first)
             {
-                _gameManager.UpdateUnlocked();
+                _gameManager.UpdateLocked();
                 _uiManager.BottomUI.SetActive(true);
             }
         }
@@ -56,8 +57,8 @@ namespace _Project.Scripts_dev.Additional
         }
         private void SetPrizes()
         {
-            _spinPrice = _gameManager.unlockOrder[_gameManager.currentUnlocked].transform.GetChild(1).GetComponent<Unlock>().price;
-            _maxExperience = _gameManager.maxExp;
+            _spinPrice = _gameManager._unlockOrder[_gameManager.CurrentUnlocked].transform.GetChild(1).GetComponent<Unlock>().price;
+            _maxExperience = _gameManager.MaxExp;
             _prize1.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_maxExperience / 10));
             _prize2.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_spinPrice / 5));
             _prize3.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_maxExperience *0.3f));
@@ -85,15 +86,15 @@ namespace _Project.Scripts_dev.Additional
             Action prizeAction;
             switch (prize)
             {
-                case 1: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab,_expirienceMovePos.GetComponent<RectTransform>(),5,_gameManager.maxExp/10,1)); break;
+                case 1: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab,_expirienceMovePos.GetComponent<RectTransform>(),5,_gameManager.MaxExp/10,1)); break;
                 case 2: prizeAction = () => StartCoroutine(RealizePrize(_moneyPrefab,_moneyMovePos.GetComponent<RectTransform>(),10,_spinPrice/5,0)); break;
-                case 3: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(),15,_gameManager.maxExp*0.3f,1)); break;
+                case 3: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(),15,_gameManager.MaxExp*0.3f,1)); break;
                 case 4: prizeAction = () => StartCoroutine(RealizePrize(_moneyPrefab, _moneyMovePos.GetComponent<RectTransform>(), 20, _spinPrice / 2, 0)); break;
-                case 5: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(), 25, _gameManager.maxExp / 2, 1)); break;
-                case 6: prizeAction = () => _gameManager.incomeBoostTime = 150; break;
-                case 7: prizeAction = () => _gameManager.speedBoostTime = 150; break;
-                case 8: prizeAction = () => _gameManager.freeSpinTimer = 0; break;
-                default: prizeAction = () => _gameManager.freeSpinTimer = 0; break;
+                case 5: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(), 25, _gameManager.MaxExp / 2, 1)); break;
+                case 6: prizeAction = () => _gameManager.IncomeBoostTime = 150; break;
+                case 7: prizeAction = () => _gameManager.SpeedBoostTime = 150; break;
+                case 8: prizeAction = () => _gameManager.FreeSpinTime = 0; break;
+                default: prizeAction = () => _gameManager.FreeSpinTime = 0; break;
             }
             return prizeAction;
         }
@@ -103,15 +104,15 @@ namespace _Project.Scripts_dev.Additional
             Action prizeAction;
             switch (prize)
             {
-                case 1: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab,_expirienceMovePos.GetComponent<RectTransform>(),5,_gameManager.maxExp/10,1)); break;
+                case 1: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab,_expirienceMovePos.GetComponent<RectTransform>(),5,_gameManager.MaxExp/10,1)); break;
                 case 2: prizeAction = () => StartCoroutine(RealizePrize(_moneyPrefab,_moneyMovePos.GetComponent<RectTransform>(),10,120,0)); break;
-                case 3: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(),15,_gameManager.maxExp*0.3f,1)); break;
+                case 3: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(),15,_gameManager.MaxExp*0.3f,1)); break;
                 case 4: prizeAction = () => StartCoroutine(RealizePrize(_moneyPrefab, _moneyMovePos.GetComponent<RectTransform>(), 20, 150, 0)); break;
-                case 5: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(), 25, _gameManager.maxExp / 2, 1)); break;
-                case 6: prizeAction = () => _gameManager.incomeBoostTime = 150; break;
-                case 7: prizeAction = () => _gameManager.speedBoostTime = 150; break;
-                case 8: prizeAction = () => _gameManager.freeSpinTimer = 0; break;
-                default: prizeAction = () => _gameManager.freeSpinTimer = 0; break;
+                case 5: prizeAction = () => StartCoroutine(RealizePrize(_expiriencePrefab, _expirienceMovePos.GetComponent<RectTransform>(), 25, _gameManager.MaxExp / 2, 1)); break;
+                case 6: prizeAction = () => _gameManager.IncomeBoostTime = 150; break;
+                case 7: prizeAction = () => _gameManager.SpeedBoostTime = 150; break;
+                case 8: prizeAction = () => _gameManager.FreeSpinTime = 0; break;
+                default: prizeAction = () => _gameManager.FreeSpinTime = 0; break;
             }
             return prizeAction;
         }
@@ -130,15 +131,15 @@ namespace _Project.Scripts_dev.Additional
                     if(type==1)
                         DotweenCodes.instance.ScaleBig(_expirienceMovePos, 1.2f, 0.1f);
                     if (type == 1)
-                        _gameManager.currentExp += amount / times;
+                        _gameManager.Exp += amount / times;
                     if (type == 0)
-                        _gameManager.money += amount / times;
+                        _gameManager.Money += amount / times;
                     int r = UnityEngine.Random.Range(0, 2);
                     if (r == 0 && type == 0)
-                        _soundManager.CreateSound(_soundManager.sounds[5], transform.position, 0.5f);
+                        _soundManager.CreateSound(_soundManager.Clips[5], transform.position, 0.5f);
                     else if (r == 0)
                     {
-                        _soundManager.CreateSound(_soundManager.sounds[9], transform.position, 0.5f);
+                        _soundManager.CreateSound(_soundManager.Clips[9], transform.position, 0.5f);
                     }
                 });
             }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using Zenject;
 
@@ -33,7 +34,7 @@ namespace _Project.Scripts_dev.Classes
             for (int i = 0; i < numbers; i++)
             {
                 yield return null;
-                _effectManager.GetMoneyEffect(sums /( numbers*2), GameObject.FindGameObjectWithTag("Player").transform);
+                _effectManager.MoneyEffect(sums /( numbers*2), GameObject.FindGameObjectWithTag("Player").transform);
             }
         }
     }

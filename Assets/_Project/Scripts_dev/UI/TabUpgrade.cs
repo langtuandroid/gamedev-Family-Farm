@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using _Project.Scripts_dev.Items;
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts_dev.UI
 {
-    public class GetUpgradeForTab : MonoBehaviour
+    public class TabUpgrade : MonoBehaviour
     {
         [Inject] private GameManager _gameManager;
         public List< LevelMangament> levelMangaments;
@@ -16,29 +17,29 @@ namespace _Project.Scripts_dev.UI
         private void Start()
         {
             levelMangaments = new List<LevelMangament>();
-            UpdateList();
+            LoadList();
 
         }
         private void OnEnable()
         {
-            UpdateList();
+            LoadList();
         }
 
-        private void UpdateList()
+        private void LoadList()
         {
             levelMangaments.Clear();
             foreach(Transform t in contents)
             {
                 Destroy(t.gameObject);
             }
-            foreach (GameObject l in _gameManager.unlockOrder)
+            foreach (GameObject l in _gameManager._unlockOrder)
             {
                 if (l.GetComponent<LevelMangament>()!=null)
-                    if (l.GetComponent<LevelMangament>().type == type)
+                    if (l.GetComponent<LevelMangament>().Type == type)
                         levelMangaments.Add(l.GetComponent<LevelMangament>());
             }
             if (type != 3)
-                levelMangaments.Sort((a, b) => a.goods.Id.CompareTo(b.goods.Id));
+                levelMangaments.Sort((a, b) => a._goods.Id.CompareTo(b._goods.Id));
             
             for(int i=0; i < levelMangaments.Count; i++)
             {

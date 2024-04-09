@@ -1,4 +1,5 @@
 using _Project.Scripts_dev.Language;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using TMPro;
 using UnityEngine;
@@ -25,25 +26,25 @@ namespace _Project.Scripts_dev.Items
         public LevelMangament LevelMangament { get; set; }
         private void Update()
         {
-            _imageText.sprite = LevelMangament.sprite;
+            _imageText.sprite = LevelMangament._sprite;
             if (LevelMangament == null) return;
 
-            _languageManager.SetText(LevelMangament.titleIndex, _titleText);
+            _languageManager.SetText(LevelMangament._titleId, _titleText);
             if (LevelMangament.transform.gameObject.activeInHierarchy)
             {
-                _levelText.text = _languageManager.GetText(42)+": " + (LevelMangament.level + 1).ToString();
+                _levelText.text = _languageManager.GetText(42)+": " + (LevelMangament.Level + 1).ToString();
                 _backgroundObject.SetActive(false);
                 _buttonIcon.sprite = _money;
-                if (LevelMangament.level < 2)
+                if (LevelMangament.Level < 2)
                 {
-                    _priceText.text = _uiManager.FormatNumber(LevelMangament.prices[LevelMangament.level]);
+                    _priceText.text = _uiManager.FormatNumber(LevelMangament._prices[LevelMangament.Level]);
                 }
                 else
                 {
                     _priceText.text = "Max";
                 }
            
-                if (LevelMangament.level >= 2 || LevelMangament.prices[LevelMangament.level] > _gameManager.money)
+                if (LevelMangament.Level >= 2 || LevelMangament._prices[LevelMangament.Level] > _gameManager.Money)
                 {
                     _upgradeButton.interactable = false;
                 }
@@ -64,7 +65,7 @@ namespace _Project.Scripts_dev.Items
         }
         public void Upgrade()
         {
-            _gameManager.money -= LevelMangament.prices[LevelMangament.level];
+            _gameManager.Money -= LevelMangament._prices[LevelMangament.Level];
             LevelMangament.Upgrade();
         }
     }

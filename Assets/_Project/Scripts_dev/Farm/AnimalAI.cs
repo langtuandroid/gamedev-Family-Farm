@@ -1,4 +1,5 @@
 ﻿using _Project.Scripts_dev.Classes;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using UnityEngine;
 using UnityEngine.AI;
@@ -44,7 +45,7 @@ namespace _Project.Scripts_dev.Farm
                 {
                     _radius = Random.Range(20, 40);
 
-                    if (_radius <= 30&&_gameManager.playTime>3)
+                    if (_radius <= 30&&_gameManager.PlayTime>3)
                     {
                         _audioSource.Play();
                     }

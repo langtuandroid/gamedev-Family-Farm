@@ -10,19 +10,19 @@ namespace _Project.Scripts_dev.Classes
         {
             if (_currentCashier == null || _currentCashier.activeInHierarchy) return;
             _currentCashier = null;
-            _cashier.cashierIsHere = false;
-            _cashier.playerIsHere = false;
+            _cashier.IsCashier = false;
+            _cashier.IsPlayer = false;
         }
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Farmer"))
             {
-                _cashier.cashierIsHere = true;
+                _cashier.IsCashier = true;
                 _currentCashier = other.gameObject;
             }
             if(other.CompareTag("Player"))
             {
-                _cashier.playerIsHere = true;
+                _cashier.IsPlayer = true;
                 _currentCashier = other.gameObject;
             }
         }
@@ -31,8 +31,8 @@ namespace _Project.Scripts_dev.Classes
             if (other.gameObject == _currentCashier)
             {
                 _currentCashier = null;
-                _cashier.cashierIsHere = false;
-                _cashier.playerIsHere = false;
+                _cashier.IsCashier = false;
+                _cashier.IsPlayer = false;
             }
         }
     }

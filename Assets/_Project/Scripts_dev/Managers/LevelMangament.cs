@@ -4,28 +4,29 @@ using _Project.Scripts_dev.Classes;
 using _Project.Scripts_dev.Configs;
 using _Project.Scripts_dev.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class LevelMangament : MonoBehaviour
 {
     [Inject] private DataManager _dataManager;
     [Inject] private GameManager _gameManager;
-    public int level = 0;
-
-    public GameObject[] unlocks;
-    public Goods goods;
-    public float multiple;
-    public List<float> prices;
-    public int titleIndex;
-    public int type;
-    public Sprite sprite;
-
-     bool load;
+    
+    [SerializeField] private GameObject[] unlocks;
+    public int Level { get; private set; }
+    [FormerlySerializedAs("goods")] public Goods _goods;
+    [FormerlySerializedAs("multiple")] public float _multiply;
+    [FormerlySerializedAs("prices")] public List<float> _prices;
+    [FormerlySerializedAs("titleIndex")] public int _titleId;
+    [FormerlySerializedAs("type")] public int Type;
+    [FormerlySerializedAs("sprite")] public Sprite _sprite;
+    
+    private bool _load;
     private void Start()
     {
-        prices = new List<float>();
-        prices.Add(goods.Income * 100);
-        prices.Add(prices[0]*6);
+        _prices = new List<float>();
+        _prices.Add(_goods.Income * 100);
+        _prices.Add(_prices[0]*6);
         foreach(GameObject go in unlocks)
         {
             go.SetActive(false);
@@ -33,29 +34,29 @@ public class LevelMangament : MonoBehaviour
     }
     private void Update()
     {
-        if(!load)
+        if(!_load)
         {
-            if (_dataManager.gameData != null && _gameManager.playTime<3)
+            if (_dataManager.GameData != null && _gameManager.PlayTime<3)
             {
-                GameData gameData = _dataManager.gameData;
+                GameData gameData = _dataManager.GameData;
                 if (transform.GetChild(0).gameObject.activeInHierarchy)
                 {
-                    load = true; 
-                    level = goods.Id >gameData.levels.Count?0: gameData.levels[goods.Id - 1];
+                    _load = true; 
+                    Level = _goods.Id >gameData.levels.Count?0: gameData.levels[_goods.Id - 1];
                 }
                
         
             }
             else
             {
-                load = true;
+                _load = true;
             }
             return;
 
         }
         if (unlocks.Length > 0)
         {
-            for (int i = 0; i < level; i++)
+            for (int i = 0; i < Level; i++)
             {
                 unlocks[i].SetActive(true);
             }
@@ -64,7 +65,6 @@ public class LevelMangament : MonoBehaviour
     }
     public void Upgrade()
     {
-        level++;
-       
+        Level++;
     }
 }

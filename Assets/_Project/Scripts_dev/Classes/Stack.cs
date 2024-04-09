@@ -42,16 +42,16 @@ namespace _Project.Scripts_dev.Classes
                     }
                 }
             }
-            if (_dataManager.gameData != null&&!load)
+            if (_dataManager.GameData != null&&!load)
             {
-                GameData gameData = _dataManager.gameData;
+                GameData gameData = _dataManager.GameData;
                 int[] stackNumbers = gameData.stackNumbers.ToArray();
                 load = true;
-                if(_gameManager.playTime<3)
+                if(_gameManager.PlayTime<3)
                     currentQuantity = productToShow.Id > stackNumbers.Length?0: stackNumbers[productToShow.Id - 1];
            
             }
-            if (_dataManager.gameData == null)
+            if (_dataManager.GameData == null)
             {
                 load = true;
             }

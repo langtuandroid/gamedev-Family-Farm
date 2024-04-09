@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using _Project.Scripts_dev.Additional;
 using _Project.Scripts_dev.Language;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using UnityEngine.Events;
 using TMPro;
@@ -55,7 +56,7 @@ public class FortuneWheelManager : MonoBehaviour
     }
     private void TurnWheel(bool isFree)
     {
-        _soundManager.CreateSound(_soundManager.sounds[10], transform.position);
+        _soundManager.CreateSound(_soundManager.Clips[10], transform.position);
         _currentLerpRotationTime = 0f;
         int[] sectorsAngles = new int[Sectors.Length];
         for (int i = 1; i <= Sectors.Length; i++)
@@ -91,15 +92,15 @@ public class FortuneWheelManager : MonoBehaviour
     public void TurnWheelButtonClick()
     {
        
-        if (_gameManager.freeSpinTimer<=0)
+        if (_gameManager.FreeSpinTime<=0)
         {
-            _gameManager.freeSpinTimer = 600;
+            _gameManager.FreeSpinTime = 600;
             TurnWheelForFree();
         }
         else
         {
             TurnWheelForAds();
-            _gameManager.interTimer = 0;
+            _gameManager.InterTimer = 0;
            
         }
     }
@@ -109,9 +110,9 @@ public class FortuneWheelManager : MonoBehaviour
 
     private void Update()
     {
-        if (_gameManager.freeSpinTimer > 0)
+        if (_gameManager.FreeSpinTime > 0)
         {
-            FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.freeSpinTimer);
+            FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.FreeSpinTime);
             DisableButton(FreeTurnButton);
         }
         else
@@ -128,14 +129,14 @@ public class FortuneWheelManager : MonoBehaviour
         {
             _currentLerpRotationTime = maxLerpRotationTime;
             _isStarted = false;
-            if (_gameManager.freeSpinTimer <= 0)
+            if (_gameManager.FreeSpinTime <= 0)
             {
                 EnableButton(FreeTurnButton);
                 _languageManager.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
             }
             else
             {
-                FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.freeSpinTimer);
+                FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.FreeSpinTime);
                 
             }
                

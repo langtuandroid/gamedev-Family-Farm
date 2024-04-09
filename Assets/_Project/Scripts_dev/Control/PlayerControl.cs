@@ -2,6 +2,7 @@
 using _Project.Scripts_dev.Classes;
 using _Project.Scripts_dev.Farm;
 using _Project.Scripts_dev.Items;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using _Project.Scripts_dev.Сamera;
 using DG.Tweening;
@@ -63,7 +64,7 @@ namespace _Project.Scripts_dev.Control
         {
             Vector3 movement = new Vector3(-_joystick.Horizontal, 0, -_joystick.Vertical);
             movement.Normalize();
-            float finalSpeed = _moveSpeed * _gameManager.speedBoost;
+            float finalSpeed = _moveSpeed * _gameManager.SpeedBoost;
             if (finalSpeed > 12) finalSpeed = 12;
             _velocity = movement * finalSpeed;
         
@@ -90,13 +91,13 @@ namespace _Project.Scripts_dev.Control
             }
             _idleTime += Time.deltaTime;
             if (_idleTime > 15) _idleParticle.SetActive(true);
-            if (_gameManager.speedBoostTime > 0) _speedParticle.SetActive(true);
+            if (_gameManager.SpeedBoostTime > 0) _speedParticle.SetActive(true);
             else _speedParticle.SetActive(false);
 
 
             ActivateGravity();
             _characterController.Move(_velocity * Time.deltaTime);
-            if(_isCar&& _gameManager.truckTime <= 0)
+            if(_isCar&& _gameManager.TruckTime <= 0)
             {
                 Remove();
             }
@@ -104,7 +105,7 @@ namespace _Project.Scripts_dev.Control
         }
         private void Remove()
         {
-            _gameManager.truckTime = -100;
+            _gameManager.TruckTime = -100;
             _playerObject.transform.position = _transform.position;
             _transform.tag = "Untagged";
             _transform.SetPositionAndRotation(_previousPosition, _previousRotation);
@@ -130,12 +131,12 @@ namespace _Project.Scripts_dev.Control
 
         private void Collect(Stack stack)
         {
-            if (_isCar && _gameManager.truckTime <= 1) return;
-            _cart.Add(stack,_gameManager. maxCart);
+            if (_isCar && _gameManager.TruckTime <= 1) return;
+            _cart.Add(stack,_gameManager. MaxCart);
         }
         private void TakeMoney(Money piile)
         {
-            if (!IsTakingMoney && piile.Quantity > 0&&!_cahsier.isTaking)
+            if (!IsTakingMoney && piile.Quantity > 0&&!_cahsier.IsTaking)
             {
                 StartCoroutine(TakeRoutine(piile));
             }
@@ -150,20 +151,20 @@ namespace _Project.Scripts_dev.Control
         private IEnumerator PayRoutine(Unlock unlock)
         {
             _isPlayMoney = true;
-            if (unlock.remain > 0 && _gameManager.money>0)
+            if (unlock.remain > 0 && _gameManager.Money>0)
             {
-                if (unlock.remain >= _gameManager.moneyPerPack && _gameManager.money> _gameManager.moneyPerPack)
+                if (unlock.remain >= _gameManager.MoneyInPack && _gameManager.Money> _gameManager.MoneyInPack)
                 {
                     GameObject clone = Instantiate(_money, _transform.position, Quaternion.identity);
-                    unlock.remain -= _gameManager.moneyPerPack;
-                    _gameManager.money -= _gameManager.moneyPerPack;
+                    unlock.remain -= _gameManager.MoneyInPack;
+                    _gameManager.Money -= _gameManager.MoneyInPack;
                     ParabolicMovement(clone, unlock.transform.position, 0.3f, 1f, () => { Destroy(clone); });
                 }
 
-                else if(_gameManager.money > unlock.remain)
+                else if(_gameManager.Money > unlock.remain)
                 {
                     GameObject clone = Instantiate(_money, _transform.position, Quaternion.identity);
-                    _gameManager.money -= unlock.remain;
+                    _gameManager.Money -= unlock.remain;
                     unlock.remain = 0;
                     ParabolicMovement(clone, unlock.transform.position, 0.3f, 1f, () => { Destroy(clone); });
                 }
@@ -172,13 +173,13 @@ namespace _Project.Scripts_dev.Control
                 {
                     GameObject clone = Instantiate(_money, _transform.position, Quaternion.identity);
                 
-                    unlock.remain -= _gameManager.money;
-                    _gameManager.money =0;
+                    unlock.remain -= _gameManager.Money;
+                    _gameManager.Money =0;
                     ParabolicMovement(clone, unlock.transform.position, 0.3f, 1f, () => { Destroy(clone); });
                 }
                 int r = Random.Range(0, 2);
-                if (r == 0&&_gameManager.money>0) 
-                    _soundManager.CreateSound(_soundManager.sounds[5],_transform.position,0.5f);
+                if (r == 0&&_gameManager.Money>0) 
+                    _soundManager.CreateSound(_soundManager.Clips[5],_transform.position,0.5f);
                 yield return new WaitForSeconds(5/unlock.price);
             }
             _isPlayMoney = false;
@@ -240,7 +241,7 @@ namespace _Project.Scripts_dev.Control
             }
 
             if (other.name == "PlayerWithCar" && other.transform != _transform && _spawnTime > 3 &&
-                _gameManager.level >= 3)
+                _gameManager.Level >= 3)
             {
                 _uiManager.CarUI.SetActive(true);
             }
@@ -256,8 +257,8 @@ namespace _Project.Scripts_dev.Control
                 other.tag = "Player";
                 other.GetComponent<PlayerControl>().enabled = true;
                 other.GetComponent<CharacterController>().enabled = true;
-                _gameManager.truckTime = 180;
-                _soundManager.CreateSound(_soundManager.sounds[11], transform.position);
+                _gameManager.TruckTime = 180;
+                _soundManager.CreateSound(_soundManager.Clips[11], transform.position);
                 for (int i = 0; i < _cart.cart.Count; i++)
                 {
                     _carCart.cart.Add(_cart.cart[i]);
@@ -275,10 +276,10 @@ namespace _Project.Scripts_dev.Control
             IsTakingMoney = true;
         
       
-            if (moneyPiile.Quantity > moneyPiile._positions.Length * _gameManager.moneyPerPack)
+            if (moneyPiile.Quantity > moneyPiile._positions.Length * _gameManager.MoneyInPack)
             {
-                _gameManager.money += (moneyPiile.Quantity - moneyPiile._positions.Length * _gameManager.moneyPerPack);
-                moneyPiile.Quantity -= (moneyPiile.Quantity - moneyPiile._positions.Length * _gameManager.moneyPerPack);
+                _gameManager.Money += (moneyPiile.Quantity - moneyPiile._positions.Length * _gameManager.MoneyInPack);
+                moneyPiile.Quantity -= (moneyPiile.Quantity - moneyPiile._positions.Length * _gameManager.MoneyInPack);
            
             }
             if (moneyPiile.Quantity>0)
@@ -286,16 +287,16 @@ namespace _Project.Scripts_dev.Control
                 GameObject clone = Instantiate(moneyPiile._moneyPrefab, moneyPiile.PreviousPosition, Quaternion.identity);
                 moneyPiile.UpdatePosition(false);
 
-                if (moneyPiile.Quantity >= _gameManager.moneyPerPack)
+                if (moneyPiile.Quantity >= _gameManager.MoneyInPack)
                 {
 
-                    moneyPiile.Quantity -= _gameManager.moneyPerPack;
-                    _gameManager.money += _gameManager.moneyPerPack;
+                    moneyPiile.Quantity -= _gameManager.MoneyInPack;
+                    _gameManager.Money += _gameManager.MoneyInPack;
                 }
               
                 else
                 {
-                    _gameManager.money += moneyPiile.Quantity;
+                    _gameManager.Money += moneyPiile.Quantity;
                     moneyPiile.Quantity =0;
                 }
            
@@ -303,7 +304,7 @@ namespace _Project.Scripts_dev.Control
                 ParabolicMovement(clone, _transform.position, 0.2f, 1f, () => { Destroy(clone);  });
                 int r = Random.Range(0, 4);
                 if (r == 0)
-                    _soundManager.CreateSound(_soundManager.sounds[5], _transform.position, 0.5f);
+                    _soundManager.CreateSound(_soundManager.Clips[5], _transform.position, 0.5f);
                 yield return null;
             }
         

@@ -1,9 +1,11 @@
 using System.Collections;
 using _Project.Scripts_dev.AI;
 using _Project.Scripts_dev.Control;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts_dev.Classes
@@ -13,24 +15,25 @@ namespace _Project.Scripts_dev.Classes
         [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
+        [FormerlySerializedAs("linePos")] public GameObject[] LinePositions;
         [SerializeField] private Money moneyPile;
         [SerializeField] private GameObject moneyPrefab;
         [SerializeField] private PlayerControl playerControl;
-        private float money, moneyToTake;
-        private AudioSource audioSource;
-    
-        public bool cashierIsHere,playerIsHere;
-        public int inLine;
-        public GameObject[] linePos;
-        public CharactersAI currentCustomer;
-        public Animator cashierAnimator;
-        public bool isTaking;
-
-        private float noCustomerTime;
+        [SerializeField] private Animator cashierAnimator;
+        
+        private float _money;
+        private float _moneyTake;
+        private AudioSource _audioSource;
+        private float _customerTime;
+        private CharactersAI _currentCustomer;
+        public bool IsTaking { get; private set; }
+        public bool IsCashier { get; set; }
+        public bool IsPlayer { get; set; }
+        public int Line { get; set; }
         private void Start()
         {
             InvokeRepeating("TakeMoney", -1, 1f);
-            audioSource = GetComponent<AudioSource>();
+            _audioSource = GetComponent<AudioSource>();
 
         }
         private void Update()
@@ -44,39 +47,40 @@ namespace _Project.Scripts_dev.Classes
                 transform.tag = "Untagged";
             }
         }
-    
-        float Counter(Cart cart)
+
+        private float Counter(Cart cart)
         {
             float sum=0;
             float multiple = 1;
             LevelMangament[] levelMangaments = FindObjectsOfType<LevelMangament>();
             foreach (GameObject item in cart.cart)
             {
-
                 foreach (LevelMangament levelMangament in levelMangaments)
                 {
-                    if (levelMangament.goods.Id == item.GetComponent<Product>().Goods.Id)
-                        multiple = levelMangament.multiple*levelMangament.level;
+                    if (levelMangament._goods.Id == item.GetComponent<Product>().Goods.Id)
+                        multiple = levelMangament._multiply*levelMangament.Level;
                     if (multiple == 0) multiple = 1;
                 }
-                sum += item.GetComponent<Product>().Goods.Income * multiple * _gameManager.incomeBoost *(_gameManager.money>=1000?0.5f:1);
+                sum += item.GetComponent<Product>().Goods.Income * multiple * _gameManager.IncomeBoost *(_gameManager.Money>=1000?0.5f:1);
                 Debug.Log(sum);
             }
             return sum;
         }
-        void TakeMoney()
+
+        private void TakeMoney()
         {
-            if ((cashierIsHere||playerIsHere) && currentCustomer!=null &&!isTaking &&!playerControl.IsTakingMoney)
+            if ((IsCashier||IsPlayer) && _currentCustomer!=null &&!IsTaking &&!playerControl.IsTakingMoney)
             {
-                StartCoroutine(TakeMoneyDelay());
+                StartCoroutine(TakeMoneyRoutine());
 
                 if (_uiManager.sound)
                 {
-                    audioSource.Play();
+                    _audioSource.Play();
                 }
             }
         }
-        void ParabolicMovement(GameObject go, Vector3 targetPosition, float duration, float height, TweenCallback OnComplete)
+
+        private void ParabolicMovement(GameObject go, Vector3 targetPosition, float duration, float height, TweenCallback OnComplete)
         {
             Vector3[] path = new Vector3[3];
             path[0] = go.transform.position;
@@ -87,30 +91,31 @@ namespace _Project.Scripts_dev.Classes
                 .SetEase(Ease.OutQuad)
                 .OnComplete(OnComplete);
         }
-        IEnumerator TakeMoneyDelay()
+
+        private IEnumerator TakeMoneyRoutine()
         {
-            isTaking = true;
-            float temp =moneyToTake;
-            for(int i=0; i < Mathf.Ceil(moneyToTake / _gameManager.moneyPerPack); i++)
+            IsTaking = true;
+            float temp =_moneyTake;
+            for(int i=0; i < Mathf.Ceil(_moneyTake / _gameManager.MoneyInPack); i++)
             {
                 yield return null; //test
                 int r = Random.Range(0, 2);
                 if (r == 0)
-                    _soundManager.CreateSound(_soundManager.sounds[5], transform.position, 0.5f);
-                GameObject item = Instantiate(moneyPrefab,linePos[0].transform.position,Quaternion.identity);
+                    _soundManager.CreateSound(_soundManager.Clips[5], transform.position, 0.5f);
+                GameObject item = Instantiate(moneyPrefab,LinePositions[0].transform.position,Quaternion.identity);
                 moneyPile.UpdatePosition(true);
             
                 ParabolicMovement(item, moneyPile.NextPosition, 0.5f, 1.5f,
                     () => {
                         Destroy(item);
-                        moneyPile.Quantity += temp > _gameManager.moneyPerPack ? _gameManager.moneyPerPack : temp;
+                        moneyPile.Quantity += temp > _gameManager.MoneyInPack ? _gameManager.MoneyInPack : temp;
                         temp -= 10;
                     });
             }
-            currentCustomer.GoHome();
-            currentCustomer = null;
+            _currentCustomer.GoHome();
+            _currentCustomer = null;
             CharactersAI[] customers = FindObjectsOfType<CharactersAI>();
-            inLine--;
+            Line--;
 
        
             foreach(CharactersAI customer in customers)
@@ -126,7 +131,7 @@ namespace _Project.Scripts_dev.Classes
             cashierAnimator.SetTrigger("Great");
             yield return new WaitForSeconds(0.5f);
             moneyPile.CalculatePositions();
-            isTaking = false;
+            IsTaking = false;
         }
    
         private void OnTriggerStay(Collider other)
@@ -136,8 +141,8 @@ namespace _Project.Scripts_dev.Classes
                 CharactersAI controller = other.GetComponent<CharactersAI>();
                 if (controller.LineNumber == 0 && controller.CheckCompletePath()&&controller.IsMovingHome==false)
                 {
-                    moneyToTake = Counter(other.GetComponent<CharactersAI>().Cart);
-                    currentCustomer = controller;
+                    _moneyTake = Counter(other.GetComponent<CharactersAI>().Cart);
+                    _currentCustomer = controller;
                 }
             }
         }

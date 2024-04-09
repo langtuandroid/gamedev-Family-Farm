@@ -62,30 +62,30 @@ namespace _Project.Scripts_dev.UI
         private void Update()
         {
 
-            if (!_gameManager.firstRolled&&_dataManager.gameData==null)
+            if (!_gameManager.FirstRolled&&_dataManager.GameData==null)
             {
                 StartCoroutine(Delay(() => FirstSpinWheel.SetActive(true),1.5f));
                 BottomUI.SetActive(false);
-                _gameManager.firstRolled = true;
+                _gameManager.FirstRolled = true;
             }
        
             if (FindObjectOfType<FarmSlot>() != null)
             {
                 UpgradeIcon.SetActive(true);
             }
-            moneyText.text =FormatNumber(Mathf.Ceil(_gameManager.money));
-            EXPBarImage.fillAmount = _gameManager.currentExp / _gameManager.maxExp;
-            levelText.text = _gameManager.level.ToString();
-            expText.text = Mathf.Ceil(_gameManager.currentExp) + "/" + Mathf.Ceil(_gameManager.maxExp);
-            if(_gameManager.truckTime<=0)
-                cartText.text = playerCart.inCart + "/" + _gameManager.maxCart;
+            moneyText.text =FormatNumber(Mathf.Ceil(_gameManager.Money));
+            EXPBarImage.fillAmount = _gameManager.Exp / _gameManager.MaxExp;
+            levelText.text = _gameManager.Level.ToString();
+            expText.text = Mathf.Ceil(_gameManager.Exp) + "/" + Mathf.Ceil(_gameManager.MaxExp);
+            if(_gameManager.TruckTime<=0)
+                cartText.text = playerCart.inCart + "/" + _gameManager.MaxCart;
             else
             {
-                cartText.text = truckCart.inCart + "/" + _gameManager.maxCart;
+                cartText.text = truckCart.inCart + "/" + _gameManager.MaxCart;
             }
 
             UpdateSoundIcons();
-            if (_gameManager.freeSpinTimer <= 0)
+            if (_gameManager.FreeSpinTime <= 0)
             {
                 SpinNotice.SetActive(true);
             }
@@ -98,7 +98,7 @@ namespace _Project.Scripts_dev.UI
         }
         void ShowUnlockReward()
         {
-            if (shouldShowUnlockReward&&_gameManager.money==0&&FindObjectOfType<Unlock>().remain>=1&&_gameManager.currentUnlocked!=0)
+            if (shouldShowUnlockReward&&_gameManager.Money==0&&FindObjectOfType<Unlock>().remain>=1&&_gameManager.CurrentUnlocked!=0)
             {
                 StartCoroutine(DelayUnlock());
                 shouldShowUnlockReward = false;
@@ -107,7 +107,7 @@ namespace _Project.Scripts_dev.UI
         IEnumerator DelayUnlock()
         {
             yield return null;
-            if (_gameManager.money == 0 &&(FindObjectOfType<Unlock>().unlockTime > 1 || FindObjectOfType<Unlock>().remain != FindObjectOfType<Unlock>().price))
+            if (_gameManager.Money == 0 &&(FindObjectOfType<Unlock>().unlockTime > 1 || FindObjectOfType<Unlock>().remain != FindObjectOfType<Unlock>().price))
             {
                 unlockRewardUI.SetActive(true);
            
@@ -119,11 +119,11 @@ namespace _Project.Scripts_dev.UI
             Button incomeButton = incomeRemain.transform.parent.GetComponent<Button>();
             Button speedButton = speedRemain.transform.parent.GetComponent<Button>();
 
-            float incomeTime = _gameManager.incomeBoostTime;
-            float speedTime = _gameManager.speedBoostTime;
+            float incomeTime = _gameManager.IncomeBoostTime;
+            float speedTime = _gameManager.SpeedBoostTime;
             incomeRemain.text =incomeTime>0? FormatTime(incomeTime):"3m";
             speedRemain.text = speedTime>0?FormatTime(speedTime):"3m";
-            if (_gameManager.incomeBoostTime>0)
+            if (_gameManager.IncomeBoostTime>0)
             {
                 incomeButton.enabled = false;
                 incomeButton.transform.GetChild(2).gameObject.SetActive(false);
@@ -138,7 +138,7 @@ namespace _Project.Scripts_dev.UI
                 incomeButton.transform.GetChild(0).gameObject.SetActive(true);
 
             }
-            if (_gameManager.speedBoostTime>0)
+            if (_gameManager.SpeedBoostTime>0)
             {
                 speedButton.enabled = false;
                 speedButton.transform.GetChild(2).gameObject.SetActive(false);
@@ -160,16 +160,16 @@ namespace _Project.Scripts_dev.UI
             {
                 StartCoroutine(Delay(() =>
                 {
-                    _gameManager.speedBoostTime = 150;
-                    _gameManager.interTimer = 0;
+                    _gameManager.SpeedBoostTime = 150;
+                    _gameManager.InterTimer = 0;
                 }, 0.2f));
             }
             if (type == 0)
             {
                 StartCoroutine(Delay(() =>
                 {
-                    _gameManager.incomeBoostTime = 150;
-                    _gameManager.interTimer = 0;
+                    _gameManager.IncomeBoostTime = 150;
+                    _gameManager.InterTimer = 0;
                 }, 0.2f));
             }
 
@@ -205,14 +205,14 @@ namespace _Project.Scripts_dev.UI
         {
             StartCoroutine(Delay(() =>
             {
-                StartCoroutine(_gameManager.GetLevelUpRewardAdsCoroutine(oldReward, 1.3f * _gameManager.maxExp / 10, true));
-                _gameManager.interTimer = 0;
+                StartCoroutine(_gameManager.LevelUpRoutine(oldReward, 1.3f * _gameManager.MaxExp / 10, true));
+                _gameManager.InterTimer = 0;
                 TurnOffPopUp(canvas);
             }, 0.2f));
         } 
         public void GetLevelUpRewardFree(RectTransform canvas)
         {
-            StartCoroutine(_gameManager.GetLevelUpRewardAdsCoroutine(oldReward, 1.3f * _gameManager.maxExp / 10, false));
+            StartCoroutine(_gameManager.LevelUpRoutine(oldReward, 1.3f * _gameManager.MaxExp / 10, false));
             TurnOffPopUp(canvas);
         }
    
@@ -270,7 +270,7 @@ namespace _Project.Scripts_dev.UI
                     canvasParent.SetActive(false); rect.GetComponent<Image>().color = color;
                     rect.anchoredPosition = oldPos;
                     Delay(() => Time.timeScale = 1, 0.1f);
-                    _gameManager.gainExp = true;
+                    _gameManager.IsExpGet = true;
 
                 });
             });
@@ -325,7 +325,7 @@ namespace _Project.Scripts_dev.UI
         }
         public void OnClickInter()
         {
-            if (_gameManager.interTimer >= 45&&_gameManager.totalPlayTime>60)
+            if (_gameManager.InterTimer >= 45&&_gameManager.TotalPlayTime>60)
             {
             
             }
@@ -336,14 +336,14 @@ namespace _Project.Scripts_dev.UI
             {
                 FindObjectOfType<Unlock>().remain=0;
                 unlockRewardUI.SetActive(false);
-                _gameManager.interTimer = 0;
+                _gameManager.InterTimer = 0;
             }, 0.2f));
         } public void RewardCar()
         {
             StartCoroutine(Delay(() =>
             {
                 GameObject.Find("Player").GetComponent<PlayerControl>().SitInCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
-                _gameManager.interTimer = 0; 
+                _gameManager.InterTimer = 0; 
             }, 0.2f));
         }
 

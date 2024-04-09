@@ -2,9 +2,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Scripts_dev
+namespace _Project.Scripts_dev.UI
 {
-    public class PopOut : MonoBehaviour
+    public class PopUp : MonoBehaviour
     {
         private RectTransform rect;
         public float delay;

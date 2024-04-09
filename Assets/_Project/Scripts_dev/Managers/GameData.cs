@@ -26,32 +26,35 @@ namespace _Project.Scripts_dev.Managers
         public GameData(GameManager gameManager)
         {
             _gameManager = gameManager;
-            this.money = _gameManager.money;
-            this.currentUnlocked = _gameManager.currentUnlocked;
-            this.level = _gameManager.level;
-            this.exp = _gameManager.currentExp;
-            freeSpinTime = _gameManager.freeSpinTimer;
-            speedTime = _gameManager.speedBoostTime;
-            incomeTime = _gameManager.incomeBoostTime;
-            firstRolled = _gameManager.firstRolled;
+            this.money = _gameManager.Money;
+            this.currentUnlocked = _gameManager.CurrentUnlocked;
+            this.level = _gameManager.Level;
+            this.exp = _gameManager.Exp;
+            freeSpinTime = _gameManager.FreeSpinTime;
+            speedTime = _gameManager.SpeedBoostTime;
+            incomeTime = _gameManager.IncomeBoostTime;
+            firstRolled = _gameManager.FirstRolled;
             timeQuit = System.DateTime.Now.ToString();
-            totalPlayTime = _gameManager.totalPlayTime;
-            unlockMoney = !(currentUnlocked > _gameManager.unlockOrder.Length - 1) ? _gameManager.unlockOrder[currentUnlocked].transform.GetChild(1).GetComponent<Unlock>().remain:0;
-            GetAllStackInfo();
-            GetAllShelvesInfo();
-            GetAllLevelInfo();
-            GetAllFarmsInfo();
+            totalPlayTime = _gameManager.TotalPlayTime;
+            unlockMoney = !(currentUnlocked > _gameManager._unlockOrder.Length - 1) ? _gameManager._unlockOrder[currentUnlocked].transform.GetChild(1).GetComponent<Unlock>().remain:0;
+            StackData();
+            ShelvesData();
+            LevelData();
+            FarmData();
         }
-        void GetAllStackInfo()
+
+        private void StackData()
         {
             stackNumbers = new List<int>();
             List<Stack> stacks = new List<Stack>(Object.FindObjectsOfType<Stack>());
             stacks.Sort((a, b) => a.productToShow.Id.CompareTo(b.productToShow.Id));
-            for (int i =0; i< stacks.Count;i++)
+            foreach (var stack in stacks)
             {
-                stackNumbers.Add(stacks[i].currentQuantity);
+                stackNumbers.Add(stack.currentQuantity);
             }
-        } void GetAllShelvesInfo()
+        }
+
+        private void ShelvesData()
         {
             productNumbers = new List<int>();
             List<Shelf>shelves = new List<Shelf>(Object.FindObjectsOfType<Shelf>());
@@ -61,18 +64,20 @@ namespace _Project.Scripts_dev.Managers
                 productNumbers.Add(shelves[i].Quantity);
             }
         }
-        void GetAllLevelInfo()
+
+        private void LevelData()
         {
             levels = new List<int>();
             List<LevelMangament> levelMangaments =new List<LevelMangament>(Object.FindObjectsOfType<LevelMangament>());
-            levelMangaments.Sort((a, b) => a.goods.Id.CompareTo(b.goods.Id));
+            levelMangaments.Sort((a, b) => a._goods.Id.CompareTo(b._goods.Id));
             for (int i = 0; i < levelMangaments.Count; i++)
             {
                 if(levelMangaments[i].transform.GetChild(0).gameObject.activeInHierarchy)
-                    levels.Add(levelMangaments[i].level);
+                    levels.Add(levelMangaments[i].Level);
             }
         }
-        void GetAllFarmsInfo()
+
+        private void FarmData()
         {
             status = new List<int>();
             FarmSlot[] farmSlots = Object.FindObjectsOfType<FarmSlot>();
@@ -81,9 +86,7 @@ namespace _Project.Scripts_dev.Managers
             {
                 if(farm.farmStatus==2)
                     status.Add(farm.productID);
-          
             }
-
         }
 
     }

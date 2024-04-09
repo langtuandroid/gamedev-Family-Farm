@@ -1,4 +1,5 @@
 using System.Collections;
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -19,8 +20,8 @@ namespace _Project.Scripts_dev.Classes
         private void SpawnCustomer()
         {
             _gameManager.UpdateCurrentShops();
-            if (_gameManager.shops.Count == 0) return;
-            _spawnNumber = _gameManager.shops.Count + 3;
+            if (_gameManager._shops.Count == 0) return;
+            _spawnNumber = _gameManager._shops.Count + 3;
             if (_spawnNumber > 15) _spawnNumber = 15;
             if (GameObject.FindGameObjectsWithTag("Customer").Length<_spawnNumber)
                 _diContainer.InstantiatePrefab(_customerPrefabs[Random.Range(0,2)],_spawnPositions[Random.Range(0,_spawnPositions.Length)].transform.position, Quaternion.identity, null);

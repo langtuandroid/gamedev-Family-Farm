@@ -1,19 +1,20 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace _Project.Scripts_dev
+namespace _Project.Scripts_dev.UI
 {
-    public class LoadingScreen : MonoBehaviour
+    public class Loading : MonoBehaviour
     {
-        public Image Loading_2_Image;
+        [SerializeField] private Image _loadImage;
         private void Start()
         {
             StartCoroutine(LoadingCoroutine());
-            StartCoroutine(Delay());
+            StartCoroutine(WaitRoutine());
         }
-        private IEnumerator Delay()
+        private IEnumerator WaitRoutine()
         {
             yield return new WaitForSeconds(2);
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
@@ -33,7 +34,7 @@ namespace _Project.Scripts_dev
                     yield return new WaitForSeconds(0.5f);
                     timeLoad = 5f;
                 }
-                Loading_2_Image.fillAmount = timeLoad / 5;
+                _loadImage.fillAmount = timeLoad / 5;
             }
             SceneManager.LoadSceneAsync(1);
         }

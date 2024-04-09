@@ -1,6 +1,7 @@
 using System.Collections;
 using _Project.Scripts_dev.Classes;
 using _Project.Scripts_dev.Control;
+using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using DG.Tweening;
 using TMPro;
@@ -38,7 +39,7 @@ namespace _Project.Scripts_dev.Car
         }
         private void Update()
         {
-            if(_gameManager.truckTime<=0) engineSound.volume =0;
+            if(_gameManager.TruckTime<=0) engineSound.volume =0;
             if (!posSet&& playerControl.enabled==true)
             {
                 originalScaleBody = truckBody.transform.localPosition;
@@ -51,7 +52,7 @@ namespace _Project.Scripts_dev.Car
                 StartCoroutine(DoCarAnim());
                 wheel1.enabled = true;
                 wheel2.enabled = true;
-                engineSound.volume = _soundManager.sound.volume;
+                engineSound.volume = _soundManager.Sound.volume;
             }
             if(characterController.velocity == Vector3.zero || !playerControl.enabled)
             {
@@ -59,15 +60,15 @@ namespace _Project.Scripts_dev.Car
                 wheel2.enabled = false;
                 DOTween.Kill(transform);
                 if (playerControl.enabled)
-                    engineSound.volume = 0.4f* _soundManager.sound.volume;
+                    engineSound.volume = 0.4f* _soundManager.Sound.volume;
                 else
                 {
                     engineSound.volume = 0;
                 }
             }
-            fuelImage.fillAmount = _gameManager.truckTime / 180f;
-            fuelText.text = _uiManager.FormatTime(_gameManager.truckTime);
-            if (_gameManager.truckTime <= 0) fuelImage.transform.parent.gameObject.SetActive(false);
+            fuelImage.fillAmount = _gameManager.TruckTime / 180f;
+            fuelText.text = _uiManager.FormatTime(_gameManager.TruckTime);
+            if (_gameManager.TruckTime <= 0) fuelImage.transform.parent.gameObject.SetActive(false);
             else fuelImage.transform.parent.gameObject.SetActive(true);
         }
         private IEnumerator BimBim()
@@ -75,7 +76,7 @@ namespace _Project.Scripts_dev.Car
             while (true)
             {
                 yield return new WaitForSeconds(Random.Range(10f, 15f));
-                bimbimSound.volume = _soundManager.sound.volume;
+                bimbimSound.volume = _soundManager.Sound.volume;
                 if (characterController.velocity != Vector3.zero) bimbimSound.Play();
           
             }
@@ -90,14 +91,14 @@ namespace _Project.Scripts_dev.Car
             {
                 truckBody.transform.DOLocalMoveY(originalScaleBody.y , duration).SetEase(Ease.OutQuad);
             });
-            if (playerControl.enabled&& _gameManager.truckTime > 1)
+            if (playerControl.enabled&& _gameManager.TruckTime > 1)
             {
                 Instantiate(trailEffect, transform).transform.localPosition = new Vector3(0.05f, 0.02f, -0.15f);
                 Instantiate(trailEffect, transform).transform.localPosition = new Vector3(-0.05f, 0.02f, -0.15f);
            
             }
             yield return new WaitForSeconds(duration);
-            if (playerControl.enabled && _gameManager.truckTime > 1)
+            if (playerControl.enabled && _gameManager.TruckTime > 1)
             {
                 Instantiate(trailEffect, transform).transform.localPosition = new Vector3(0.05f, 0.02f, -0.15f);
                 Instantiate(trailEffect, transform).transform.localPosition = new Vector3(-0.05f, 0.02f, -0.15f);

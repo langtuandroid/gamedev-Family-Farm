@@ -32,15 +32,15 @@ namespace _Project.Scripts_dev.Classes
         }
         private void Update()
         {
-            if (_dataManager.gameData != null && !_isLoad)
+            if (_dataManager.GameData != null && !_isLoad)
             {
-                GameData gameData = _dataManager.gameData;
+                GameData gameData = _dataManager.GameData;
                 int[] productNumbers = gameData.productNumbers.ToArray();
                 _isLoad = true;
-                if (_gameManager.playTime < 3) 
+                if (_gameManager.PlayTime < 3) 
                     Quantity = _productsToDisplay.Id > productNumbers.Length? 0 : productNumbers[_productsToDisplay.Id - 1];
             }
-            if (_dataManager.gameData == null)
+            if (_dataManager.GameData == null)
             {
                 _isLoad = true;
             }

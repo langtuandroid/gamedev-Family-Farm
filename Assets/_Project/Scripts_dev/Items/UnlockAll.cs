@@ -1,3 +1,4 @@
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using Zenject;
 
@@ -11,9 +12,9 @@ namespace _Project.Scripts_dev.Items
         {
             if (other.CompareTag("Player"))
             {
-                _gameManager.money += 10000;
+                _gameManager.Money += 10000;
                 if (!unlock) return;
-                foreach (GameObject go in _gameManager.unlockOrder)
+                foreach (GameObject go in _gameManager._unlockOrder)
                 {
                     go.SetActive(true);
                 }

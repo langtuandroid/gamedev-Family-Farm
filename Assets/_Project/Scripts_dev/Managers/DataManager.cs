@@ -6,45 +6,38 @@ namespace _Project.Scripts_dev.Managers
     public class DataManager : MonoBehaviour
     {
         [Inject] private GameManager _gameManager;
-        public GameData gameData;
+        public GameData GameData { get; private set; }
     
         private void Awake()
         {
-            gameData = LoadGameData();
+            GameData = LoadData();
         }
 
-        private void SaveGameData()
+        private void SaveData()
         {
             GameData gameData = new GameData(_gameManager);
             string gameDataJson = JsonUtility.ToJson(gameData);
             PlayerPrefs.SetString("GameData", gameDataJson);
             PlayerPrefs.Save();
-        
         }
 
-        private GameData LoadGameData()
+        private GameData LoadData()
         {
-            if (PlayerPrefs.HasKey("GameData"))
-            {
-                string savedGameDataJson = PlayerPrefs.GetString("GameData");
-                GameData savedGameData = JsonUtility.FromJson<GameData>(savedGameDataJson);
-                return savedGameData;
-            }
-            else
-            {
-                return null;
-            }
+            if (!PlayerPrefs.HasKey("GameData")) return null;
+            string savedGameDataJson = PlayerPrefs.GetString("GameData");
+            GameData savedGameData = JsonUtility.FromJson<GameData>(savedGameDataJson);
+            return savedGameData;
         }
         private void OnApplicationPause(bool pause)
         {
             if (pause)
             {
-                SaveGameData();
+                SaveData();
             }
         }
         private void OnApplicationQuit()
         {
-            SaveGameData();
+            SaveData();
         }
     }
 }

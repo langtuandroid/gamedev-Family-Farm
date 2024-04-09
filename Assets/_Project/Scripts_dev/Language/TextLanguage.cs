@@ -1,10 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-[System.Serializable]
-public class TextLanguage 
+using UnityEngine.Serialization;
+
+namespace _Project.Scripts_dev.Language
 {
-    public int id;
-    public string eng;
-    public string vni;
+    [System.Serializable]
+    public class TextLanguage 
+    {
+        [FormerlySerializedAs("id")] public int ID;
+        [FormerlySerializedAs("eng")] public string EnglishVariant;
+        [FormerlySerializedAs("vni")] public string VniVariant;
+    }
 }

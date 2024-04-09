@@ -1,3 +1,4 @@
+using _Project.Scripts_dev.Managers;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,7 +15,7 @@ namespace _Project.Scripts_dev.Classes
 
         private void Update()
         {
-            switch (_gameManager.money)
+            switch (_gameManager.Money)
             {
                 case <= 0 when !_isNoMoney && !_isPoor:
                     DOTween.Kill(_border, true);
@@ -30,7 +31,7 @@ namespace _Project.Scripts_dev.Classes
         {
             if (_isNoMoney) return;
             if (!other.CompareTag("Player") || DOTween.IsTweening(_border)) return;
-            if (_gameManager.money > 0)
+            if (_gameManager.Money > 0)
             {
                 _border.DOScale(1.2f * Vector2.one, 0.15f).OnComplete(() =>
                 {

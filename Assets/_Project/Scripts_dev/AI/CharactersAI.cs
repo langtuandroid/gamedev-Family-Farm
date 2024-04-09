@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts_dev.Classes;
 using _Project.Scripts_dev.Farm;
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -80,7 +81,7 @@ namespace _Project.Scripts_dev.AI
             _cashier = GameObject.FindGameObjectsWithTag("Cashier")[Random.Range(0,cashiers.Length)].GetComponent<Cashier>();
             foreach (GameObject c in cashiers)
             {
-                if (c.GetComponent<Cashier>().inLine < _cashier.inLine) {
+                if (c.GetComponent<Cashier>().Line < _cashier.Line) {
                     _cashier = c.GetComponent<Cashier>();
                 }
             }
@@ -127,7 +128,7 @@ namespace _Project.Scripts_dev.AI
                 }
                 if (_isToCashier)
                 {
-                    if (_gameManager.some1Taking==0&&!_isChoosing)
+                    if (_gameManager.SomeTaking==0&&!_isChoosing)
                     {
                         StartCoroutine(ConfigureLine());
                     }
@@ -173,11 +174,11 @@ namespace _Project.Scripts_dev.AI
         private IEnumerator ConfigureLine()
         {
             _isChoosing = true;
-            _gameManager.some1Taking++;
+            _gameManager.SomeTaking++;
             yield return new WaitForSeconds(0.05f);
-            destination = _cashier.linePos[LineNumber];
+            destination = _cashier.LinePositions[LineNumber];
             _wishCloud.SetActive(false);
-            _gameManager.some1Taking--;
+            _gameManager.SomeTaking--;
             _isChoosing = true;
         }
 
@@ -406,21 +407,21 @@ namespace _Project.Scripts_dev.AI
         private GameObject ChooseShop(bool reChoose=false)
         {
             _gameManager.UpdateCurrentShops();
-            if (_gameManager.shops.Count == 0||IsMovingHome) return null;
+            if (_gameManager._shops.Count == 0||IsMovingHome) return null;
        
-            GameObject shop = _gameManager.shops[Random.Range(0, _gameManager.shops.Count)];
+            GameObject shop = _gameManager._shops[Random.Range(0, _gameManager._shops.Count)];
             if(reChoose==false)
-                while (_shopsSkipped.Contains(shop) && _gameManager.shops.Count != _shopsSkipped.Count)
+                while (_shopsSkipped.Contains(shop) && _gameManager._shops.Count != _shopsSkipped.Count)
                 {
-                    shop = _gameManager.shops[Random.Range(0, _gameManager.shops.Count)];
+                    shop = _gameManager._shops[Random.Range(0, _gameManager._shops.Count)];
 
                 }
             else
             {
                 shop = null;
-                foreach(GameObject go in _gameManager.shops)
+                foreach(GameObject go in _gameManager._shops)
                 {
-                    if (go.GetComponent<AreaInfo>().shelf.Quantity > 0)
+                    if (go.GetComponent<AreaInfo>()._shelfArea.Quantity > 0)
                     {
                         shop = go;
                     }
@@ -430,14 +431,14 @@ namespace _Project.Scripts_dev.AI
                     return null;
                 } 
             }
-            if (_gameManager.shops.Count == _shopsSkipped.Count) return null;
+            if (_gameManager._shops.Count == _shopsSkipped.Count) return null;
             _shopsSkipped.Add(shop);
             destination =shop;
             if (_shopsSkipped.Count <3 )
-                StartCoroutine(WaitTillShopOpen(shop.GetComponent<AreaInfo>().shelf));
-            _productsAmount = destination.GetComponent<AreaInfo>().shelf._productsRequierment;
+                StartCoroutine(WaitTillShopOpen(shop.GetComponent<AreaInfo>()._shelfArea));
+            _productsAmount = destination.GetComponent<AreaInfo>()._shelfArea._productsRequierment;
        
-            _wishImage.sprite = _wishList[shop.GetComponent<AreaInfo>().shelf._productsRequierment - 1];
+            _wishImage.sprite = _wishList[shop.GetComponent<AreaInfo>()._shelfArea._productsRequierment - 1];
             _isShopChoose = true;
             return shop;
         }
@@ -445,7 +446,7 @@ namespace _Project.Scripts_dev.AI
         {
             if (IsMovingHome||!_isToCashier) return;
             LineNumber--;
-            destination = _cashier.linePos[LineNumber];
+            destination = _cashier.LinePositions[LineNumber];
         }
     
         public void GoHome()
@@ -479,10 +480,10 @@ namespace _Project.Scripts_dev.AI
            
                 _wishImage.sprite = _wishList[20];
                 _isToCashier = true;
-                destination = _cashier.linePos[_cashier.inLine];
+                destination = _cashier.LinePositions[_cashier.Line];
             
-                LineNumber = _cashier.inLine;
-                _cashier.inLine++;
+                LineNumber = _cashier.Line;
+                _cashier.Line++;
             }
         }
 
@@ -566,7 +567,7 @@ namespace _Project.Scripts_dev.AI
             {
                 foreach(GameObject s in _shelvesList)
                 {
-                    if(s.GetComponent<AreaInfo>().shelf._productsToDisplay.Id == Cart.cart[0].GetComponent<Product>().Goods.Id)
+                    if(s.GetComponent<AreaInfo>()._shelfArea._productsToDisplay.Id == Cart.cart[0].GetComponent<Product>().Goods.Id)
                     {
                         destination = (s);
                         _isShipping = true;
@@ -588,12 +589,12 @@ namespace _Project.Scripts_dev.AI
             {
                 if (_isCustomer)
                 {
-                    if (other.GetComponent<AreaInfo>().shelf._productsRequierment != _productsAmount) return;
-                    int quantity = other.GetComponent<AreaInfo>().shelf.Quantity;
+                    if (other.GetComponent<AreaInfo>()._shelfArea._productsRequierment != _productsAmount) return;
+                    int quantity = other.GetComponent<AreaInfo>()._shelfArea.Quantity;
                     _needAmount = Random.Range(quantity / 5, quantity / 3);
                     if (_needAmount < 2) _needAmount =Random.Range(1,3) ;
                     if (_needAmount > Cart.CartPos.Length) _needAmount = Cart.CartPos.Length;
-                    GrabProduct(other.GetComponent<AreaInfo>().shelf);
+                    GrabProduct(other.GetComponent<AreaInfo>()._shelfArea);
                     if (Cart.cart.Count > 0)
                     {
                         _animator.SetBool("Carry", true);
@@ -604,7 +605,7 @@ namespace _Project.Scripts_dev.AI
                 }
                 if(_isShiper&& Cart.cart.Count>0)
                 {
-                    if (other.GetComponent<AreaInfo>().shelf._productsRequierment==Cart.cart[0].GetComponent<Product>().Goods.Id)
+                    if (other.GetComponent<AreaInfo>()._shelfArea._productsRequierment==Cart.cart[0].GetComponent<Product>().Goods.Id)
                         _isShipping = false;
                 }
             }

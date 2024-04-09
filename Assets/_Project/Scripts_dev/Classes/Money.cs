@@ -1,4 +1,5 @@
 using System.Collections;
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -38,7 +39,7 @@ namespace _Project.Scripts_dev.Classes
         private void UpdateView()
         {
             StartCoroutine(ActiveRoutine());
-            if (Mathf.Ceil(Quantity / _gameManager.moneyPerPack) < _positions.Length)
+            if (Mathf.Ceil(Quantity / _gameManager.MoneyInPack) < _positions.Length)
                 Delay();
         }
         public void UpdatePosition(bool add)
@@ -49,7 +50,7 @@ namespace _Project.Scripts_dev.Classes
                 PreviousPosition = _positions[NewIndex-1].transform.position;
             if (add)
                 NewIndex++;
-            else if (Mathf.Ceil(Quantity / _gameManager.moneyPerPack) <= _positions.Length)
+            else if (Mathf.Ceil(Quantity / _gameManager.MoneyInPack) <= _positions.Length)
             {
                 Debug.Log("Whu bug wtf man");
                 NewIndex--;
@@ -77,7 +78,7 @@ namespace _Project.Scripts_dev.Classes
         }
         private IEnumerator ActiveRoutine()
         {
-            for (int i = 0; i < (Quantity / _gameManager.moneyPerPack > _positions.Length ? _positions.Length :Mathf.Ceil(Quantity / _gameManager.moneyPerPack)); i++)
+            for (int i = 0; i < (Quantity / _gameManager.MoneyInPack > _positions.Length ? _positions.Length :Mathf.Ceil(Quantity / _gameManager.MoneyInPack)); i++)
             {
                 _positions[i].transform.GetChild(0).gameObject.SetActive(true);
                 yield return null;
@@ -85,7 +86,7 @@ namespace _Project.Scripts_dev.Classes
         }
         private void Delay()
         {
-            for (int i =(int) (Mathf.Ceil(Quantity / _gameManager.moneyPerPack)); i < _positions.Length; i++)
+            for (int i =(int) (Mathf.Ceil(Quantity / _gameManager.MoneyInPack)); i < _positions.Length; i++)
             {
                 if (_positions[i].transform.childCount>0)
                     _positions[i].transform.GetChild(0).gameObject.SetActive(false);

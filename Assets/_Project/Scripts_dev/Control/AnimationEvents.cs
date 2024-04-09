@@ -1,3 +1,4 @@
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using Zenject;
 
@@ -11,11 +12,11 @@ namespace _Project.Scripts_dev.Control
         public void Plant()
         {
             if (transform.name == "Player Variant") 
-                _soundManager.CreateSound(_soundManager.sounds[6], transform.position);
+                _soundManager.CreateSound(_soundManager.Clips[6], transform.position);
         }
         public void RunTrail()
         {
-            Instantiate(_effectManager.dustTrail, transform).transform.localPosition =new Vector3(0,0,-0.04f);
+            Instantiate(_effectManager._dustTrailPrefab, transform).transform.localPosition =new Vector3(0,0,-0.04f);
         }
     }
 }

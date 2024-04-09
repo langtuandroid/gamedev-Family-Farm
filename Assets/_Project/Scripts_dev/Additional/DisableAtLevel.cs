@@ -1,3 +1,4 @@
+using _Project.Scripts_dev.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -11,7 +12,7 @@ namespace _Project.Scripts_dev.Additional
 
         private void Update()
         {
-            if (_gameManager.level >= _level) gameObject.SetActive(false);
+            if (_gameManager.Level >= _level) gameObject.SetActive(false);
         }
     }
 }

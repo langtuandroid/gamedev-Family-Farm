@@ -16,7 +16,7 @@ namespace _Project.Scripts_dev.Language
     
         public void SetText(int index, TextMeshProUGUI text,bool outline=false)
         {
-            text.text = language==0? file.textLanguages[index].vni: file.textLanguages[index].eng;
+            text.text = language==0? file.textLanguages[index].VniVariant: file.textLanguages[index].EnglishVariant;
             if (outline)
             {
                 text.font = language == 0 ? VNIOutline :ENOutline;
@@ -29,16 +29,16 @@ namespace _Project.Scripts_dev.Language
         }
         public void SetTextAll()
         {
-            LaguageSetter[] setters = FindObjectsOfType<LaguageSetter>();
+            LanguageSetter[] setters = FindObjectsOfType<LanguageSetter>();
 
-            foreach(LaguageSetter setter in setters)
+            foreach(LanguageSetter setter in setters)
             {
-                setter.Set();
+                setter.SetText();
             }
         }
         public string GetText(int index)
         {
-            return language == 0 ? file.textLanguages[index].vni : file.textLanguages[index].eng;
+            return language == 0 ? file.textLanguages[index].VniVariant : file.textLanguages[index].EnglishVariant;
         }
     }
 }

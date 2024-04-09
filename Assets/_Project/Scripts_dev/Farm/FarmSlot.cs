@@ -67,11 +67,11 @@ namespace _Project.Scripts_dev.Farm
   
         private void Update()
         {
-            if (_dataManager.gameData != null&&!load&&_gameManager.load)
+            if (_dataManager.GameData != null&&!load&&_gameManager.IsLoad)
             {
-                GameData gameData = _dataManager.gameData;
+                GameData gameData = _dataManager.GameData;
                 int[] statuses = gameData.status.ToArray();
-                if (_gameManager.playTime < 3)
+                if (_gameManager.PlayTime < 3)
                 {
                     foreach (int status in statuses)
                     {
@@ -101,7 +101,7 @@ namespace _Project.Scripts_dev.Farm
             
                 load = true;
             }
-            if(_dataManager.gameData==null)
+            if(_dataManager.GameData==null)
             {
                 load = true;
             }
@@ -359,8 +359,8 @@ namespace _Project.Scripts_dev.Farm
                 yield return new WaitForSeconds(0.05f);
             }
             
-            float exp = stack.productToShow.ExpNum * (_gameManager.currentUnlocked < 18 ? 1 : _gameManager.currentUnlocked < 35 ? 0.75f : 0.5f);
-            _effectManager.GetExpEffect(exp, GameObject.FindGameObjectWithTag("Player").transform);
+            float exp = stack.productToShow.ExpNum * (_gameManager.CurrentUnlocked < 18 ? 1 : _gameManager.CurrentUnlocked < 35 ? 0.75f : 0.5f);
+            _effectManager.ExperienceEffect(exp, GameObject.FindGameObjectWithTag("Player").transform);
         }
 
         private void ParabolicMovement(GameObject go,Vector3 targetPosition,float duration, float height,TweenCallback OnComplete)

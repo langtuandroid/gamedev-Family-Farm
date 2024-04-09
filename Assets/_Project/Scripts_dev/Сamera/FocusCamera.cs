@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using _Project.Scripts_dev.Managers;
 using Cinemachine;
 using UnityEngine;
 using Zenject;
@@ -33,7 +34,7 @@ namespace _Project.Scripts_dev.Сamera
 
         private IEnumerator TemporaryFocusCoroutine(GameObject targetObject)
         {
-            while (_gameManager.gainExp == false)
+            while (_gameManager.IsExpGet == false)
             {
                 virtualCamera.gameObject.SetActive(false);
                 yield return null;
