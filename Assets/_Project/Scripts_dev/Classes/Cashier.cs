@@ -13,7 +13,7 @@ namespace _Project.Scripts_dev.Classes
         [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
-        [SerializeField] private MoneyPiile moneyPile;
+        [SerializeField] private Money moneyPile;
         [SerializeField] private GameObject moneyPrefab;
         [SerializeField] private PlayerControl playerControl;
         private float money, moneyToTake;
@@ -55,18 +55,18 @@ namespace _Project.Scripts_dev.Classes
 
                 foreach (LevelMangament levelMangament in levelMangaments)
                 {
-                    if (levelMangament.goods.id == item.GetComponent<Product>().goods.id)
+                    if (levelMangament.goods.Id == item.GetComponent<Product>().Goods.Id)
                         multiple = levelMangament.multiple*levelMangament.level;
                     if (multiple == 0) multiple = 1;
                 }
-                sum += item.GetComponent<Product>().goods.income * multiple * _gameManager.incomeBoost *(_gameManager.money>=1000?0.5f:1);
+                sum += item.GetComponent<Product>().Goods.Income * multiple * _gameManager.incomeBoost *(_gameManager.money>=1000?0.5f:1);
                 Debug.Log(sum);
             }
             return sum;
         }
         void TakeMoney()
         {
-            if ((cashierIsHere||playerIsHere) && currentCustomer!=null &&!isTaking &&!playerControl.takingMoney)
+            if ((cashierIsHere||playerIsHere) && currentCustomer!=null &&!isTaking &&!playerControl.IsTakingMoney)
             {
                 StartCoroutine(TakeMoneyDelay());
 
@@ -98,12 +98,12 @@ namespace _Project.Scripts_dev.Classes
                 if (r == 0)
                     _soundManager.CreateSound(_soundManager.sounds[5], transform.position, 0.5f);
                 GameObject item = Instantiate(moneyPrefab,linePos[0].transform.position,Quaternion.identity);
-                moneyPile.UpdateNextPos(true);
+                moneyPile.UpdatePosition(true);
             
-                ParabolicMovement(item, moneyPile.nextPos, 0.5f, 1.5f,
+                ParabolicMovement(item, moneyPile.NextPosition, 0.5f, 1.5f,
                     () => {
                         Destroy(item);
-                        moneyPile.currentQuantity += temp > _gameManager.moneyPerPack ? _gameManager.moneyPerPack : temp;
+                        moneyPile.Quantity += temp > _gameManager.moneyPerPack ? _gameManager.moneyPerPack : temp;
                         temp -= 10;
                     });
             }
@@ -125,7 +125,7 @@ namespace _Project.Scripts_dev.Classes
             }
             cashierAnimator.SetTrigger("Great");
             yield return new WaitForSeconds(0.5f);
-            moneyPile.ReCalculatePos();
+            moneyPile.CalculatePositions();
             isTaking = false;
         }
    

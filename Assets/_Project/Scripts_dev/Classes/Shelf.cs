@@ -5,6 +5,7 @@ using _Project.Scripts_dev.Configs;
 using _Project.Scripts_dev.Control;
 using _Project.Scripts_dev.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts_dev.Classes
@@ -13,61 +14,59 @@ namespace _Project.Scripts_dev.Classes
     {
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
-        public int currentQuantity;
-        public int productNeeded;
-        public Goods productToShow;
-        [SerializeField] GameObject[] pos;
-        [SerializeField] MatPlace matPlace;
-        private bool load;
+        public int Quantity { get; set; }
+        [FormerlySerializedAs("productNeeded")] public int _productsRequierment;
+        [FormerlySerializedAs("productToShow")] public Goods _productsToDisplay;
+        [FormerlySerializedAs("pos")] [SerializeField] private GameObject[] _positions;
+        [FormerlySerializedAs("matPlace")] [SerializeField] private MaterialPlace _materialsPlace;
+        private bool _isLoad;
 
         private void Start()
         {
-            foreach (GameObject go in pos)
+            foreach (GameObject go in _positions)
             {
-                GameObject clone = Instantiate(productToShow.prefab, go.transform);
+                GameObject clone = Instantiate(_productsToDisplay.ItemPrefab, go.transform);
                 clone.transform.position = go.transform.position;
                 clone.SetActive(false);
             }
         }
         private void Update()
         {
-            if (_dataManager.gameData != null && !load)
+            if (_dataManager.gameData != null && !_isLoad)
             {
                 GameData gameData = _dataManager.gameData;
                 int[] productNumbers = gameData.productNumbers.ToArray();
-                load = true;
+                _isLoad = true;
                 if (_gameManager.playTime < 3) 
-                    currentQuantity = productToShow.id > productNumbers.Length? 0 : productNumbers[productToShow.id - 1];
+                    Quantity = _productsToDisplay.Id > productNumbers.Length? 0 : productNumbers[_productsToDisplay.Id - 1];
             }
             if (_dataManager.gameData == null)
             {
-                load = true;
+                _isLoad = true;
             }
-            if (!load) return;
-            UpdateStockLooks();
+            if (!_isLoad) return;
+            UpdateStockView();
         }
-        private void UpdateStockLooks()
+        private void UpdateStockView()
         {
-
-            StartCoroutine(DelayActive());
-            if (currentQuantity < pos.Length)
-                StartCoroutine(DelayDeative());
+            StartCoroutine(ActiveRoutine());
+            if (Quantity < _positions.Length)
+                StartCoroutine(DeactivateRoutine());
 
         }
-        private IEnumerator DelayActive()
+        private IEnumerator ActiveRoutine()
         {
-            for (int i = 0; i < (currentQuantity > pos.Length ? pos.Length : currentQuantity); i++)
+            for (int i = 0; i < (Quantity > _positions.Length ? _positions.Length : Quantity); i++)
             {
-                pos[i].transform.GetChild(0).gameObject.SetActive(true);
+                _positions[i].transform.GetChild(0).gameObject.SetActive(true);
                 yield return new WaitForSeconds(0.05f);
-
             }
         }
-        private IEnumerator DelayDeative()
+        private IEnumerator DeactivateRoutine()
         {
-            for (int i = currentQuantity; i < pos.Length; i++)
+            for (int i = Quantity; i < _positions.Length; i++)
             {
-                pos[i].transform.GetChild(0).gameObject.SetActive(false);
+                _positions[i].transform.GetChild(0).gameObject.SetActive(false);
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -76,21 +75,21 @@ namespace _Project.Scripts_dev.Classes
             if (other.CompareTag("Shipper") || other.CompareTag("Player"))
             {
                 string tag = other.gameObject.tag;
-                Cart cart = tag == "Shipper" ? other.GetComponent<CharactersAI>().Cart : other.GetComponent<PlayerControl>().cart;
+                Cart cart = tag == "Shipper" ? other.GetComponent<CharactersAI>().Cart : other.GetComponent<PlayerControl>().Cart;
            
-                if (CheckCart(cart))
+                if (CheckCartRequierment(cart))
                 {
-                    cart.Remove(transform.name,productNeeded, matPlace, 10000, true, this);
+                    cart.Remove(transform.name,_productsRequierment, _materialsPlace, 10000, true, this);
                 }
             }
         }
 
-        private bool CheckCart(Cart cart)
+        private bool CheckCartRequierment(Cart cart)
         {
             List<GameObject> list = cart.cart; 
             foreach (GameObject go in list)
             {
-                if (go.GetComponent<Product>().goods.id == productNeeded)
+                if (go.GetComponent<Product>().Goods.Id == _productsRequierment)
                 {
                     return true;
                 }

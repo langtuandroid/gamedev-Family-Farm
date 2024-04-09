@@ -6474,12 +6474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0e3ad6a3bf14d48bc00c7a9ec3227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentQuantity: 0
-  productToShow: {fileID: 4723092794129890076, guid: c6f839e64b0f79f43b85fd423f025535, type: 3}
-  nextPos: {x: 0, y: 0, z: 0}
-  prevPos: {x: 0, y: 0, z: 0}
-  nextIndex: 0
-  pos:
+  _moneyPrefab: {fileID: 4723092794129890076, guid: c6f839e64b0f79f43b85fd423f025535, type: 3}
+  _positions:
   - {fileID: 4630565618178861873}
   - {fileID: 4630565616747635599}
   - {fileID: 4630565618532258041}
@@ -14347,8 +14343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ed7dca9101d2e4e93bc167d4f9b8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  border: {fileID: 8126867692809486282}
-  noMoney: 1
+  _border: {fileID: 8126867692809486282}
+  _isNoMoney: 1
 --- !u!1 &7176978224601925118
 GameObject:
   m_ObjectHideFlags: 0

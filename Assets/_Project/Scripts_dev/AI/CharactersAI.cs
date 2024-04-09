@@ -210,7 +210,7 @@ namespace _Project.Scripts_dev.AI
                         {
                             foreach (int mat in farm.materialsNeeded)
                             {
-                                if (mat == staack.productToShow.id)
+                                if (mat == staack.productToShow.Id)
                                 {
                                     stackneed = staack;
                                 }
@@ -245,7 +245,7 @@ namespace _Project.Scripts_dev.AI
                         bool shouldAdd = true;
                         foreach (GameObject cartItem in Cart.cart)
                         {
-                            if (cartItem.GetComponent<Product>().goods.id == item)
+                            if (cartItem.GetComponent<Product>().Goods.Id == item)
                                 shouldAdd = false;
                         }
 
@@ -254,7 +254,7 @@ namespace _Project.Scripts_dev.AI
                         {
                             foreach (int mat in farm.materialsNeeded)
                             {
-                                if (mat == stack.productToShow.id)
+                                if (mat == stack.productToShow.Id)
                                 {
                                     stackneed = stack;
                                 }
@@ -315,7 +315,7 @@ namespace _Project.Scripts_dev.AI
                 foreach(Stack stack in _stacks)
                 {
                
-                    if (stack.productToShow.id == _mats[0]&&stack.currentQuantity>0)
+                    if (stack.productToShow.Id == _mats[0]&&stack.currentQuantity>0)
                     {
                         _isTakingMaterial = true;
                         destination = stack.gameObject;
@@ -343,7 +343,7 @@ namespace _Project.Scripts_dev.AI
                         if (farm.materialsNeeded.Length > 0 && farm.farmStatus == 0 && farm.workingFarmer == null)
                         {
 
-                            if (farm.materialsNeeded[0]/*tam*/ == Cart.cart[0].GetComponent<Product>().goods.id)
+                            if (farm.materialsNeeded[0]/*tam*/ == Cart.cart[0].GetComponent<Product>().Goods.Id)
                             {
                                 farmSlot = farm;
                                 destination = farmSlot.AIWorkingSpot;
@@ -419,7 +419,7 @@ namespace _Project.Scripts_dev.AI
                 shop = null;
                 foreach(GameObject go in _gameManager.shops)
                 {
-                    if (go.GetComponent<AreaInfo>().shelf.currentQuantity > 0)
+                    if (go.GetComponent<AreaInfo>().shelf.Quantity > 0)
                     {
                         shop = go;
                     }
@@ -434,9 +434,9 @@ namespace _Project.Scripts_dev.AI
             destination =shop;
             if (_shopsSkipped.Count <3 )
                 StartCoroutine(WaitTillShopOpen(shop.GetComponent<AreaInfo>().shelf));
-            _productsAmount = destination.GetComponent<AreaInfo>().shelf.productNeeded;
+            _productsAmount = destination.GetComponent<AreaInfo>().shelf._productsRequierment;
        
-            _wishImage.sprite = _wishList[shop.GetComponent<AreaInfo>().shelf.productNeeded - 1];
+            _wishImage.sprite = _wishList[shop.GetComponent<AreaInfo>().shelf._productsRequierment - 1];
             _isShopChoose = true;
             return shop;
         }
@@ -488,7 +488,7 @@ namespace _Project.Scripts_dev.AI
         private IEnumerator WaitTillShopOpen(Shelf shelf,bool first =false)
         {
             _isWaiting = true;
-            while (shelf.currentQuantity == 0&&_stayTime<20&&Cart.inCart==0)
+            while (shelf.Quantity == 0&&_stayTime<20&&Cart.inCart==0)
             {
 
                 if (CheckCompletePath() || first)
@@ -556,7 +556,7 @@ namespace _Project.Scripts_dev.AI
             if (_isTakingMaterial||_stacks.Count==0||Cart.cart.Count>0) return;
             int r = Random.Range(0, _stacks.Count>3?3:_stacks.Count);
             destination = _stacks[r].gameObject;
-            _currentMaterialNeeded = _stacks[r].productToShow.id;
+            _currentMaterialNeeded = _stacks[r].productToShow.Id;
             _isTakingMaterial = true;
         }
         private void DeliverProduct()
@@ -565,7 +565,7 @@ namespace _Project.Scripts_dev.AI
             {
                 foreach(GameObject s in _shelvesList)
                 {
-                    if(s.GetComponent<AreaInfo>().shelf.productToShow.id == Cart.cart[0].GetComponent<Product>().goods.id)
+                    if(s.GetComponent<AreaInfo>().shelf._productsToDisplay.Id == Cart.cart[0].GetComponent<Product>().Goods.Id)
                     {
                         destination = (s);
                         _isShipping = true;
@@ -576,7 +576,7 @@ namespace _Project.Scripts_dev.AI
         private void SortList()
         {
             if(_stacks.Count>0)
-                _stacks.Sort((a, b) => a.shelf.currentQuantity.CompareTo(b.shelf.currentQuantity));
+                _stacks.Sort((a, b) => a.shelf.Quantity.CompareTo(b.shelf.Quantity));
        
             if (_farmSlots.Count > 0)
                 _farmSlots.Sort((a, b) => b.stack.currentQuantity.CompareTo(a.stack.currentQuantity));
@@ -587,8 +587,8 @@ namespace _Project.Scripts_dev.AI
             {
                 if (_isCustomer)
                 {
-                    if (other.GetComponent<AreaInfo>().shelf.productNeeded != _productsAmount) return;
-                    int quantity = other.GetComponent<AreaInfo>().shelf.currentQuantity;
+                    if (other.GetComponent<AreaInfo>().shelf._productsRequierment != _productsAmount) return;
+                    int quantity = other.GetComponent<AreaInfo>().shelf.Quantity;
                     _needAmount = Random.Range(quantity / 5, quantity / 3);
                     if (_needAmount < 2) _needAmount =Random.Range(1,3) ;
                     if (_needAmount > Cart.CartPos.Length) _needAmount = Cart.CartPos.Length;
@@ -603,18 +603,18 @@ namespace _Project.Scripts_dev.AI
                 }
                 if(_isShiper&& Cart.cart.Count>0)
                 {
-                    if (other.GetComponent<AreaInfo>().shelf.productNeeded==Cart.cart[0].GetComponent<Product>().goods.id)
+                    if (other.GetComponent<AreaInfo>().shelf._productsRequierment==Cart.cart[0].GetComponent<Product>().Goods.Id)
                         _isShipping = false;
                 }
             }
             if(other.transform.CompareTag("Stack")|| other.transform.CompareTag("Stack2"))
             {
-                if (_isTakingMaterial&& _currentMaterialNeeded== other.GetComponent<Stack>().productToShow.id)
+                if (_isTakingMaterial&& _currentMaterialNeeded== other.GetComponent<Stack>().productToShow.Id)
                 {
                     if (_isFarmer)
                     {
                         Cart.Clear();
-                        int needNumber = _mats.Count(n => n == other.GetComponent<Stack>().productToShow.id);
+                        int needNumber = _mats.Count(n => n == other.GetComponent<Stack>().productToShow.Id);
                         Cart.FarmerAdd(other.GetComponent<Stack>(), needNumber);
                         for (int i = _mats.Count - 1; i >= 0; i--)
                         {
@@ -637,7 +637,7 @@ namespace _Project.Scripts_dev.AI
                 }
                 if (_isShiper)
                 {
-                    if(CheckCompletePath()&&_currentMaterialNeeded != other.GetComponent<Stack>().productToShow.id)
+                    if(CheckCompletePath()&&_currentMaterialNeeded != other.GetComponent<Stack>().productToShow.Id)
                     {
                         _isTakingMaterial = false;
                         _isShipping = false;

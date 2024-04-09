@@ -5,6 +5,7 @@ using _Project.Scripts_dev.UI;
 using _Project.Scripts_dev.Сamera;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 using Stack = _Project.Scripts_dev.Classes.Stack;
 
@@ -19,100 +20,102 @@ namespace _Project.Scripts_dev.Control
         [Inject] private CamFollow _camFollow;
         
         [Header("Character")]
-        [SerializeField] CharacterController _characterController;
-        [SerializeField] FloatingJoystick _joystick;
-        [SerializeField] float speed;
-        public Cart cart;
-        [SerializeField] Cashier cashier;
-        [SerializeField] GameObject money;
-        [SerializeField] GameObject ZZZ;
-        [SerializeField] GameObject Speedy;
-        [SerializeField] GameObject tool;
-        [SerializeField] Transform seat;
-        [SerializeField] float rotationSpeed;
-        [SerializeField] bool car;
-        public Animator animator;
-    
+        [SerializeField] private CharacterController _characterController;
+        [SerializeField] private FloatingJoystick _joystick;
+        [FormerlySerializedAs("speed")] [SerializeField] private float _moveSpeed;
+        [FormerlySerializedAs("cart")] [SerializeField] private Cart _cart;
+        [FormerlySerializedAs("cashier")] [SerializeField] private Cashier _cahsier;
+        [FormerlySerializedAs("money")] [SerializeField] private GameObject _money;
+        [FormerlySerializedAs("ZZZ")] [SerializeField] private GameObject _idleParticle;
+        [FormerlySerializedAs("Speedy")] [SerializeField] private GameObject _speedParticle;
+        [FormerlySerializedAs("tool")] [SerializeField] private GameObject _tool;
+        [FormerlySerializedAs("seat")] [SerializeField] private Transform _carSeat;
+        [FormerlySerializedAs("car")] [SerializeField] private bool _isCar;
+        [FormerlySerializedAs("animator")] [SerializeField] private Animator _animatorController;
+        
         [Header("Car")]
-        public GameObject mainPlayer;
-        [SerializeField] GameObject driver;
-        [SerializeField] Vector3 oldPos;
-        [SerializeField] Quaternion oldRotation;
-        [SerializeField] Cart carCart;
-        private bool payMoney;
-        private float idleTime;
+        [FormerlySerializedAs("mainPlayer")] [SerializeField] private GameObject _playerObject;
+        [FormerlySerializedAs("driver")] [SerializeField] private GameObject _driver;
+        [FormerlySerializedAs("carCart")] [SerializeField] private Cart _carCart;
+        private Vector3 _previousPosition;
+        private Quaternion _previousRotation;
+        private readonly float _carRotateSpeed = 500;
+        private bool _isPlayMoney;
+        private float _idleTime;
         private Vector3 _velocity;
-        private float spawnTime;
-        public bool takingMoney { get; private set; }
+        private float _spawnTime;
+        private Transform _transform;
+        public bool IsTakingMoney { get; private set; }
+        public Cart Cart => _cart;
         private void OnDisable()
         {
-            spawnTime = 0;
+            _spawnTime = 0;
         }
         private void Start()
         {
-            oldPos = transform.position;
-            oldRotation = transform.rotation;
+            _transform = transform;
+            _previousPosition = _transform.position;
+            _previousRotation = _transform.rotation;
         }
 
         private void Update()
         {
-        
             Vector3 movement = new Vector3(-_joystick.Horizontal, 0, -_joystick.Vertical);
             movement.Normalize();
-            float finalSpeed = speed * _gameManager.speedBoost;
+            float finalSpeed = _moveSpeed * _gameManager.speedBoost;
             if (finalSpeed > 12) finalSpeed = 12;
             _velocity = movement * finalSpeed;
         
-            animator.SetFloat("Speed", _velocity.magnitude);
+            _animatorController.SetFloat("Speed", _velocity.magnitude);
             if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
             {
-                if (car)
+                if (_isCar)
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(_velocity);
-                    Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                    transform.rotation = newRotation;
+                    Quaternion newRotation = Quaternion.RotateTowards(_transform.rotation, targetRotation, _carRotateSpeed * Time.deltaTime);
+                    _transform.rotation = newRotation;
                 }
                 else
                 {
-                    transform.rotation = Quaternion.LookRotation(_velocity);
+                    _transform.rotation = Quaternion.LookRotation(_velocity);
                 }
             }
 
             if (_velocity != Vector3.zero)
             {
-                tool.SetActive(false);
-                idleTime = 0;
-                ZZZ.SetActive(false);
+                _tool.SetActive(false);
+                _idleTime = 0;
+                _idleParticle.SetActive(false);
             }
-            idleTime += Time.deltaTime;
-            if (idleTime > 15) ZZZ.SetActive(true);
-            if (_gameManager.speedBoostTime > 0) Speedy.SetActive(true);
-            else Speedy.SetActive(false);
+            _idleTime += Time.deltaTime;
+            if (_idleTime > 15) _idleParticle.SetActive(true);
+            if (_gameManager.speedBoostTime > 0) _speedParticle.SetActive(true);
+            else _speedParticle.SetActive(false);
 
 
-            ApplyGravity();
+            ActivateGravity();
             _characterController.Move(_velocity * Time.deltaTime);
-            if(car&& _gameManager.truckTime <= 0)
+            if(_isCar&& _gameManager.truckTime <= 0)
             {
-                GetOff();
+                Remove();
             }
-            spawnTime += Time.deltaTime;
+            _spawnTime += Time.deltaTime;
         }
-        private void GetOff()
+        private void Remove()
         {
             _gameManager.truckTime = -100;
-            mainPlayer.transform.position = transform.position;
-            transform.tag = "Untagged";
-            transform.SetPositionAndRotation(oldPos, oldRotation);
-            mainPlayer.SetActive(true);
+            _playerObject.transform.position = _transform.position;
+            _transform.tag = "Untagged";
+            _transform.SetPositionAndRotation(_previousPosition, _previousRotation);
+            _playerObject.SetActive(true);
             GetComponent<PlayerControl>().enabled = false;
-            _camFollow.player = mainPlayer;
-            mainPlayer.GetComponent<PlayerControl>().enabled = true;
-            driver.SetActive(false);
+            _camFollow.player = _playerObject;
+            _playerObject.GetComponent<PlayerControl>().enabled = true;
+            _driver.SetActive(false);
             TapKetHang tapKetHang = FindObjectOfType<TapKetHang>();
-            tapKetHang.CreateStacks(cart);
+            tapKetHang.Stack(_cart);
         }
-        private void ApplyGravity()
+        private void ActivateGravity()
         {
             if (!_characterController.isGrounded)
             {
@@ -124,33 +127,33 @@ namespace _Project.Scripts_dev.Control
             }
         }
 
-        private void Grab(Stack stack)
+        private void Collect(Stack stack)
         {
-            if (car && _gameManager.truckTime <= 1) return;
-            cart.Add(stack,_gameManager. maxCart);
+            if (_isCar && _gameManager.truckTime <= 1) return;
+            _cart.Add(stack,_gameManager. maxCart);
         }
-        private void TakeMyMoney(MoneyPiile piile)
+        private void TakeMoney(Money piile)
         {
-            if (!takingMoney && piile.currentQuantity > 0&&!cashier.isTaking)
+            if (!IsTakingMoney && piile.Quantity > 0&&!_cahsier.isTaking)
             {
-                StartCoroutine(DelayTake(piile));
+                StartCoroutine(TakeRoutine(piile));
             }
         }
-        private void PayMoney(Unlock unlock)
+        private void Pay(Unlock unlock)
         {
-            if (!payMoney && unlock.remain > 0)
+            if (!_isPlayMoney && unlock.remain > 0)
             {
-                StartCoroutine(DelayPay(unlock));
+                StartCoroutine(PayRoutine(unlock));
             }
         }
-        private IEnumerator DelayPay(Unlock unlock)
+        private IEnumerator PayRoutine(Unlock unlock)
         {
-            payMoney = true;
+            _isPlayMoney = true;
             if (unlock.remain > 0 && _gameManager.money>0)
             {
                 if (unlock.remain >= _gameManager.moneyPerPack && _gameManager.money> _gameManager.moneyPerPack)
                 {
-                    GameObject clone = Instantiate(money, transform.position, Quaternion.identity);
+                    GameObject clone = Instantiate(_money, _transform.position, Quaternion.identity);
                     unlock.remain -= _gameManager.moneyPerPack;
                     _gameManager.money -= _gameManager.moneyPerPack;
                     ParabolicMovement(clone, unlock.transform.position, 0.3f, 1f, () => { Destroy(clone); });
@@ -158,7 +161,7 @@ namespace _Project.Scripts_dev.Control
 
                 else if(_gameManager.money > unlock.remain)
                 {
-                    GameObject clone = Instantiate(money, transform.position, Quaternion.identity);
+                    GameObject clone = Instantiate(_money, _transform.position, Quaternion.identity);
                     _gameManager.money -= unlock.remain;
                     unlock.remain = 0;
                     ParabolicMovement(clone, unlock.transform.position, 0.3f, 1f, () => { Destroy(clone); });
@@ -166,7 +169,7 @@ namespace _Project.Scripts_dev.Control
 
                 else 
                 {
-                    GameObject clone = Instantiate(money, transform.position, Quaternion.identity);
+                    GameObject clone = Instantiate(_money, _transform.position, Quaternion.identity);
                 
                     unlock.remain -= _gameManager.money;
                     _gameManager.money =0;
@@ -174,44 +177,44 @@ namespace _Project.Scripts_dev.Control
                 }
                 int r = Random.Range(0, 2);
                 if (r == 0&&_gameManager.money>0) 
-                    _soundManager.CreateSound(_soundManager.sounds[5],transform.position,0.5f);
+                    _soundManager.CreateSound(_soundManager.sounds[5],_transform.position,0.5f);
                 yield return new WaitForSeconds(5/unlock.price);
             }
-            payMoney = false;
+            _isPlayMoney = false;
         }
 
         private void OnTriggerStay(Collider other)
         {
             if (other.transform.CompareTag("MoneyPile"))
             {
-                TakeMyMoney(other.GetComponent<MoneyPiile>());
+                TakeMoney(other.GetComponent<Money>());
             }
             if (other.transform.CompareTag("Unlock"))
             {
           
-                PayMoney(other.GetComponent<Unlock>());
+                Pay(other.GetComponent<Unlock>());
 
             }
             if (other.transform.CompareTag("Farm")|| other.transform.CompareTag("Farm2")|| other.transform.CompareTag("Farm3"))
             {
                 if (other.GetComponent<FarmSlot>().workingFarmer == gameObject&&!Input.anyKey)
                 {
-                    tool.SetActive(true);
-                    animator.SetBool("Work", true);
-                    idleTime = 0;
+                    _tool.SetActive(true);
+                    _animatorController.SetBool("Work", true);
+                    _idleTime = 0;
                 }
                 else
                 {
-                    tool.SetActive(false);
+                    _tool.SetActive(false);
                 
-                    animator.SetBool("Work", false);
+                    _animatorController.SetBool("Work", false);
                
                 }
             }
             if (other.transform.CompareTag("Stack")||other.transform.CompareTag("Stack2"))
             {
                 Debug.Log("Grabbb");
-                Grab(other.GetComponent<Stack>());
+                Collect(other.GetComponent<Stack>());
             }
         }
     
@@ -219,7 +222,7 @@ namespace _Project.Scripts_dev.Control
         {
             if (other.transform.CompareTag("MoneyPile"))
             {
-                other.GetComponent<MoneyPiile>().ReCalculatePos();
+                other.GetComponent<Money>().CalculatePositions();
             }
         }
 
@@ -227,7 +230,7 @@ namespace _Project.Scripts_dev.Control
         {
             if (other.transform.CompareTag("MoneyPile"))
             {
-                other.GetComponent<MoneyPiile>().ReCalculatePos();
+                other.GetComponent<Money>().CalculatePositions();
             }
 
             if (other.transform.CompareTag("Unlock"))
@@ -235,18 +238,18 @@ namespace _Project.Scripts_dev.Control
                 _uiManager.shouldShowUnlockReward = true;
             }
 
-            if (other.name == "PlayerWithCar" && other.transform != transform && spawnTime > 3 &&
+            if (other.name == "PlayerWithCar" && other.transform != _transform && _spawnTime > 3 &&
                 _gameManager.level >= 3)
             {
                 _uiManager.CarUI.SetActive(true);
             }
         }
 
-        public void GetCar(Collider other)
+        public void SitInCar(Collider other)
         {
             GetComponent<PlayerControl>().enabled = false;
 
-            ParabolicMovement(gameObject, seat.position, 0.5f, 1f, () =>
+            ParabolicMovement(gameObject, _carSeat.position, 0.5f, 1f, () =>
             {
                 other.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
                 other.tag = "Player";
@@ -254,56 +257,56 @@ namespace _Project.Scripts_dev.Control
                 other.GetComponent<CharacterController>().enabled = true;
                 _gameManager.truckTime = 180;
                 _soundManager.CreateSound(_soundManager.sounds[11], transform.position);
-                for (int i = 0; i < cart.cart.Count; i++)
+                for (int i = 0; i < _cart.cart.Count; i++)
                 {
-                    carCart.cart.Add(cart.cart[i]);
-                    cart.cart[i].transform.parent = carCart.CartPos[i].transform;
-                    cart.cart[i].transform.rotation = carCart.transform.rotation;
-                    cart.cart[i].transform.localPosition = Vector3.zero;
+                    _carCart.cart.Add(_cart.cart[i]);
+                    _cart.cart[i].transform.parent = _carCart.CartPos[i].transform;
+                    _cart.cart[i].transform.rotation = _carCart.transform.rotation;
+                    _cart.cart[i].transform.localPosition = Vector3.zero;
                 }
-                cart.Clear();
+                _cart.Clear();
                 gameObject.SetActive(false);
             });
         }
 
-        private IEnumerator DelayTake(MoneyPiile moneyPiile)
+        private IEnumerator TakeRoutine(Money moneyPiile)
         {
-            takingMoney = true;
+            IsTakingMoney = true;
         
       
-            if (moneyPiile.currentQuantity > moneyPiile.pos.Length * _gameManager.moneyPerPack)
+            if (moneyPiile.Quantity > moneyPiile._positions.Length * _gameManager.moneyPerPack)
             {
-                _gameManager.money += (moneyPiile.currentQuantity - moneyPiile.pos.Length * _gameManager.moneyPerPack);
-                moneyPiile.currentQuantity -= (moneyPiile.currentQuantity - moneyPiile.pos.Length * _gameManager.moneyPerPack);
+                _gameManager.money += (moneyPiile.Quantity - moneyPiile._positions.Length * _gameManager.moneyPerPack);
+                moneyPiile.Quantity -= (moneyPiile.Quantity - moneyPiile._positions.Length * _gameManager.moneyPerPack);
            
             }
-            if (moneyPiile.currentQuantity>0)
+            if (moneyPiile.Quantity>0)
             {
-                GameObject clone = Instantiate(moneyPiile.productToShow, moneyPiile.prevPos, Quaternion.identity);
-                moneyPiile.UpdateNextPos(false);
+                GameObject clone = Instantiate(moneyPiile._moneyPrefab, moneyPiile.PreviousPosition, Quaternion.identity);
+                moneyPiile.UpdatePosition(false);
 
-                if (moneyPiile.currentQuantity >= _gameManager.moneyPerPack)
+                if (moneyPiile.Quantity >= _gameManager.moneyPerPack)
                 {
 
-                    moneyPiile.currentQuantity -= _gameManager.moneyPerPack;
+                    moneyPiile.Quantity -= _gameManager.moneyPerPack;
                     _gameManager.money += _gameManager.moneyPerPack;
                 }
               
                 else
                 {
-                    _gameManager.money += moneyPiile.currentQuantity;
-                    moneyPiile.currentQuantity =0;
+                    _gameManager.money += moneyPiile.Quantity;
+                    moneyPiile.Quantity =0;
                 }
            
-                Debug.Log("Next: " + moneyPiile.nextIndex);
-                ParabolicMovement(clone, transform.position, 0.2f, 1f, () => { Destroy(clone);  });
+                Debug.Log("Next: " + moneyPiile.NewIndex);
+                ParabolicMovement(clone, _transform.position, 0.2f, 1f, () => { Destroy(clone);  });
                 int r = Random.Range(0, 4);
                 if (r == 0)
-                    _soundManager.CreateSound(_soundManager.sounds[5],transform.position, 0.5f);
+                    _soundManager.CreateSound(_soundManager.sounds[5], _transform.position, 0.5f);
                 yield return null;
             }
         
-            takingMoney = false;
+            IsTakingMoney = false;
         }
         private void ParabolicMovement(GameObject go, Vector3 targetPosition, float duration, float height, TweenCallback OnComplete)
         {

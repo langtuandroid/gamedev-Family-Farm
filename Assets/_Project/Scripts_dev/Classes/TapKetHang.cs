@@ -8,18 +8,16 @@ namespace _Project.Scripts_dev.Classes
     public class TapKetHang : MonoBehaviour
     {
         [Inject] private EffectManager _effectManager;
-        [SerializeField] private GameObject stackPrefab;
+        [SerializeField] private GameObject _stackPrefab;
   
-        public void CreateStacks(Cart cart)
+        public void Stack(Cart cart)
         {
             float sums = 0;
-      
             List<GameObject> items = cart.cart;
             int numbers = cart.cart.Count ;
             foreach (GameObject item in items)
             {
-
-                sums += item.GetComponent<Product>().goods.income;
+                sums += item.GetComponent<Product>().Goods.Income;
             }
 
             foreach (GameObject item in items)
@@ -28,9 +26,9 @@ namespace _Project.Scripts_dev.Classes
             }
             items.Clear();
 
-            StartCoroutine(DelayRefund(sums,numbers));
+            StartCoroutine(RefundRoutine(sums,numbers));
         }
-        IEnumerator DelayRefund(float sums,int numbers)
+        private IEnumerator RefundRoutine(float sums,int numbers)
         {
             for (int i = 0; i < numbers; i++)
             {

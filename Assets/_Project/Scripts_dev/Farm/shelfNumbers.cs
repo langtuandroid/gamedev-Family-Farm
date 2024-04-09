@@ -10,7 +10,7 @@ namespace _Project.Scripts_dev.Farm
         [SerializeField] Shelf shelf;
         void Update()
         {
-            text.text ="x"+ shelf.currentQuantity.ToString();
+            text.text ="x"+ shelf.Quantity.ToString();
         }
     }
 }

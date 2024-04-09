@@ -40,16 +40,16 @@ namespace _Project.Scripts_dev.Classes
             for (int i = 0; i < (need>CartPos.Length?CartPos.Length:need); i++)
             {
             
-                if (stack.currentQuantity <= 0) break;
+                if (stack.Quantity <= 0) break;
                 GameObject pos = CartPos[i];
            
                 if (pos.transform.childCount == 0)
                 {
-                    GameObject clone = Instantiate(stack.productToShow.prefab, stack.transform.position, pos.transform.rotation);
+                    GameObject clone = Instantiate(stack._productsToDisplay.ItemPrefab, stack.transform.position, pos.transform.rotation);
                     clone.transform.parent = pos.transform;
                     cart.Add(clone);
                     ParabolicMovement(clone, CartPos[i].transform.position,0.5f, 1.5f, () => { clone.transform.DOLocalMove(Vector3.zero, 0.1f); });
-                    stack.currentQuantity--;
+                    stack.Quantity--;
                     _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
                     _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
                     yield return new WaitForSeconds(0.05f);
@@ -78,7 +78,7 @@ namespace _Project.Scripts_dev.Classes
 
                 if (pos.transform.childCount == 0)
                 {
-                    GameObject clone = Instantiate(stack.productToShow.prefab, stack.transform.GetChild(0).position, pos.transform.rotation);
+                    GameObject clone = Instantiate(stack.productToShow.ItemPrefab, stack.transform.GetChild(0).position, pos.transform.rotation);
                     clone.transform.parent = pos.transform;
                     cart.Add(clone);
                     ParabolicMovement(clone, CartPos[i].transform.position,0.5f, 1.5f, () => { clone.transform.DOLocalMove(Vector3.zero, 0.1f); });
@@ -112,7 +112,7 @@ namespace _Project.Scripts_dev.Classes
                 GameObject pos = CartPos[i];
                 if (pos.transform.childCount == 0)
                 {
-                    GameObject clone = Instantiate(stack.productToShow.prefab, stack.transform.position, pos.transform.rotation);
+                    GameObject clone = Instantiate(stack.productToShow.ItemPrefab, stack.transform.position, pos.transform.rotation);
                     clone.transform.parent = pos.transform;
                     cart.Add(clone);
                     ParabolicMovement(clone, CartPos[i].transform.position,0.3f, 1.5f, () => { clone.transform.DOLocalMove(Vector3.zero, 0.1f); });
@@ -140,7 +140,7 @@ namespace _Project.Scripts_dev.Classes
         }
   
 
-        public bool  Remove(string name,int id, MatPlace matPlace, int max, bool destroy = false, Shelf shelf = null)
+        public bool  Remove(string name,int id, MaterialPlace matPlace, int max, bool destroy = false, Shelf shelf = null)
         {
      
             if (!objectUsingCart.Contains(name)&&!taking)
@@ -150,29 +150,29 @@ namespace _Project.Scripts_dev.Classes
             }
             return false;
         }
-        private bool RemoveAnim(int id, MatPlace matPlace, bool destroy,Shelf shelf=null)
+        private bool RemoveAnim(int id, MaterialPlace matPlace, bool destroy,Shelf shelf=null)
         {
        
-            for (int i = 0; i < matPlace.pos.Length; i++)
+            for (int i = 0; i < matPlace._positions.Length; i++)
             {
-                if (matPlace.pos[i].transform.childCount == 0||destroy)
+                if (matPlace._positions[i].transform.childCount == 0||destroy)
                 {
                     for (int j = 0; j < (cart.Count); j++)
                     {
 
 
-                        if (cart[j].GetComponent<Product>().goods.id == id)
+                        if (cart[j].GetComponent<Product>().Goods.Id == id)
                         {
-                            ParabolicMovement(cart[j], matPlace.pos[i].transform.position,0.75f, 1.5f, () => {
-                                if (destroy) Destroy(matPlace.pos[i].transform.GetChild(0).gameObject);
+                            ParabolicMovement(cart[j], matPlace._positions[i].transform.position,0.75f, 1.5f, () => {
+                                if (destroy) Destroy(matPlace._positions[i].transform.GetChild(0).gameObject);
                                 matPlace.UpdateMat();
-                                if (shelf != null) shelf.currentQuantity++;
+                                if (shelf != null) shelf.Quantity++;
                             });
                         
-                            cart[j].transform.parent = matPlace.pos[i].transform;
-                            cart[j].transform.rotation = matPlace.pos[i].transform.rotation;
+                            cart[j].transform.parent = matPlace._positions[i].transform;
+                            cart[j].transform.rotation = matPlace._positions[i].transform.rotation;
                             cart[j].transform.Rotate(0, 0, 90);
-                            matPlace.currentQuantity++;
+                            matPlace.CurrentQuantity++;
                             cart.Remove(cart[j]);
                             UpdateCart();
 
@@ -184,12 +184,12 @@ namespace _Project.Scripts_dev.Classes
                 }
             
                 matPlace.UpdateMat();
-                if (i == matPlace.pos.Length-1) return false;
+                if (i == matPlace._positions.Length-1) return false;
             }
        
             return true;
         }
-        private IEnumerator RemoveInterval(string name,int id, MatPlace matPlace,int max, bool destroy,Shelf shelf)
+        private IEnumerator RemoveInterval(string name,int id, MaterialPlace matPlace,int max, bool destroy,Shelf shelf)
         {
             taking = true;
             objectUsingCart.Add(name);
@@ -207,7 +207,7 @@ namespace _Project.Scripts_dev.Classes
 
                     foreach (GameObject go in cart)
                     {
-                        if (go.GetComponent<Product>().goods.id == id)
+                        if (go.GetComponent<Product>().Goods.Id == id)
                         {
                             goOn = true;
                             break;

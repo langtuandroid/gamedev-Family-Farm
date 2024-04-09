@@ -24,7 +24,7 @@ public class LevelMangament : MonoBehaviour
     private void Start()
     {
         prices = new List<float>();
-        prices.Add(goods.income * 100);
+        prices.Add(goods.Income * 100);
         prices.Add(prices[0]*6);
         foreach(GameObject go in unlocks)
         {
@@ -41,7 +41,7 @@ public class LevelMangament : MonoBehaviour
                 if (transform.GetChild(0).gameObject.activeInHierarchy)
                 {
                     load = true; 
-                    level = goods.id >gameData.levels.Count?0: gameData.levels[goods.id - 1];
+                    level = goods.Id >gameData.levels.Count?0: gameData.levels[goods.Id - 1];
                 }
                
         

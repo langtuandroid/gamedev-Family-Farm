@@ -25,7 +25,7 @@ namespace _Project.Scripts_dev.Classes
         [SerializeField] private GameObject harvstMeIcon;
         [SerializeField] private bool noFruit;
         [SerializeField] private Animator animator;
-        [SerializeField] MatPlace matPlace;
+        [SerializeField] MaterialPlace matPlace;
         [SerializeField] GameObject goodsPrefabs;
         [SerializeField] int feedMax;
         
@@ -46,7 +46,7 @@ namespace _Project.Scripts_dev.Classes
         public GameObject workingFarmer { get; private set; }
         private void Start()
         {
-            productID = goodsPrefabs.GetComponent<Product>().goods.id;
+            productID = goodsPrefabs.GetComponent<Product>().Goods.Id;
             SetupTimerCanvas();
         }
         private void SetupTimerCanvas()
@@ -109,7 +109,7 @@ namespace _Project.Scripts_dev.Classes
             if ((workingFarmer != null) )
             {
                 string tagg = workingFarmer.tag;
-                Cart cartt = tagg == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                Cart cartt = tagg == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().Cart;
                 if( CheckCart(cartt) )
                 {
                     time += Time.deltaTime;
@@ -238,7 +238,7 @@ namespace _Project.Scripts_dev.Classes
                             foreach (int matID in materialsNeeded)
                             {
                                 string tagg = workingFarmer.tag;
-                                Cart cartt = tagg == "Farmer" ? workingFarmer. GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                                Cart cartt = tagg == "Farmer" ? workingFarmer. GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().Cart;
                                 if (!cartt.Remove(transform.name, matID, matPlace, feedMax,true))
                                 {
                                     time = completeTime;
@@ -256,7 +256,7 @@ namespace _Project.Scripts_dev.Classes
                         }
                   
                         string tag = workingFarmer.tag;
-                        Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                        Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().Cart;
                    
                         if (CheckCart(cart)) {
                             UpdateFarmStautus();
@@ -287,7 +287,7 @@ namespace _Project.Scripts_dev.Classes
             }
             if (isFactory)
             {
-                if (matPlace.currentQuantity > 0)
+                if (matPlace.CurrentQuantity > 0)
                 {
                     farmStatus = 1;
                     animator.SetBool("Work", true);
@@ -304,7 +304,7 @@ namespace _Project.Scripts_dev.Classes
                         foreach (int matID in materialsNeeded)
                         {
                             string tag = workingFarmer.tag;
-                            Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                            Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().Cart;
                             cart.Remove(transform.name, matID, matPlace, feedMax);
                         }
                     }
@@ -312,16 +312,16 @@ namespace _Project.Scripts_dev.Classes
                 {
                     machineTime = 0;
                 
-                    for(int i=matPlace.pos.Length-1; i >=0; i--)
+                    for(int i=matPlace._positions.Length-1; i >=0; i--)
                     {
-                        if (matPlace.pos[i].transform.childCount > 0)
+                        if (matPlace._positions[i].transform.childCount > 0)
                         {
-                            Destroy(matPlace.pos[i].transform.GetChild(0).gameObject);
+                            Destroy(matPlace._positions[i].transform.GetChild(0).gameObject);
                             StartCoroutine(ToStack());
                             break;
                         }
                     }
-                    matPlace.currentQuantity--;
+                    matPlace.CurrentQuantity--;
                 }
             }
         }
@@ -355,7 +355,7 @@ namespace _Project.Scripts_dev.Classes
                 yield return new WaitForSeconds(0.05f);
             }
             
-            float exp = stack.productToShow.exp * (_gameManager.currentUnlocked < 18 ? 1 : _gameManager.currentUnlocked < 35 ? 0.75f : 0.5f);
+            float exp = stack.productToShow.ExpNum * (_gameManager.currentUnlocked < 18 ? 1 : _gameManager.currentUnlocked < 35 ? 0.75f : 0.5f);
             _effectManager.GetExpEffect(exp, GameObject.FindGameObjectWithTag("Player").transform);
      
         }
@@ -387,7 +387,7 @@ namespace _Project.Scripts_dev.Classes
                     workingFarmer = other.gameObject;
 
                     string tag = workingFarmer.tag;
-                    Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                    Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().Cart;
               
                     if (!CheckCart(cart))
                     {
@@ -404,7 +404,7 @@ namespace _Project.Scripts_dev.Classes
             {
                 foreach(int matID in materialsNeeded)
                 {
-                    if (go.GetComponent<Product>().goods.id == matID)
+                    if (go.GetComponent<Product>().Goods.Id == matID)
                     {
                         return true;
                     }

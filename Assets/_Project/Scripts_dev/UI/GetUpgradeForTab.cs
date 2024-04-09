@@ -38,7 +38,7 @@ namespace _Project.Scripts_dev.UI
                         levelMangaments.Add(l.GetComponent<LevelMangament>());
             }
             if (type != 3)
-                levelMangaments.Sort((a, b) => a.goods.id.CompareTo(b.goods.id));
+                levelMangaments.Sort((a, b) => a.goods.Id.CompareTo(b.goods.Id));
             
             for(int i=0; i < levelMangaments.Count; i++)
             {

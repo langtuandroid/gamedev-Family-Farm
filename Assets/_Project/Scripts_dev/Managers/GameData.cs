@@ -45,7 +45,7 @@ namespace _Project.Scripts_dev.Managers
         {
             stackNumbers = new List<int>();
             List<Stack> stacks = new List<Stack>(Object.FindObjectsOfType<Stack>());
-            stacks.Sort((a, b) => a.productToShow.id.CompareTo(b.productToShow.id));
+            stacks.Sort((a, b) => a.productToShow.Id.CompareTo(b.productToShow.Id));
             for (int i =0; i< stacks.Count;i++)
             {
                 stackNumbers.Add(stacks[i].currentQuantity);
@@ -54,17 +54,17 @@ namespace _Project.Scripts_dev.Managers
         {
             productNumbers = new List<int>();
             List<Shelf>shelves = new List<Shelf>(Object.FindObjectsOfType<Shelf>());
-            shelves.Sort((a, b) => a.productToShow.id.CompareTo(b.productToShow.id));
+            shelves.Sort((a, b) => a._productsToDisplay.Id.CompareTo(b._productsToDisplay.Id));
             for (int i = 0; i < shelves.Count; i++)
             {
-                productNumbers.Add(shelves[i].currentQuantity);
+                productNumbers.Add(shelves[i].Quantity);
             }
         }
         void GetAllLevelInfo()
         {
             levels = new List<int>();
             List<LevelMangament> levelMangaments =new List<LevelMangament>(Object.FindObjectsOfType<LevelMangament>());
-            levelMangaments.Sort((a, b) => a.goods.id.CompareTo(b.goods.id));
+            levelMangaments.Sort((a, b) => a.goods.Id.CompareTo(b.goods.Id));
             for (int i = 0; i < levelMangaments.Count; i++)
             {
                 if(levelMangaments[i].transform.GetChild(0).gameObject.activeInHierarchy)

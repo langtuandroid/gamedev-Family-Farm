@@ -15,7 +15,7 @@ namespace _Project.Scripts_dev.Car
         [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
-        [SerializeField] SpinTransform wheel1, wheel2;
+        [SerializeField] Rotation wheel1, wheel2;
         [SerializeField] float scaleAmount=1.2f,duration=0.3f;
         [SerializeField] GameObject trailEffect;
         [SerializeField] GameObject truckCart;

@@ -341,7 +341,7 @@ namespace _Project.Scripts_dev.UI
         {
             StartCoroutine(Delay(() =>
             {
-                GameObject.Find("Player").GetComponent<PlayerControl>().GetCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
+                GameObject.Find("Player").GetComponent<PlayerControl>().SitInCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
                 _gameManager.interTimer = 0; 
             }, 0.2f));
         }

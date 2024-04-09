@@ -22,7 +22,7 @@ namespace _Project.Scripts_dev.Classes
         {
             foreach(GameObject go in pos)
             {
-                GameObject clone= Instantiate(productToShow.prefab, go.transform);
+                GameObject clone= Instantiate(productToShow.ItemPrefab, go.transform);
                 clone.transform.position = go.transform.position;
                 clone.transform.rotation = Quaternion.identity;
                 clone.SetActive(false);
@@ -35,7 +35,7 @@ namespace _Project.Scripts_dev.Classes
                 shelves = FindObjectsOfType<Shelf>();
                 foreach (Shelf s in shelves)
                 {
-                    if (s.productNeeded == productToShow.id)
+                    if (s._productsRequierment == productToShow.Id)
                     {
                         shelf = s;
                         shelfFound = true;
@@ -48,7 +48,7 @@ namespace _Project.Scripts_dev.Classes
                 int[] stackNumbers = gameData.stackNumbers.ToArray();
                 load = true;
                 if(_gameManager.playTime<3)
-                    currentQuantity = productToShow.id > stackNumbers.Length?0: stackNumbers[productToShow.id - 1];
+                    currentQuantity = productToShow.Id > stackNumbers.Length?0: stackNumbers[productToShow.Id - 1];
            
             }
             if (_dataManager.gameData == null)
