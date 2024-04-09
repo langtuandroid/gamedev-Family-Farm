@@ -2,6 +2,7 @@ using _Project.Scripts_dev.Language;
 using _Project.Scripts_dev.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
@@ -12,57 +13,59 @@ namespace _Project.Scripts_dev.Items
         [Inject] private LanguageManager _languageManager;
         [Inject] private GameManager _gameManager;
         [Inject] private UIManager _uiManager;
-        public LevelMangament levelMangament;
-        public TextMeshProUGUI title, price, level;
-        public Image image;
-        public Image btnIcon;
-        public Button upgradeBtn;
-        public Sprite money, locked;
-        [SerializeField] GameObject bg;
-
+        [FormerlySerializedAs("bg")] [SerializeField] private GameObject _backgroundObject;
+        [FormerlySerializedAs("title")] [SerializeField] private TextMeshProUGUI _titleText;
+        [FormerlySerializedAs("price")] [SerializeField] private TextMeshProUGUI _priceText;
+        [FormerlySerializedAs("level")] [SerializeField] private TextMeshProUGUI _levelText;
+        [FormerlySerializedAs("image")] [SerializeField] private Image _imageText;
+        [FormerlySerializedAs("btnIcon")] [SerializeField] private Image _buttonIcon;
+        [FormerlySerializedAs("upgradeBtn")] [SerializeField] private Button _upgradeButton;
+        [FormerlySerializedAs("money")] [SerializeField] private Sprite _money;
+        [FormerlySerializedAs("locked")] [SerializeField] private Sprite _lockedSprite;
+        public LevelMangament LevelMangament { get; set; }
         private void Update()
         {
-            image.sprite = levelMangament.sprite;
-            if (levelMangament == null) return;
+            _imageText.sprite = LevelMangament.sprite;
+            if (LevelMangament == null) return;
 
-            _languageManager.SetText(levelMangament.titleIndex, title);
-            if (levelMangament.transform.gameObject.activeInHierarchy)
+            _languageManager.SetText(LevelMangament.titleIndex, _titleText);
+            if (LevelMangament.transform.gameObject.activeInHierarchy)
             {
-                level.text = _languageManager.GetText(42)+": " + (levelMangament.level + 1).ToString();
-                bg.SetActive(false);
-                btnIcon.sprite = money;
-                if (levelMangament.level < 2)
+                _levelText.text = _languageManager.GetText(42)+": " + (LevelMangament.level + 1).ToString();
+                _backgroundObject.SetActive(false);
+                _buttonIcon.sprite = _money;
+                if (LevelMangament.level < 2)
                 {
-                    price.text = _uiManager.FormatNumber(levelMangament.prices[levelMangament.level]);
+                    _priceText.text = _uiManager.FormatNumber(LevelMangament.prices[LevelMangament.level]);
                 }
                 else
                 {
-                    price.text = "Max";
+                    _priceText.text = "Max";
                 }
            
-                if (levelMangament.level >= 2 || levelMangament.prices[levelMangament.level] > _gameManager.money)
+                if (LevelMangament.level >= 2 || LevelMangament.prices[LevelMangament.level] > _gameManager.money)
                 {
-                    upgradeBtn.interactable = false;
+                    _upgradeButton.interactable = false;
                 }
                 else
                 {
-                    upgradeBtn.interactable = true;
+                    _upgradeButton.interactable = true;
                 }
             }
             else
             {
-                price.text = _languageManager.GetText(43);
-                upgradeBtn.interactable = false;
-                level.text = _languageManager.GetText(42) + ": 0";
-                bg.SetActive(true);
-                btnIcon.sprite = locked;
+                _priceText.text = _languageManager.GetText(43);
+                _upgradeButton.interactable = false;
+                _levelText.text = _languageManager.GetText(42) + ": 0";
+                _backgroundObject.SetActive(true);
+                _buttonIcon.sprite = _lockedSprite;
 
             }
         }
         public void Upgrade()
         {
-            _gameManager.money -= levelMangament.prices[levelMangament.level];
-            levelMangament.Upgrade();
+            _gameManager.money -= LevelMangament.prices[LevelMangament.level];
+            LevelMangament.Upgrade();
         }
     }
 }

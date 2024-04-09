@@ -43,7 +43,7 @@ namespace _Project.Scripts_dev.UI
             for(int i=0; i < levelMangaments.Count; i++)
             {
                 GameObject item = Instantiate(itemPrefab, contents);
-                item.GetComponent<UpgradeItem>().levelMangament = levelMangaments[i];
+                item.GetComponent<UpgradeItem>().LevelMangament = levelMangaments[i];
             }
         }
     }

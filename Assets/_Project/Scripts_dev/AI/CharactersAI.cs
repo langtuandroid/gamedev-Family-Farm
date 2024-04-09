@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts_dev.Classes;
+using _Project.Scripts_dev.Farm;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -262,8 +263,8 @@ namespace _Project.Scripts_dev.AI
                         }
                         if (stackneed.currentQuantity == 0) shouldAdd = false;
 
-                        if (farm.isFarm && shouldAdd) _mats.Add(item);
-                        else if (farm.isFactory && shouldAdd)
+                        if (farm.IsFarm && shouldAdd) _mats.Add(item);
+                        else if (farm.IsFactory && shouldAdd)
                         {
                             for (int i = 0; i < 10; i++)
                             {
@@ -277,7 +278,7 @@ namespace _Project.Scripts_dev.AI
 
         private IEnumerator PlantFarm()
         {
-            if (!_currentFarmWorkingOn.isCattle)
+            if (!_currentFarmWorkingOn.IsCattle)
             {
                 while (_currentFarmWorkingOn.farmStatus == 0)
                 {

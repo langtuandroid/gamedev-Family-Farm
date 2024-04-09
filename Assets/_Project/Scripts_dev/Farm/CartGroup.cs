@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts_dev.Farm
 {
     public class CartGroup : MonoBehaviour
     {
-        [SerializeField] Transform partent;
+        [FormerlySerializedAs("partent")] [SerializeField] private Transform _cartTransform;
 
         private void Update()
         {
-            transform.localRotation = partent.rotation;
+            transform.localRotation = _cartTransform.rotation;
         }
     }
 }
