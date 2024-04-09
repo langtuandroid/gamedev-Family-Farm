@@ -260,7 +260,7 @@ namespace _Project.Scripts_dev.Managers
         public IEnumerator FocusRoutine(GameObject focus)
         {
             yield return new WaitForSeconds(1f);
-            FocusCamera.instance.SetCameraFocus(focus);
+            CameraFocus.instance.StartFocus(focus);
         }
     }
 }

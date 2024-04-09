@@ -62,7 +62,6 @@ namespace _Project.Scripts_dev.Classes
                     if (multiple == 0) multiple = 1;
                 }
                 sum += item.GetComponent<Product>().Goods.Income * multiple * _gameManager.IncomeBoost *(_gameManager.Money>=1000?0.5f:1);
-                Debug.Log(sum);
             }
             return sum;
         }

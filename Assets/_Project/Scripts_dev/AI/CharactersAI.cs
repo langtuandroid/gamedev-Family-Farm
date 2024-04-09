@@ -427,7 +427,6 @@ namespace _Project.Scripts_dev.AI
                     }
                 }
                 if (shop == null) {
-                    Debug.Log("Go home");
                     return null;
                 } 
             }
@@ -468,7 +467,6 @@ namespace _Project.Scripts_dev.AI
                     _stayTime = 0;
                
                     GameObject newShop = ChooseShop(true);
-                    Debug.Log(newShop);
                
                     if (newShop == null||_shopsSkipped.Count==3) { _stayTime = 21;  StopAllCoroutines();  }
                
@@ -507,7 +505,6 @@ namespace _Project.Scripts_dev.AI
                 _stayTime = 0;
           
                 GameObject newShop = ChooseShop(true);
-                Debug.Log(newShop);
             
                 if (newShop == null || _shopsSkipped.Count == 3) 
                 { 

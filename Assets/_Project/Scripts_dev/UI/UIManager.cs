@@ -338,7 +338,9 @@ namespace _Project.Scripts_dev.UI
                 unlockRewardUI.SetActive(false);
                 _gameManager.InterTimer = 0;
             }, 0.2f));
-        } public void RewardCar()
+        } 
+        
+        public void RewardCar()
         {
             StartCoroutine(Delay(() =>
             {

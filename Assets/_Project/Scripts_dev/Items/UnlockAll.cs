@@ -7,7 +7,7 @@ namespace _Project.Scripts_dev.Items
     public class UnlockAll : MonoBehaviour //TODO Remove
     {
         [Inject] private GameManager _gameManager;
-        public bool unlock;
+        public bool unlock = true;
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))

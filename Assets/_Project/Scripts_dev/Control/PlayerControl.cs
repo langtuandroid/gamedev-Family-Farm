@@ -19,7 +19,7 @@ namespace _Project.Scripts_dev.Control
         [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
-        [Inject] private CamFollow _camFollow;
+        [Inject] private CameraFollowPlayer _camFollow;
         
         [Header("Character")]
         [SerializeField] private CharacterController _characterController;
@@ -111,7 +111,7 @@ namespace _Project.Scripts_dev.Control
             _transform.SetPositionAndRotation(_previousPosition, _previousRotation);
             _playerObject.SetActive(true);
             GetComponent<PlayerControl>().enabled = false;
-            _camFollow.player = _playerObject;
+            _camFollow.PlayerObject = _playerObject;
             _playerObject.GetComponent<PlayerControl>().enabled = true;
             _driver.SetActive(false);
             TapKetHang tapKetHang = FindObjectOfType<TapKetHang>();
@@ -215,7 +215,6 @@ namespace _Project.Scripts_dev.Control
             }
             if (other.transform.CompareTag("Stack")||other.transform.CompareTag("Stack2"))
             {
-                Debug.Log("Grabbb");
                 Collect(other.GetComponent<Stack>());
             }
         }

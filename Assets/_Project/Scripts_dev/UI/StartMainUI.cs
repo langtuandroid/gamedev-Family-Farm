@@ -1,79 +1,86 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-public class StartMainUI : MonoBehaviour
+namespace _Project.Scripts_dev.UI
 {
-    List<Vector2> oldPos;
-    public RectTransform[] rects;
-    [SerializeField] float speed;
-    private void Start()
+    public class StartMainUI : MonoBehaviour
     {
-        oldPos = new List<Vector2>() ;
-      
-        SetUp();
-        Step1(0.2f);
-        Step2(0.4f);
-        Step3(0.6f);
-        Step4(0.8f);
-    }
-    
-    void SetUp()
-    {
-        for(int i = 0; i < rects.Length; i++)
+        private List<Vector2> _oldPos;
+        [FormerlySerializedAs("rects")] [SerializeField] private RectTransform[] _rects;
+        private float _speed = 0.5f;
+        private void Start()
         {
-            oldPos.Add(rects[i].position);
+            _oldPos = new List<Vector2>() ;
+      
+            SetUp();
+            FirstSetUp(0.2f);
+            SecondStep(0.4f);
+            ThirdStep(0.6f);
+            FourthStep(0.8f);
         }
-        rects[0].anchoredPosition = new Vector2(rects[0].anchoredPosition.x - 350, rects[0].anchoredPosition.y);
-        rects[1].anchoredPosition = new Vector2(rects[1].anchoredPosition.x + 350, rects[1].anchoredPosition.y);
-        rects[2].anchoredPosition = new Vector2(rects[2].anchoredPosition.x + 350, rects[2].anchoredPosition.y);
-        rects[3].anchoredPosition = new Vector2(rects[3].anchoredPosition.x + 350, rects[3].anchoredPosition.y);
-        rects[4].anchoredPosition = new Vector2(rects[4].anchoredPosition.x - 350, rects[4].anchoredPosition.y);
-        rects[5].anchoredPosition = new Vector2(rects[5].anchoredPosition.x + 350, rects[5].anchoredPosition.y);
-        rects[6].anchoredPosition = new Vector2(rects[6].anchoredPosition.x + 350, rects[6].anchoredPosition.y);
-        rects[7].anchoredPosition = new Vector2(rects[7].anchoredPosition.x, rects[7].anchoredPosition.y+350);
-        rects[8].anchoredPosition = new Vector2(rects[8].anchoredPosition.x - 350, rects[8].anchoredPosition.y);
-    }
-    void Step1(float delay)
-    {
-        rects[0].DOMove(oldPos[0]+new Vector2(20,0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(()=> {
-            rects[0].DOMove(oldPos[0], speed/2).SetEase(Ease.InQuad);
-        }); 
-        rects[1].DOMove(oldPos[1] - new Vector2(20, 0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[1].DOMove(oldPos[1], speed/2).SetEase(Ease.InQuad);
-        }); ;
-    }
-    void Step2(float delay)
-    {
-        rects[2].DOMove(oldPos[2] - new Vector2(20, 0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[2].DOMove(oldPos[2], speed/2).SetEase(Ease.InQuad);
-        }); 
-    }
-    void Step3(float delay)
-    {
-        rects[3].DOMove(oldPos[3] - new Vector2(20, 0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[3].DOMove(oldPos[3], speed/2).SetEase(Ease.InQuad);
-        });
-    }
-    void Step4(float delay)
-    {
-        rects[4].DOMove(oldPos[4] + new Vector2(20, 0), speed).SetEase(Ease.OutFlash).SetDelay(delay).OnComplete(() => {
-            rects[4].DOMove(oldPos[4], speed/2).SetEase(Ease.InQuad);
-        });
-        rects[5].DOMove(oldPos[5] - new Vector2(20, 0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[5].DOMove(oldPos[5], speed/2).SetEase(Ease.InQuad);
-        });
-        rects[6].DOMove(oldPos[6] - new Vector2(20, 0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[6].DOMove(oldPos[6], speed/2).SetEase(Ease.InQuad);
-        });
-        rects[7].DOMove(oldPos[7] - new Vector2(0, 20), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[7].DOMove(oldPos[7], speed/2).SetEase(Ease.InQuad);
 
-        });
-        rects[8].DOMove(oldPos[8] + new Vector2(20, 0), speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
-            rects[8].DOMove(oldPos[8], speed / 2).SetEase(Ease.InQuad);
-        });
-    }
+        private void SetUp()
+        {
+            foreach (var rect in _rects)
+            {
+                _oldPos.Add(rect.position);
+            }
+            _rects[0].anchoredPosition = new Vector2(_rects[0].anchoredPosition.x - 350, _rects[0].anchoredPosition.y);
+            _rects[1].anchoredPosition = new Vector2(_rects[1].anchoredPosition.x + 350, _rects[1].anchoredPosition.y);
+            _rects[2].anchoredPosition = new Vector2(_rects[2].anchoredPosition.x + 350, _rects[2].anchoredPosition.y);
+            _rects[3].anchoredPosition = new Vector2(_rects[3].anchoredPosition.x + 350, _rects[3].anchoredPosition.y);
+            _rects[4].anchoredPosition = new Vector2(_rects[4].anchoredPosition.x - 350, _rects[4].anchoredPosition.y);
+            _rects[5].anchoredPosition = new Vector2(_rects[5].anchoredPosition.x + 350, _rects[5].anchoredPosition.y);
+            _rects[6].anchoredPosition = new Vector2(_rects[6].anchoredPosition.x + 350, _rects[6].anchoredPosition.y);
+            _rects[7].anchoredPosition = new Vector2(_rects[7].anchoredPosition.x, _rects[7].anchoredPosition.y+350);
+            _rects[8].anchoredPosition = new Vector2(_rects[8].anchoredPosition.x - 350, _rects[8].anchoredPosition.y);
+        }
 
+        private void FirstSetUp(float delay)
+        {
+            _rects[0].DOMove(_oldPos[0]+new Vector2(20,0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(()=> {
+                _rects[0].DOMove(_oldPos[0], _speed/2).SetEase(Ease.InQuad);
+            }); 
+            _rects[1].DOMove(_oldPos[1] - new Vector2(20, 0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[1].DOMove(_oldPos[1], _speed/2).SetEase(Ease.InQuad);
+            }); ;
+        }
+
+        private void SecondStep(float delay)
+        {
+            _rects[2].DOMove(_oldPos[2] - new Vector2(20, 0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[2].DOMove(_oldPos[2], _speed/2).SetEase(Ease.InQuad);
+            }); 
+        }
+
+        private void ThirdStep(float delay)
+        {
+            _rects[3].DOMove(_oldPos[3] - new Vector2(20, 0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[3].DOMove(_oldPos[3], _speed/2).SetEase(Ease.InQuad);
+            });
+        }
+
+        private void FourthStep(float delay)
+        {
+            _rects[4].DOMove(_oldPos[4] + new Vector2(20, 0), _speed).SetEase(Ease.OutFlash).SetDelay(delay).OnComplete(() => {
+                _rects[4].DOMove(_oldPos[4], _speed/2).SetEase(Ease.InQuad);
+            });
+            _rects[5].DOMove(_oldPos[5] - new Vector2(20, 0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[5].DOMove(_oldPos[5], _speed/2).SetEase(Ease.InQuad);
+            });
+            _rects[6].DOMove(_oldPos[6] - new Vector2(20, 0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[6].DOMove(_oldPos[6], _speed/2).SetEase(Ease.InQuad);
+            });
+            _rects[7].DOMove(_oldPos[7] - new Vector2(0, 20), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[7].DOMove(_oldPos[7], _speed/2).SetEase(Ease.InQuad);
+
+            });
+            _rects[8].DOMove(_oldPos[8] + new Vector2(20, 0), _speed).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(() => {
+                _rects[8].DOMove(_oldPos[8], _speed / 2).SetEase(Ease.InQuad);
+            });
+        }
+
+    }
 }

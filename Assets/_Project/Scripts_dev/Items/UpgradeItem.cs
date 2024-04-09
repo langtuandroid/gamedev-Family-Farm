@@ -28,7 +28,7 @@ namespace _Project.Scripts_dev.Items
         {
             _imageText.sprite = LevelMangament._sprite;
             if (LevelMangament == null) return;
-
+            
             _languageManager.SetText(LevelMangament._titleId, _titleText);
             if (LevelMangament.transform.gameObject.activeInHierarchy)
             {

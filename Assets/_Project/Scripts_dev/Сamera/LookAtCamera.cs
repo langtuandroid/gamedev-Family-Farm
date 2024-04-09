@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 
-namespace _Project.Scripts_dev
+namespace _Project.Scripts_dev.Сamera
 {
     public class LookAtCamera : MonoBehaviour
     {
-        private Transform cameraTransform;
+        private Transform _cameraTransform;
 
         private void Start()
         {
-            cameraTransform = Camera.main.transform;
+            _cameraTransform = Camera.main.transform;
         }
 
         private void Update()
         {
-            transform.LookAt(cameraTransform);
+            transform.LookAt(_cameraTransform);
         }
     }
 }

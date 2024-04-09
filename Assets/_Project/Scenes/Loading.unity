@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48bbe37b2a19005479ea0b36d8bec1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Loading_2_Image: {fileID: 1585524478}
+  _loadImage: {fileID: 1585524478}
 --- !u!114 &375074084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,7 +540,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 684259544}
   scaleDuration: 1
-  loopDelay: 0.5
   scaleFactor: 1.1
 --- !u!114 &684259546
 MonoBehaviour:

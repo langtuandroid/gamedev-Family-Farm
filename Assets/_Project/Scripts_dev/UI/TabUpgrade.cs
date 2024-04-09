@@ -2,21 +2,23 @@ using System.Collections.Generic;
 using _Project.Scripts_dev.Items;
 using _Project.Scripts_dev.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts_dev.UI
 {
     public class TabUpgrade : MonoBehaviour
     {
+        [Inject] private DiContainer _diContainer;
         [Inject] private GameManager _gameManager;
-        public List< LevelMangament> levelMangaments;
-        public GameObject itemPrefab;
-        public Transform contents;
+        [FormerlySerializedAs("levelMangaments")] [SerializeField] private List< LevelMangament> _levelManagers;
+        [FormerlySerializedAs("itemPrefab")] [SerializeField] private GameObject _itemPrefab;
+        [FormerlySerializedAs("contents")] [SerializeField] private Transform _content;
         public int type;
 
         private void Start()
         {
-            levelMangaments = new List<LevelMangament>();
+            _levelManagers = new List<LevelMangament>();
             LoadList();
 
         }
@@ -27,8 +29,8 @@ namespace _Project.Scripts_dev.UI
 
         private void LoadList()
         {
-            levelMangaments.Clear();
-            foreach(Transform t in contents)
+            _levelManagers.Clear();
+            foreach(Transform t in _content)
             {
                 Destroy(t.gameObject);
             }
@@ -36,15 +38,15 @@ namespace _Project.Scripts_dev.UI
             {
                 if (l.GetComponent<LevelMangament>()!=null)
                     if (l.GetComponent<LevelMangament>().Type == type)
-                        levelMangaments.Add(l.GetComponent<LevelMangament>());
+                        _levelManagers.Add(l.GetComponent<LevelMangament>());
             }
             if (type != 3)
-                levelMangaments.Sort((a, b) => a._goods.Id.CompareTo(b._goods.Id));
+                _levelManagers.Sort((a, b) => a._goods.Id.CompareTo(b._goods.Id));
             
-            for(int i=0; i < levelMangaments.Count; i++)
+            for(int i=0; i < _levelManagers.Count; i++)
             {
-                GameObject item = Instantiate(itemPrefab, contents);
-                item.GetComponent<UpgradeItem>().LevelMangament = levelMangaments[i];
+                GameObject item = _diContainer.InstantiatePrefab(_itemPrefab, _content);
+                item.GetComponent<UpgradeItem>().LevelMangament = _levelManagers[i];
             }
         }
     }

@@ -48,7 +48,6 @@ namespace _Project.Scripts_dev.Car
             }
             if (characterController.velocity != Vector3.zero&&!running && playerControl.enabled)
             {
-                Debug.Log(characterController.enabled);
                 StartCoroutine(DoCarAnim());
                 wheel1.enabled = true;
                 wheel2.enabled = true;
