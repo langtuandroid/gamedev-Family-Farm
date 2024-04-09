@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts_dev.Classes
 {
     public class Cart : MonoBehaviour
     {
+        [Inject] private SoundManager _soundManager;
         public List<GameObject> cart;
         public int inCart;
 
@@ -48,8 +50,8 @@ namespace _Project.Scripts_dev.Classes
                     cart.Add(clone);
                     ParabolicMovement(clone, CartPos[i].transform.position,0.5f, 1.5f, () => { clone.transform.DOLocalMove(Vector3.zero, 0.1f); });
                     stack.currentQuantity--;
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[7], transform.position, 1f);
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[7], transform.position, 1f);
+                    _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
+                    _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
                     yield return new WaitForSeconds(0.05f);
                 }
 
@@ -81,8 +83,8 @@ namespace _Project.Scripts_dev.Classes
                     cart.Add(clone);
                     ParabolicMovement(clone, CartPos[i].transform.position,0.5f, 1.5f, () => { clone.transform.DOLocalMove(Vector3.zero, 0.1f); });
                     stack.currentQuantity--;
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[7], transform.position, 1f);
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[7], transform.position, 1f);
+                    _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
+                    _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
                     yield return new WaitForSeconds(0.05f);
                 }
 
@@ -115,8 +117,8 @@ namespace _Project.Scripts_dev.Classes
                     cart.Add(clone);
                     ParabolicMovement(clone, CartPos[i].transform.position,0.3f, 1.5f, () => { clone.transform.DOLocalMove(Vector3.zero, 0.1f); });
                     stack.currentQuantity--;
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[7], transform.position, 1f);
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[7], transform.position, 1f);
+                    _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
+                    _soundManager.CreateSound(_soundManager.sounds[7], transform.position, 1f);
                     yield return new WaitForSeconds(0.05f);
                 }
 
@@ -199,7 +201,7 @@ namespace _Project.Scripts_dev.Classes
                 goOn = false;
 
                 yield return new WaitForSeconds(0.05f);
-                SoundManager.instance.CreateSound(SoundManager.instance.sounds[8], transform.position, 1f);
+                _soundManager.CreateSound(_soundManager.sounds[8], transform.position, 1f);
                 if ( RemoveAnim(id, matPlace, destroy, shelf))
                 {
 

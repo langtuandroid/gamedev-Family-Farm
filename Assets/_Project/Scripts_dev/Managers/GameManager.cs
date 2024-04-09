@@ -11,6 +11,7 @@ using Zenject;
 
 public class GameManager : MonoBehaviour
 {
+    [Inject] private SoundManager _soundManager;
     [Inject] private EffectManager _effectManager;
     [Inject] private DataManager _dataManager;
     [Inject] private GameManager _gameManager;
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
     public bool gainExp;
     public float interTimer;
     public float inactiveTimer;
-    public float playTimer;
+    
     public bool draggable;
     public float incomeBoostTime, speedBoostTime,truckTime;
     public float incomeBoost, speedBoost;
@@ -100,7 +101,6 @@ public class GameManager : MonoBehaviour
         if (draggable&& totalPlayTime>60 &&  (interTimer > 15))
         {
             inactiveTimer += Time.deltaTime;
-            playTimer += Time.deltaTime;
         }
            
         if (inactiveTimer > 30) inactiveTimer = 30;
@@ -192,8 +192,7 @@ public class GameManager : MonoBehaviour
 
     private void LevelUp()
     {
-
-        SoundManager.instance.PlaySound(SoundManager.instance.sounds[2]);
+        _soundManager.PlaySound(_soundManager.sounds[2]);
         gainExp = false;
         float bonusExp = (maxExp * 1.3f) / 10;
         _uiManager.UILevelUp.SetActive(true);

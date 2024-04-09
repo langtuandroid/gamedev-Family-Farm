@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts_dev.Additional
@@ -6,11 +7,11 @@ namespace _Project.Scripts_dev.Additional
     public class DisableAtLevel : MonoBehaviour
     {
         [Inject] private GameManager _gameManager;
-        public int level;
+        [FormerlySerializedAs("level")] [SerializeField] private int _level;
 
         private void Update()
         {
-            if (_gameManager.level >= level) gameObject.SetActive(false);
+            if (_gameManager.level >= _level) gameObject.SetActive(false);
         }
     }
 }

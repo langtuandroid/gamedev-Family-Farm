@@ -109,7 +109,7 @@ namespace _Project.Scripts_dev.Classes
             if ((workingFarmer != null) )
             {
                 string tagg = workingFarmer.tag;
-                Cart cartt = tagg == "Farmer" ? workingFarmer.GetComponent<AIController>().cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                Cart cartt = tagg == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
                 if( CheckCart(cartt) )
                 {
                     time += Time.deltaTime;
@@ -238,7 +238,7 @@ namespace _Project.Scripts_dev.Classes
                             foreach (int matID in materialsNeeded)
                             {
                                 string tagg = workingFarmer.tag;
-                                Cart cartt = tagg == "Farmer" ? workingFarmer. GetComponent<AIController>().cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                                Cart cartt = tagg == "Farmer" ? workingFarmer. GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
                                 if (!cartt.Remove(transform.name, matID, matPlace, feedMax,true))
                                 {
                                     time = completeTime;
@@ -256,7 +256,7 @@ namespace _Project.Scripts_dev.Classes
                         }
                   
                         string tag = workingFarmer.tag;
-                        Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<AIController>().cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                        Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
                    
                         if (CheckCart(cart)) {
                             UpdateFarmStautus();
@@ -304,7 +304,7 @@ namespace _Project.Scripts_dev.Classes
                         foreach (int matID in materialsNeeded)
                         {
                             string tag = workingFarmer.tag;
-                            Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<AIController>().cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                            Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
                             cart.Remove(transform.name, matID, matPlace, feedMax);
                         }
                     }
@@ -387,7 +387,7 @@ namespace _Project.Scripts_dev.Classes
                     workingFarmer = other.gameObject;
 
                     string tag = workingFarmer.tag;
-                    Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<AIController>().cart : workingFarmer.GetComponent<PlayerControl>().cart;
+                    Cart cart = tag == "Farmer" ? workingFarmer.GetComponent<CharactersAI>().Cart : workingFarmer.GetComponent<PlayerControl>().cart;
               
                     if (!CheckCart(cart))
                     {

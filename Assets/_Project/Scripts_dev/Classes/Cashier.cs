@@ -10,6 +10,7 @@ namespace _Project.Scripts_dev.Classes
 {
     public class Cashier : MonoBehaviour
     {
+        [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
         [SerializeField] private MoneyPiile moneyPile;
@@ -21,7 +22,7 @@ namespace _Project.Scripts_dev.Classes
         public bool cashierIsHere,playerIsHere;
         public int inLine;
         public GameObject[] linePos;
-        public AIController currentCustomer;
+        public CharactersAI currentCustomer;
         public Animator cashierAnimator;
         public bool isTaking;
 
@@ -95,7 +96,7 @@ namespace _Project.Scripts_dev.Classes
                 yield return null; //test
                 int r = Random.Range(0, 2);
                 if (r == 0)
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[5], transform.position, 0.5f);
+                    _soundManager.CreateSound(_soundManager.sounds[5], transform.position, 0.5f);
                 GameObject item = Instantiate(moneyPrefab,linePos[0].transform.position,Quaternion.identity);
                 moneyPile.UpdateNextPos(true);
             
@@ -106,20 +107,19 @@ namespace _Project.Scripts_dev.Classes
                         temp -= 10;
                     });
             }
-            currentCustomer.goHome = true;
             currentCustomer.GoHome();
             currentCustomer = null;
-            AIController[] customers = FindObjectsOfType<AIController>();
+            CharactersAI[] customers = FindObjectsOfType<CharactersAI>();
             inLine--;
 
        
-            foreach(AIController customer in customers)
+            foreach(CharactersAI customer in customers)
             {
                 if (customer.transform.CompareTag("Customer"))
                 {
-                    if (customer.cashier.gameObject == gameObject)
+                    if (customer.Cashier == this)
                     {
-                        customer.Reline();
+                        customer.GoToOtherLine();
                     }
                 }
             }
@@ -133,10 +133,10 @@ namespace _Project.Scripts_dev.Classes
         {
             if (other.CompareTag("Customer"))
             {
-                AIController controller = other.GetComponent<AIController>();
-                if (controller.lineNum == 0 && controller.CheckCompletePath()&&controller.goHome==false)
+                CharactersAI controller = other.GetComponent<CharactersAI>();
+                if (controller.LineNumber == 0 && controller.CheckCompletePath()&&controller.IsMovingHome==false)
                 {
-                    moneyToTake = Counter(other.GetComponent<AIController>().cart);
+                    moneyToTake = Counter(other.GetComponent<CharactersAI>().Cart);
                     currentCustomer = controller;
                 }
             }

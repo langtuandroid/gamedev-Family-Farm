@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts_dev.Language
 {
     public class LaguageSetter : MonoBehaviour
     {
+        [Inject] private LanguageManager _languageManager;
         public bool notUi;
         public bool outline;
         public int index;
@@ -24,7 +26,7 @@ namespace _Project.Scripts_dev.Language
         }
         public void Set()
         {
-            LanguageManager.instance.SetText(index, text,outline);
+            _languageManager.SetText(index, text,outline);
         }
     }
 }

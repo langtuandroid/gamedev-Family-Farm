@@ -6,13 +6,11 @@ namespace _Project.Scripts_dev.Language
     public class LanguageManager : MonoBehaviour
     {
         [SerializeField] TMP_FontAsset EN, ENOutline, VNI, VNIOutline;
-        public static LanguageManager instance;
 
         public float language;
         public ExcelLanguage file;
         private void Awake()
         {
-            instance = this;
             language = PlayerPrefs.GetFloat("language", 1);
         }
     

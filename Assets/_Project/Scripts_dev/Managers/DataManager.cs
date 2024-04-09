@@ -8,12 +8,12 @@ namespace _Project.Scripts_dev.Managers
         [Inject] private GameManager _gameManager;
         public GameData gameData;
     
-        private void Start()
+        private void Awake()
         {
             gameData = LoadGameData();
         }
 
-        public void SaveGameData()
+        private void SaveGameData()
         {
             GameData gameData = new GameData(_gameManager);
             string gameDataJson = JsonUtility.ToJson(gameData);
@@ -21,7 +21,8 @@ namespace _Project.Scripts_dev.Managers
             PlayerPrefs.Save();
         
         }
-        public GameData LoadGameData()
+
+        private GameData LoadGameData()
         {
             if (PlayerPrefs.HasKey("GameData"))
             {

@@ -18779,8 +18779,6 @@ MonoBehaviour:
   starEXPBar: {fileID: 721411679}
   money: {fileID: 8264030318233271109, guid: ba029bda59924884bb24dc6411793218, type: 3}
   MoneyBar: {fileID: 1760587458}
-  noInternetText: {fileID: 5638026210321792421, guid: cfc54aebae5e19342ab950d2a4a74219, type: 3}
-  effectUI: {fileID: 827177044}
 --- !u!1 &932884708 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1488758668405950170, guid: 937317725d9c3c047a11fa4e23b4c234, type: 3}
@@ -24979,7 +24977,6 @@ MonoBehaviour:
   load: 0
   some1Taking: 0
   playTime: 0
-  dragon: 0
 --- !u!114 &1266431948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31244,9 +31241,7 @@ MonoBehaviour:
   btnClose: {fileID: 667852203}
   Circle: {fileID: 2115350553}
   Sectors:
-  - ValueTextObject: {fileID: 1647991062}
-    RewardValue: 10
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31262,9 +31257,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 138269042}
-    RewardValue: 50
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31280,9 +31273,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 308172082}
-    RewardValue: 20
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31298,9 +31289,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 28853253}
-    RewardValue: 100
-    Probability: 100
+  - Probability: 100
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31316,9 +31305,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1645111818}
-    RewardValue: 30
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31334,9 +31321,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 855171103}
-    RewardValue: 150
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31352,9 +31337,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 133388282}
-    RewardValue: 40
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -31370,9 +31353,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 545974770}
-    RewardValue: 200
-    Probability: 0
+  - Probability: 0
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -32356,6 +32337,9 @@ MonoBehaviour:
   _gameManager: {fileID: 1266431947}
   _camFollow: {fileID: 662143360}
   _uiManager: {fileID: 1354136870}
+  _effectManager: {fileID: 922255613}
+  _languageManager: {fileID: 1713091839}
+  _soundManager: {fileID: 1855770036}
 --- !u!114 &1635719920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32369,7 +32353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: 1635719919}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -43896,9 +43881,7 @@ MonoBehaviour:
   btnClose: {fileID: 3023020140869598361}
   Circle: {fileID: 1000014334810205}
   Sectors:
-  - ValueTextObject: {fileID: 1000007988862817}
-    RewardValue: 10
-    Probability: 24
+  - Probability: 24
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -43914,9 +43897,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000011036559859}
-    RewardValue: 50
-    Probability: 18
+  - Probability: 18
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -43932,9 +43913,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000012541853793}
-    RewardValue: 20
-    Probability: 18
+  - Probability: 18
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -43950,9 +43929,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000014064043613}
-    RewardValue: 100
-    Probability: 12
+  - Probability: 12
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -43968,9 +43945,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000011517367419}
-    RewardValue: 30
-    Probability: 12
+  - Probability: 12
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -43986,9 +43961,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000013240474041}
-    RewardValue: 150
-    Probability: 6
+  - Probability: 6
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -44004,9 +43977,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000010794701551}
-    RewardValue: 40
-    Probability: 6
+  - Probability: 6
     RewardCallback:
       m_PersistentCalls:
         m_Calls:
@@ -44022,9 +43993,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - ValueTextObject: {fileID: 1000010404553743}
-    RewardValue: 200
-    Probability: 4
+  - Probability: 4
     RewardCallback:
       m_PersistentCalls:
         m_Calls:

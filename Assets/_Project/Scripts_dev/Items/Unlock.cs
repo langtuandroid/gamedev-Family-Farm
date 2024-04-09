@@ -10,6 +10,7 @@ namespace _Project.Scripts_dev.Items
 {
     public class Unlock : MonoBehaviour
     {
+        [Inject] private SoundManager _soundManager;
         [Inject] private EffectManager _effectManager;
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
@@ -97,10 +98,10 @@ namespace _Project.Scripts_dev.Items
         {
             if (unlock.CompareTag("Area"))
             {
-                SoundManager.instance.PlaySound(SoundManager.instance.sounds[2]);
+                _soundManager.PlaySound(_soundManager.sounds[2]);
             }
             else
-                SoundManager.instance.PlaySound(SoundManager.instance.sounds[1]);
+                _soundManager.PlaySound(_soundManager.sounds[1]);
             yield return new WaitForSeconds(0.3f);
         
             unlock.SetActive(true);

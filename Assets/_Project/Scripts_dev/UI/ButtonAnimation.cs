@@ -1,11 +1,13 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-namespace _Project.Scripts_dev
+namespace _Project.Scripts_dev.UI
 {
     public class ButtonAnimation : MonoBehaviour
     {
+        [Inject] private SoundManager _soundManager;
         public float scaleAmount = 0.8f;
         public float duration = 0.1f;
 
@@ -15,9 +17,9 @@ namespace _Project.Scripts_dev
         public void OnButtonClick(Button button)
         {
             if(!upgrade)
-                SoundManager.instance.PlaySound(SoundManager.instance.sounds[4]);
+                _soundManager.PlaySound(_soundManager.sounds[4]);
             else
-                SoundManager.instance.PlaySound(SoundManager.instance.sounds[0]);
+                _soundManager.PlaySound(_soundManager.sounds[0]);
 
             button.transform.DOScale(originalScale * scaleAmount, duration).SetUpdate(true).OnComplete(()=> { ResetButtonScale(button); });
         }

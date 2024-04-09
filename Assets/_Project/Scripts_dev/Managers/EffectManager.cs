@@ -10,7 +10,9 @@ using Zenject;
 
 public class EffectManager : MonoBehaviour
 {
+    [Inject] private SoundManager _soundManager;
     [Inject] private GameManager _gameManager;
+    public GameObject dustTrail;
     public GameObject rainbowUnlock;
     public GameObject star;
     public GameObject starEXPBar; 
@@ -20,7 +22,6 @@ public class EffectManager : MonoBehaviour
     private void MoveFromWorkSpaceToUI(Transform startPos, RectTransform targetUI, GameObject obj, TweenCallback complete)
     {
         Vector3 startScreenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, startPos.position);
-        float speed = 2000f;
         obj.transform.position = new Vector3(startScreenPos.x, startScreenPos.y,0);
         ParabolicMovement(obj, startScreenPos, targetUI.position, UnityEngine.Random.Range(1, 1.5f), UnityEngine.Random.Range(-200f, 200f), complete);
     }
@@ -30,7 +31,7 @@ public class EffectManager : MonoBehaviour
         go.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         MoveFromWorkSpaceToUI(startPos, starEXPBar.GetComponent<RectTransform>(), go,()=> {
             if (_gameManager.draggable)
-                SoundManager.instance.CreateSound(SoundManager.instance.sounds[9], transform.position, 0.5f);
+                _soundManager.CreateSound(_soundManager.sounds[9], transform.position, 0.5f);
             StartCoroutine(EXPanim(exp));
             go.transform.GetChild(1).GetComponent<Image>().enabled = false;
             DotweenCodes.instance.ScaleBig(starEXPBar, 1.2f, 0.1f);
@@ -42,10 +43,10 @@ public class EffectManager : MonoBehaviour
         go.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         MoveFromWorkSpaceToUI(startPos, MoneyBar.GetComponent<RectTransform>(), go,()=> {
             if (_gameManager.draggable)
-                SoundManager.instance.CreateSound(SoundManager.instance.sounds[5], transform.position, 0.5f);
+                _soundManager.CreateSound(_soundManager.sounds[5], transform.position, 0.5f);
            
             _gameManager.money += money;
-            go.transform.GetChild(1).GetComponent<Image>().enabled = false;
+            go.GetComponent<Image>().enabled = false;
            
         });
     }

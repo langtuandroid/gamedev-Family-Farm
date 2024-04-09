@@ -9,6 +9,7 @@ namespace _Project.Scripts_dev.Items
 {
     public class UpgradeItem : MonoBehaviour
     {
+        [Inject] private LanguageManager _languageManager;
         [Inject] private GameManager _gameManager;
         [Inject] private UIManager _uiManager;
         public LevelMangament levelMangament;
@@ -24,10 +25,10 @@ namespace _Project.Scripts_dev.Items
             image.sprite = levelMangament.sprite;
             if (levelMangament == null) return;
 
-            LanguageManager.instance.SetText(levelMangament.titleIndex,title);
+            _languageManager.SetText(levelMangament.titleIndex, title);
             if (levelMangament.transform.gameObject.activeInHierarchy)
             {
-                level.text = LanguageManager.instance.GetText(42)+": " + (levelMangament.level + 1).ToString();
+                level.text = _languageManager.GetText(42)+": " + (levelMangament.level + 1).ToString();
                 bg.SetActive(false);
                 btnIcon.sprite = money;
                 if (levelMangament.level < 2)
@@ -50,9 +51,9 @@ namespace _Project.Scripts_dev.Items
             }
             else
             {
-                price.text = LanguageManager.instance.GetText(43);
+                price.text = _languageManager.GetText(43);
                 upgradeBtn.interactable = false;
-                level.text = LanguageManager.instance.GetText(42) + ": 0";
+                level.text = _languageManager.GetText(42) + ": 0";
                 bg.SetActive(true);
                 btnIcon.sprite = locked;
 

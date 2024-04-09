@@ -7,17 +7,11 @@ public class SoundManager : MonoBehaviour
     public AudioSource music;
     public AudioSource sound;
     public AudioClip[] sounds;
-    public static SoundManager instance;
-    private void Awake()
-    {
-        instance = this;
-    }
+  
     private void Update()
     {
-       
-            music.volume = PlayerPrefs.GetFloat("music", 1)==1?0.5f:0;
-            sound.volume = PlayerPrefs.GetFloat("sound", 1);
-        
+        music.volume = PlayerPrefs.GetFloat("music", 1)==1?0.5f:0;
+        sound.volume = PlayerPrefs.GetFloat("sound", 1);
     }
     public void PlaySound(AudioClip clip)
     {

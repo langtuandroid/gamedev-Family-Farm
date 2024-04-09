@@ -16,6 +16,7 @@ namespace _Project.Scripts_dev.UI
 {
     public class UIManager : MonoBehaviour
     {
+        [Inject] private LanguageManager _languageManager;
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
 
@@ -160,7 +161,6 @@ namespace _Project.Scripts_dev.UI
                 {
                     _gameManager.speedBoostTime = 150;
                     _gameManager.interTimer = 0;
-                    _gameManager.playTimer = 0;
                 }, 0.2f));
             }
             if (type == 0)
@@ -169,7 +169,6 @@ namespace _Project.Scripts_dev.UI
                 {
                     _gameManager.incomeBoostTime = 150;
                     _gameManager.interTimer = 0;
-                    _gameManager.playTimer = 0;
                 }, 0.2f));
             }
 
@@ -207,8 +206,6 @@ namespace _Project.Scripts_dev.UI
             {
                 StartCoroutine(_gameManager.GetLevelUpRewardAdsCoroutine(oldReward, 1.3f * _gameManager.maxExp / 10, true));
                 _gameManager.interTimer = 0;
-                _gameManager.playTimer = 0;
-
                 TurnOffPopUp(canvas);
             }, 0.2f));
         } 
@@ -330,7 +327,6 @@ namespace _Project.Scripts_dev.UI
             if (_gameManager.interTimer >= 45&&_gameManager.totalPlayTime>60)
             {
             
-                _gameManager.playTimer = 45 - 5;
             }
         }
         public void RewardUnlock()
@@ -340,14 +336,13 @@ namespace _Project.Scripts_dev.UI
                 FindObjectOfType<Unlock>().remain=0;
                 unlockRewardUI.SetActive(false);
                 _gameManager.interTimer = 0;
-                _gameManager.playTimer = 0;
             }, 0.2f));
         } public void RewardCar()
         {
             StartCoroutine(Delay(() =>
             {
                 GameObject.Find("Player").GetComponent<PlayerControl>().GetCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
-                _gameManager.interTimer = 0; _gameManager.playTimer = 0;
+                _gameManager.interTimer = 0; 
             }, 0.2f));
         }
 
@@ -368,12 +363,12 @@ namespace _Project.Scripts_dev.UI
             if (vnmeseImage.activeInHierarchy)
             {
                 PlayerPrefs.SetFloat("language", 0);
-                LanguageManager.instance.language = 0;
+                _languageManager.language = 0;
             }
             else { PlayerPrefs.SetFloat("language", 1);
-                LanguageManager.instance.language = 1;
+                _languageManager.language = 1;
             }
-            LanguageManager.instance.SetTextAll();
+            _languageManager.SetTextAll();
         }
     }
 }

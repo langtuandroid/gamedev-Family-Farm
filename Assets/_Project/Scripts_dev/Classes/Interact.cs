@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts_dev.Classes
@@ -7,46 +8,46 @@ namespace _Project.Scripts_dev.Classes
     public class Interact : MonoBehaviour
     {
         [Inject] private GameManager _gameManager;
-        [SerializeField] RectTransform border;
-        public bool noMoney;
-        private bool imPoor;
+        [FormerlySerializedAs("border")] [SerializeField] private RectTransform _border;
+        [FormerlySerializedAs("noMoney")] [SerializeField] private bool _isNoMoney;
+        private bool _isPoor;
 
         private void Update()
         {
-            if (_gameManager.money <= 0&&!noMoney&&!imPoor)
+            switch (_gameManager.money)
             {
-                DOTween.Kill(border, true);
-                border.DOScale(Vector2.one, 0.1f);
-                imPoor = true;
+                case <= 0 when !_isNoMoney && !_isPoor:
+                    DOTween.Kill(_border, true);
+                    _border.DOScale(Vector2.one, 0.1f);
+                    _isPoor = true;
+                    break;
+                case > 0:
+                    _isPoor = false;
+                    break;
             }
-            if (_gameManager.money > 0) imPoor = false;
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (!noMoney) {
-                if (other.CompareTag("Player") && !DOTween.IsTweening(border))
+            if (_isNoMoney) return;
+            if (!other.CompareTag("Player") || DOTween.IsTweening(_border)) return;
+            if (_gameManager.money > 0)
+            {
+                _border.DOScale(1.2f * Vector2.one, 0.15f).OnComplete(() =>
                 {
-                    if (_gameManager.money > 0)
-                    {
-                
-                        border.DOScale(1.2f * Vector2.one, 0.15f).OnComplete(() =>
-                        {
-                            border.DOScale(Vector2.one *1f, 0.15f);
-                        }).SetLoops(-1, LoopType.Restart);
-                    }
-                    else
-                    {
-                        border.DOScale(1.2f * Vector2.one, 0.15f);
-                    }
-                }
+                    _border.DOScale(Vector2.one *1f, 0.15f);
+                }).SetLoops(-1, LoopType.Restart);
+            }
+            else
+            {
+                _border.DOScale(1.2f * Vector2.one, 0.15f);
             }
         }
         private void OnTriggerStay(Collider other)
         {
-            if (!noMoney) return;
-            if ((other.CompareTag("Player")) && !DOTween.IsTweening(border))
+            if (!_isNoMoney) return;
+            if ((other.CompareTag("Player")) && !DOTween.IsTweening(_border))
             {
-                border.DOScale(1.2f * Vector2.one, 0.15f);
+                _border.DOScale(1.2f * Vector2.one, 0.15f);
 
             }
         }
@@ -55,8 +56,8 @@ namespace _Project.Scripts_dev.Classes
         {
             if ((other.CompareTag("Player")))
             {
-                DOTween.Kill(border, true);
-                border.DOScale(Vector2.one, 0.15f);
+                DOTween.Kill(_border, true);
+                _border.DOScale(Vector2.one, 0.15f);
             }
         }
     }

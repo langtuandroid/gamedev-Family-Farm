@@ -13,6 +13,7 @@ namespace _Project.Scripts_dev.Control
     public class PlayerControl : MonoBehaviour
     {
         private const float Gravity = 9.8f;
+        [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
         [Inject] private CamFollow _camFollow;
@@ -173,7 +174,7 @@ namespace _Project.Scripts_dev.Control
                 }
                 int r = Random.Range(0, 2);
                 if (r == 0&&_gameManager.money>0) 
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[5],transform.position,0.5f);
+                    _soundManager.CreateSound(_soundManager.sounds[5],transform.position,0.5f);
                 yield return new WaitForSeconds(5/unlock.price);
             }
             payMoney = false;
@@ -252,7 +253,7 @@ namespace _Project.Scripts_dev.Control
                 other.GetComponent<PlayerControl>().enabled = true;
                 other.GetComponent<CharacterController>().enabled = true;
                 _gameManager.truckTime = 180;
-                SoundManager.instance.CreateSound(SoundManager.instance.sounds[11], transform.position);
+                _soundManager.CreateSound(_soundManager.sounds[11], transform.position);
                 for (int i = 0; i < cart.cart.Count; i++)
                 {
                     carCart.cart.Add(cart.cart[i]);
@@ -298,7 +299,7 @@ namespace _Project.Scripts_dev.Control
                 ParabolicMovement(clone, transform.position, 0.2f, 1f, () => { Destroy(clone);  });
                 int r = Random.Range(0, 4);
                 if (r == 0)
-                    SoundManager.instance.CreateSound(SoundManager.instance.sounds[5],transform.position, 0.5f);
+                    _soundManager.CreateSound(_soundManager.sounds[5],transform.position, 0.5f);
                 yield return null;
             }
         

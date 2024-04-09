@@ -76,7 +76,7 @@ namespace _Project.Scripts_dev.Classes
             if (other.CompareTag("Shipper") || other.CompareTag("Player"))
             {
                 string tag = other.gameObject.tag;
-                Cart cart = tag == "Shipper" ? other.GetComponent<AIController>().cart : other.GetComponent<PlayerControl>().cart;
+                Cart cart = tag == "Shipper" ? other.GetComponent<CharactersAI>().Cart : other.GetComponent<PlayerControl>().cart;
            
                 if (CheckCart(cart))
                 {

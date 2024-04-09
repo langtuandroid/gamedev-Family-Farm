@@ -12,6 +12,7 @@ namespace _Project.Scripts_dev.Car
 {
     public class CarAnimation : MonoBehaviour
     {
+        [Inject] private SoundManager _soundManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
         [SerializeField] SpinTransform wheel1, wheel2;
@@ -50,16 +51,15 @@ namespace _Project.Scripts_dev.Car
                 StartCoroutine(DoCarAnim());
                 wheel1.enabled = true;
                 wheel2.enabled = true;
-                engineSound.volume = SoundManager.instance.sound.volume;
+                engineSound.volume = _soundManager.sound.volume;
             }
             if(characterController.velocity == Vector3.zero || !playerControl.enabled)
             {
                 wheel1.enabled = false;
                 wheel2.enabled = false;
-                // StopAllCoroutines();
                 DOTween.Kill(transform);
                 if (playerControl.enabled)
-                    engineSound.volume = 0.4f* SoundManager.instance.sound.volume;
+                    engineSound.volume = 0.4f* _soundManager.sound.volume;
                 else
                 {
                     engineSound.volume = 0;
@@ -75,7 +75,7 @@ namespace _Project.Scripts_dev.Car
             while (true)
             {
                 yield return new WaitForSeconds(Random.Range(10f, 15f));
-                bimbimSound.volume = SoundManager.instance.sound.volume;
+                bimbimSound.volume = _soundManager.sound.volume;
                 if (characterController.velocity != Vector3.zero) bimbimSound.Play();
           
             }

@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Linq;
-using _Project.Scripts_dev;
 using _Project.Scripts_dev.Additional;
 using _Project.Scripts_dev.Language;
 using _Project.Scripts_dev.UI;
@@ -12,10 +10,12 @@ using UnityEngine.Events;
 using TMPro;
 using Zenject;
 #if UNITY_EDITOR
-using UnityEditor;
+
 #endif
 public class FortuneWheelManager : MonoBehaviour
 {
+    [Inject] private SoundManager _soundManager;
+    [Inject] private LanguageManager _languageManager;
     [Inject] private UIManager _uiManager;
     [Inject] private GameManager _gameManager;
     [Header("Game Objects for some elements")]
@@ -32,12 +32,9 @@ public class FortuneWheelManager : MonoBehaviour
     private float _startAngle;                  
     private float _currentLerpRotationTime;    
     
-    private bool _isFreeTurnAvailable;
-
     private FortuneWheelSector _finalSector;
     [SerializeField] TextMeshProUGUI txtTime;
-    int timeSpinFree = 600;
-    public SpinRewardControler spinReward;
+    public WheelManager spinReward;
 
     private void Start()
     {
@@ -58,7 +55,7 @@ public class FortuneWheelManager : MonoBehaviour
     }
     private void TurnWheel(bool isFree)
     {
-        SoundManager.instance.CreateSound(SoundManager.instance.sounds[10], transform.position);
+        _soundManager.CreateSound(_soundManager.sounds[10], transform.position);
         _currentLerpRotationTime = 0f;
         int[] sectorsAngles = new int[Sectors.Length];
         for (int i = 1; i <= Sectors.Length; i++)
@@ -89,14 +86,6 @@ public class FortuneWheelManager : MonoBehaviour
         DisableButton(FreeTurnButton);
         DisableButton(PaidTurnButton);
         DisableButton(btnClose);
-        if (!isFree)
-        {
-
-        }
-        else
-        {
-            SetNextFreeTime();
-        }
     }
 
     public void TurnWheelButtonClick()
@@ -115,10 +104,7 @@ public class FortuneWheelManager : MonoBehaviour
         }
     }
 
-    private void SetNextFreeTime()
-    {
-        _isFreeTurnAvailable = false;
-    }
+ 
 
 
     private void Update()
@@ -131,7 +117,7 @@ public class FortuneWheelManager : MonoBehaviour
         else
         {
             EnableButton(FreeTurnButton);
-            LanguageManager.instance.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
+            _languageManager.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
         }
         if (!_isStarted)
             return;
@@ -145,7 +131,7 @@ public class FortuneWheelManager : MonoBehaviour
             if (_gameManager.freeSpinTimer <= 0)
             {
                 EnableButton(FreeTurnButton);
-                LanguageManager.instance.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
+                _languageManager.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
             }
             else
             {
@@ -170,14 +156,14 @@ public class FortuneWheelManager : MonoBehaviour
 
     public void RewardCoins(float awardCoins)
     {
-        Action action = spinReward.GetPrice(awardCoins);
+        Action action = spinReward.TakePrize(awardCoins);
         if (!spinReward.first)
         {
-            action = spinReward.GetPrice(awardCoins);
+            action = spinReward.TakePrize(awardCoins);
         }
         else
         {
-            action = spinReward.GetFirstPrice(awardCoins);
+            action = spinReward.TakeFirstPrize(awardCoins);
         }
 
         action();
