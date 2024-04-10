@@ -23,7 +23,10 @@ namespace _Project.Scripts_dev.Managers
 
         private GameData LoadData()
         {
-            if (!PlayerPrefs.HasKey("GameData")) return null;
+            if (!PlayerPrefs.HasKey("GameData"))
+            {
+                return null;
+            }
             string savedGameDataJson = PlayerPrefs.GetString("GameData");
             GameData savedGameData = JsonUtility.FromJson<GameData>(savedGameDataJson);
             return savedGameData;

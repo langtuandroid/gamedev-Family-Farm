@@ -21,28 +21,33 @@ namespace _Project.Scripts_dev.UI
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
 
-        public bool sound, music;
+        public bool sound;
+        public bool music;
         public TextMeshProUGUI moneyText;
-        [SerializeField] Image EXPBarImage;
-        [SerializeField] TextMeshProUGUI levelText;
+        [SerializeField] private Image EXPBarImage;
+        [SerializeField] private TextMeshProUGUI levelText;
         public TextMeshProUGUI expText;
-        [SerializeField] TextMeshProUGUI cartText;
-        [SerializeField] TextMeshProUGUI bonusMoneyText;
-        [SerializeField] Cart playerCart;
-        [SerializeField] Cart truckCart;
-        [SerializeField] GameObject[] tabs;
-        [SerializeField] GameObject[] tabBtnImages;
-        [SerializeField] TextMeshProUGUI oldCart, newCart, reward,expBonus;
-        [SerializeField] Transform musicUI, soundUI;
-        [SerializeField] GameObject UpgradeIcon;
-        [SerializeField] GameObject SpinNotice;
-
-        [SerializeField] GameObject FirstSpinWheel;
-        [SerializeField] GameObject unlockRewardUI;
-        [SerializeField] GameObject adsUI,adsBtn;
-        [SerializeField] TextMeshProUGUI price1,price2;
-        [SerializeField] TextMeshProUGUI incomeRemain, speedRemain;
-        [SerializeField] GameObject vnmeseImage;
+        [SerializeField] private TextMeshProUGUI cartText;
+        [SerializeField] private TextMeshProUGUI bonusMoneyText;
+        [SerializeField] private Cart playerCart;
+        [SerializeField] private Cart truckCart;
+        [SerializeField] private GameObject[] tabs;
+        [SerializeField] private GameObject[] tabBtnImages;
+        [SerializeField] private TextMeshProUGUI oldCart;
+        [SerializeField] private TextMeshProUGUI newCart;
+        [SerializeField] private TextMeshProUGUI reward;
+        [SerializeField] private TextMeshProUGUI expBonus;
+        [SerializeField] private Transform musicUI;
+        [SerializeField] private Transform soundUI;
+        [SerializeField] private GameObject UpgradeIcon;
+        [SerializeField] private GameObject SpinNotice;
+        [SerializeField] private GameObject FirstSpinWheel;
+        [SerializeField] private GameObject unlockRewardUI;
+        [SerializeField] private GameObject adsUI;
+        [SerializeField] private GameObject adsBtn;
+        [SerializeField] private TextMeshProUGUI price1,price2;
+        [SerializeField] private TextMeshProUGUI incomeRemain, speedRemain;
+        [SerializeField] private GameObject vnmeseImage;
         public GameObject BottomUI;
         public GameObject UILevelUp;
         public GameObject CarUI;
@@ -330,6 +335,11 @@ namespace _Project.Scripts_dev.UI
             
             }
         }
+
+        public void NotEnoughMoney()
+        {
+            unlockRewardUI.SetActive(true);
+        }
         public void RewardUnlock()
         {
             StartCoroutine(Delay(() =>
@@ -342,11 +352,16 @@ namespace _Project.Scripts_dev.UI
         
         public void RewardCar()
         {
-            StartCoroutine(Delay(() =>
+            int prise = 100;
+            if (_gameManager.Money >= prise)
             {
-                GameObject.Find("Player").GetComponent<PlayerControl>().SitInCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
-                _gameManager.InterTimer = 0; 
-            }, 0.2f));
+                _gameManager.Money -= prise;
+                StartCoroutine(Delay(() =>
+                {
+                    GameObject.Find("Player").GetComponent<PlayerControl>().SitInCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
+                    _gameManager.InterTimer = 0; 
+                }, 0.2f));
+            }
         }
 
         public string FormatTime(float seconds)

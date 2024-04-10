@@ -91,7 +91,6 @@ public class FortuneWheelManager : MonoBehaviour
 
     public void TurnWheelButtonClick()
     {
-       
         if (_gameManager.FreeSpinTime<=0)
         {
             _gameManager.FreeSpinTime = 600;
@@ -99,9 +98,13 @@ public class FortuneWheelManager : MonoBehaviour
         }
         else
         {
-            TurnWheelForAds();
-            _gameManager.InterTimer = 0;
-           
+            int price = 20;
+            if (_gameManager.Money >= price)
+            {
+                TurnWheelForAds();
+                _gameManager.Money -= 20;
+                _gameManager.InterTimer = 0;
+            }
         }
     }
 

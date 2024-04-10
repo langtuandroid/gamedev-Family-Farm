@@ -25,7 +25,7 @@ namespace _Project.Scripts_dev.Managers
         public int MoneyInPack => 10;
         public int CurrentUnlocked { get; set; }
         public int MaxCart { get; private set; } = 40;
-        public int Level { get; private set; } = 10;
+        public int Level { get; private set; } = 0;
         public float Exp { get; set; } 
         public float MaxExp { get; private set; }
         public bool IsExpGet { get; set; } 
@@ -130,14 +130,28 @@ namespace _Project.Scripts_dev.Managers
         private IEnumerator LoadDelay()
         {
             yield return new WaitForSeconds(2);
-        
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
-            Debug.Log("Current active : " + SceneManager.GetActiveScene().name);
-      
         }
 
         private void LoadGame()
         {
+            if (_dataManager.GameData == null)
+            {
+                for (int i = _unlockOrder.Length - 1; i > CurrentUnlocked; i--)
+                {
+                    _unlockOrder[i].SetActive(false);
+                    FirstRolled = false;
+                }
+             
+                if (CurrentUnlocked == 0 && FirstRolled)
+                {
+                    if (Money < 150) Money = 150;
+                }
+                IsLoad = true;
+                return;
+            }
+            
+
             GameData gameData = _dataManager.GameData;
             CurrentUnlocked = gameData.currentUnlocked;
             Money = gameData.money;
