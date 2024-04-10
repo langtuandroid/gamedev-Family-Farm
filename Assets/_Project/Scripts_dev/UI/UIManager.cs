@@ -163,19 +163,32 @@ namespace _Project.Scripts_dev.UI
         {
             if (type == 1)
             {
-                StartCoroutine(Delay(() =>
+                int price = 20;
+                if (_gameManager.Money >= price)
                 {
-                    _gameManager.SpeedBoostTime = 150;
+                    _gameManager.Money -= 20;
                     _gameManager.InterTimer = 0;
-                }, 0.2f));
+                    StartCoroutine(Delay(() =>
+                    {
+                        _gameManager.SpeedBoostTime = 150;
+                        _gameManager.InterTimer = 0;
+                    }, 0.2f));
+                }
+                
             }
             if (type == 0)
             {
-                StartCoroutine(Delay(() =>
+                int price = 20;
+                if (_gameManager.Money >= price)
                 {
-                    _gameManager.IncomeBoostTime = 150;
+                    _gameManager.Money -= 20;
                     _gameManager.InterTimer = 0;
-                }, 0.2f));
+                    StartCoroutine(Delay(() =>
+                    {
+                        _gameManager.IncomeBoostTime = 150;
+                        _gameManager.InterTimer = 0;
+                    }, 0.2f));
+                }
             }
 
         }
