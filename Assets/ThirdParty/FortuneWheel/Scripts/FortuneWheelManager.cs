@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using _Project.Scripts_dev.Additional;
-using _Project.Scripts_dev.Language;
 using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using UnityEngine.Events;
@@ -16,11 +15,9 @@ using Zenject;
 public class FortuneWheelManager : MonoBehaviour
 {
     [Inject] private SoundManager _soundManager;
-    [Inject] private LanguageManager _languageManager;
     [Inject] private UIManager _uiManager;
     [Inject] private GameManager _gameManager;
     [Header("Game Objects for some elements")]
-    public Button PaidTurnButton;              
     public Button FreeTurnButton;              
     public Button btnClose;
     public GameObject Circle;                  
@@ -85,7 +82,6 @@ public class FortuneWheelManager : MonoBehaviour
         _finalAngle = fullTurnovers * 360 + randomFinalAngle - 20f;
         _isStarted = true;
         DisableButton(FreeTurnButton);
-        DisableButton(PaidTurnButton);
         DisableButton(btnClose);
     }
 
@@ -121,7 +117,6 @@ public class FortuneWheelManager : MonoBehaviour
         else
         {
             EnableButton(FreeTurnButton);
-            _languageManager.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
         }
         if (!_isStarted)
             return;
@@ -135,15 +130,12 @@ public class FortuneWheelManager : MonoBehaviour
             if (_gameManager.FreeSpinTime <= 0)
             {
                 EnableButton(FreeTurnButton);
-                _languageManager.SetText(35, FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
             }
             else
             {
                 FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.FreeSpinTime);
-                
             }
-               
-            EnableButton(PaidTurnButton);
+            
             EnableButton(btnClose);
             _startAngle = _finalAngle % 360;
             _finalSector.RewardCallback.Invoke();

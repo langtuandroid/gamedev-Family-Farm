@@ -1,4 +1,4 @@
-using _Project.Scripts_dev.Language;
+
 using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using TMPro;
@@ -11,7 +11,6 @@ namespace _Project.Scripts_dev.Items
 {
     public class UpgradeItem : MonoBehaviour
     {
-        [Inject] private LanguageManager _languageManager;
         [Inject] private GameManager _gameManager;
         [Inject] private UIManager _uiManager;
         [FormerlySerializedAs("bg")] [SerializeField] private GameObject _backgroundObject;
@@ -28,11 +27,11 @@ namespace _Project.Scripts_dev.Items
         {
             _imageText.sprite = LevelMangament._sprite;
             if (LevelMangament == null) return;
-            
-            _languageManager.SetText(LevelMangament._titleId, _titleText);
+
+            _titleText.text = LevelMangament._titleId.ToString(); //TODO fix
             if (LevelMangament.transform.gameObject.activeInHierarchy)
             {
-                _levelText.text = _languageManager.GetText(42)+": " + (LevelMangament.Level + 1).ToString();
+                _levelText.text = "Level: " + (LevelMangament.Level + 1).ToString();
                 _backgroundObject.SetActive(false);
                 _buttonIcon.sprite = _money;
                 if (LevelMangament.Level < 2)
@@ -55,9 +54,9 @@ namespace _Project.Scripts_dev.Items
             }
             else
             {
-                _priceText.text = _languageManager.GetText(43);
+                _priceText.text = "Locked";
                 _upgradeButton.interactable = false;
-                _levelText.text = _languageManager.GetText(42) + ": 0";
+                _levelText.text = "Level: 0";
                 _backgroundObject.SetActive(true);
                 _buttonIcon.sprite = _lockedSprite;
 

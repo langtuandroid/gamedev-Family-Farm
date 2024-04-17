@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,6 +10,12 @@ namespace _Project.Scripts_dev.Managers
         [SerializeField] private AudioSource _soundAudioSource;
         [FormerlySerializedAs("sounds")] public AudioClip[] Clips;
         public AudioSource Sound => _soundAudioSource;
+
+        private void Start()
+        {
+            AudioListener.volume = PlayerPrefs.GetInt("Audio", 1);
+        }
+
         private void Update()
         {
             _musicAudioSource.volume = PlayerPrefs.GetFloat("music", 1)==1?0.5f:0;

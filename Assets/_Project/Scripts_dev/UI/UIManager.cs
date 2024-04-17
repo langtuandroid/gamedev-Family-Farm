@@ -4,7 +4,6 @@ using _Project.Scripts_dev.Classes;
 using _Project.Scripts_dev.Control;
 using _Project.Scripts_dev.Farm;
 using _Project.Scripts_dev.Items;
-using _Project.Scripts_dev.Language;
 using _Project.Scripts_dev.Managers;
 using DG.Tweening;
 using TMPro;
@@ -17,14 +16,12 @@ namespace _Project.Scripts_dev.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [Inject] private LanguageManager _languageManager;
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
 
         public bool sound;
         public bool music;
         public TextMeshProUGUI moneyText;
-        [SerializeField] private Image EXPBarImage;
         [SerializeField] private TextMeshProUGUI levelText;
         public TextMeshProUGUI expText;
         [SerializeField] private TextMeshProUGUI cartText;
@@ -32,22 +29,19 @@ namespace _Project.Scripts_dev.UI
         [SerializeField] private Cart playerCart;
         [SerializeField] private Cart truckCart;
         [SerializeField] private GameObject[] tabs;
-        [SerializeField] private GameObject[] tabBtnImages;
+        
         [SerializeField] private TextMeshProUGUI oldCart;
         [SerializeField] private TextMeshProUGUI newCart;
         [SerializeField] private TextMeshProUGUI reward;
         [SerializeField] private TextMeshProUGUI expBonus;
-        [SerializeField] private Transform musicUI;
-        [SerializeField] private Transform soundUI;
         [SerializeField] private GameObject UpgradeIcon;
         [SerializeField] private GameObject SpinNotice;
         [SerializeField] private GameObject FirstSpinWheel;
         [SerializeField] private GameObject unlockRewardUI;
         [SerializeField] private GameObject adsUI;
         [SerializeField] private GameObject adsBtn;
-        [SerializeField] private TextMeshProUGUI price1,price2;
         [SerializeField] private TextMeshProUGUI incomeRemain, speedRemain;
-        [SerializeField] private GameObject vnmeseImage;
+       
         public GameObject BottomUI;
         public GameObject UILevelUp;
         public GameObject CarUI;
@@ -61,7 +55,7 @@ namespace _Project.Scripts_dev.UI
         {
             music = PlayerPrefs.GetFloat("music", 1) == 1;
             sound = PlayerPrefs.GetFloat("sound", 1) == 1;
-            vnmeseImage.SetActive(PlayerPrefs.GetFloat("language", 1) == 0);
+           
         }
 
         private void Update()
@@ -79,7 +73,6 @@ namespace _Project.Scripts_dev.UI
                 UpgradeIcon.SetActive(true);
             }
             moneyText.text =FormatNumber(Mathf.Ceil(_gameManager.Money));
-            EXPBarImage.fillAmount = _gameManager.Exp / _gameManager.MaxExp;
             levelText.text = _gameManager.Level.ToString();
             expText.text = Mathf.Ceil(_gameManager.Exp) + "/" + Mathf.Ceil(_gameManager.MaxExp);
             if(_gameManager.TruckTime<=0)
@@ -88,8 +81,7 @@ namespace _Project.Scripts_dev.UI
             {
                 cartText.text = truckCart.inCart + "/" + _gameManager.MaxCart;
             }
-
-            UpdateSoundIcons();
+            
             if (_gameManager.FreeSpinTime <= 0)
             {
                 SpinNotice.SetActive(true);
@@ -130,33 +122,19 @@ namespace _Project.Scripts_dev.UI
             speedRemain.text = speedTime>0?FormatTime(speedTime):"3m";
             if (_gameManager.IncomeBoostTime>0)
             {
-                incomeButton.enabled = false;
-                incomeButton.transform.GetChild(2).gameObject.SetActive(false);
-                incomeButton.transform.GetChild(1).gameObject.SetActive(false);
-                incomeButton.transform.GetChild(0).gameObject.SetActive(false);
+                incomeButton.interactable = false;
             }
             else
             {
-                incomeButton.enabled = true;
-                incomeButton.transform.GetChild(2).gameObject.SetActive(true);
-                incomeButton.transform.GetChild(1).gameObject.SetActive(true);
-                incomeButton.transform.GetChild(0).gameObject.SetActive(true);
-
+                incomeButton.interactable = true;
             }
             if (_gameManager.SpeedBoostTime>0)
             {
-                speedButton.enabled = false;
-                speedButton.transform.GetChild(2).gameObject.SetActive(false);
-                speedButton.transform.GetChild(1).gameObject.SetActive(false);
-                speedButton.transform.GetChild(0).gameObject.SetActive(false);
+                speedButton.interactable = false;
             }
             else
             {
-                speedButton.enabled = true;
-                speedButton.transform.GetChild(2).gameObject.SetActive(true);
-                speedButton.transform.GetChild(1).gameObject.SetActive(true);
-                speedButton.transform.GetChild(0).gameObject.SetActive(true);
-
+                speedButton.interactable = true;
             }
         }
         public void BoostReward(int type)
@@ -192,42 +170,16 @@ namespace _Project.Scripts_dev.UI
             }
 
         }
-        void UpdateSoundIcons()
-        {
-            if (music)
-            {
-                musicUI.GetChild(1).gameObject.SetActive(false);
-            }
-            else
-            {
-                musicUI.GetChild(1).gameObject.SetActive(true);
-            }
-            if (sound)
-            {
-                soundUI.GetChild(1).gameObject.SetActive(false);
-            }
-            else
-            {
-                soundUI.GetChild(1).gameObject.SetActive(true);
-            }
-        }
+      
         public void  UpdateLevelUpUI(int oldCart, int newCart,float reward,float bonusExp) {
             this.oldCart.text = oldCart.ToString();
             this.newCart.text = newCart.ToString();
             this.reward.text ="+"+ FormatNumber(Mathf.Ceil(reward));
             this.expBonus.text ="+"+ FormatNumber(Mathf.Ceil(bonusExp));
-            bonusMoneyText.text= "+" + FormatNumber(Mathf.Ceil(reward*2));
+            bonusMoneyText.text = "+" + FormatNumber(Mathf.Ceil(reward*2));
             oldReward = reward;
         }
-        public void GetLevelUpRewardAds(RectTransform canvas)
-        {
-            StartCoroutine(Delay(() =>
-            {
-                StartCoroutine(_gameManager.LevelUpRoutine(oldReward, 1.3f * _gameManager.MaxExp / 10, true));
-                _gameManager.InterTimer = 0;
-                TurnOffPopUp(canvas);
-            }, 0.2f));
-        } 
+   
         public void GetLevelUpRewardFree(RectTransform canvas)
         {
             StartCoroutine(_gameManager.LevelUpRoutine(oldReward, 1.3f * _gameManager.MaxExp / 10, false));
@@ -299,16 +251,8 @@ namespace _Project.Scripts_dev.UI
             {
                 t.SetActive(false);
             }
-            foreach (GameObject t in tabBtnImages)
-            {
-                t.SetActive(false);
-                t.transform.parent.GetComponent<Button>().enabled = true;
-            }
             tabs[tabIndex].SetActive(true);
             tabs[tabIndex].GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
-
-            tabBtnImages[tabIndex].SetActive(true);
-            tabBtnImages[tabIndex].transform.parent.GetComponent<Button>().enabled = false;
         }
         public void PauseGame()
         {
@@ -387,19 +331,6 @@ namespace _Project.Scripts_dev.UI
         {
             SceneManager.LoadScene(0);
         }
-    
-        public void ChangeLanguage()
-        {
-            vnmeseImage.SetActive(!vnmeseImage.activeInHierarchy);
-            if (vnmeseImage.activeInHierarchy)
-            {
-                PlayerPrefs.SetFloat("language", 0);
-                _languageManager.language = 0;
-            }
-            else { PlayerPrefs.SetFloat("language", 1);
-                _languageManager.language = 1;
-            }
-            _languageManager.SetTextAll();
-        }
+        
     }
 }

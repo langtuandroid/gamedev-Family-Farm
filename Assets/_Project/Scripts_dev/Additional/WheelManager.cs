@@ -2,14 +2,12 @@ using System;
 using System.Collections;
 using _Project.Scripts_dev.Animation;
 using _Project.Scripts_dev.Items;
-using _Project.Scripts_dev.Language;
 using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Zenject;
 
 namespace _Project.Scripts_dev.Additional
@@ -17,7 +15,6 @@ namespace _Project.Scripts_dev.Additional
     public class WheelManager : MonoBehaviour
     {
         [Inject] private SoundManager _soundManager;
-        [Inject] private LanguageManager _languageManager;
         [Inject] private UIManager _uiManager;
         [Inject] private GameManager _gameManager;
         [FormerlySerializedAs("prizeText1")] [SerializeField] TextMeshProUGUI _prize1;
@@ -64,9 +61,9 @@ namespace _Project.Scripts_dev.Additional
             _prize3.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_maxExperience *0.3f));
             _prize4.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_spinPrice / 2));
             _prize5.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_maxExperience / 2));
-            _prize6.text = _languageManager.GetText(55)+" + 150s";
-            _prize7.text = _languageManager.GetText(56) + " +150s";
-            _prize8.text = _languageManager.GetText(34);
+            _prize6.text = "Income + 150s";
+            _prize7.text = "Speed +150s";
+            _prize8.text = "Free";
 
         }
         private void SetFiresPrizes()
@@ -76,9 +73,9 @@ namespace _Project.Scripts_dev.Additional
             _prize3.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_maxExperience * 0.3f));
             _prize4.text = "+150";
             _prize5.text = "+" + _uiManager.FormatNumber(Mathf.Ceil(_maxExperience / 2));
-            _prize6.text = _languageManager.GetText(55) + " +150s";
-            _prize7.text = _languageManager.GetText(56) + " +150s";
-            _prize8.text = _languageManager.GetText(34);
+            _prize6.text = "Income + 150s";
+            _prize7.text = "Speed +150s";
+            _prize8.text = "Free";
         }
     
         public Action TakePrize(float prize)
