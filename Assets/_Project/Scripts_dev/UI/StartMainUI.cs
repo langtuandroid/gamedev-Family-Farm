@@ -28,10 +28,8 @@ namespace _Project.Scripts_dev.UI
                 _oldPos.Add(rect.position);
             }
             _rects[0].anchoredPosition = new Vector2(_rects[0].anchoredPosition.x - 350, _rects[0].anchoredPosition.y);
-            //_rects[1].anchoredPosition = new Vector2(_rects[1].anchoredPosition.x + 350, _rects[1].anchoredPosition.y);
             _rects[1].anchoredPosition = new Vector2(_rects[1].anchoredPosition.x + 350, _rects[1].anchoredPosition.y);
             _rects[2].anchoredPosition = new Vector2(_rects[2].anchoredPosition.x + 350, _rects[2].anchoredPosition.y);
-            //_rects[4].anchoredPosition = new Vector2(_rects[4].anchoredPosition.x - 350, _rects[4].anchoredPosition.y);
             _rects[3].anchoredPosition = new Vector2(_rects[3].anchoredPosition.x + 350, _rects[3].anchoredPosition.y);
             _rects[4].anchoredPosition = new Vector2(_rects[4].anchoredPosition.x + 350, _rects[4].anchoredPosition.y);
             _rects[5].anchoredPosition = new Vector2(_rects[5].anchoredPosition.x, _rects[5].anchoredPosition.y+350);
