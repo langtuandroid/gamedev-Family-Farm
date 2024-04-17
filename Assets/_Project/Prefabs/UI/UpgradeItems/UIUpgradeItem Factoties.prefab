@@ -38,19 +38,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7384961292750152631, guid: 47655f1e9fb34014c99ca2e16a8db8ef, type: 3}
       propertyPath: m_fontColor.b
-      value: 0
+      value: 0.41960788
       objectReference: {fileID: 0}
     - target: {fileID: 7384961292750152631, guid: 47655f1e9fb34014c99ca2e16a8db8ef, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.29803923
+      value: 0.41176474
       objectReference: {fileID: 0}
     - target: {fileID: 7384961292750152631, guid: 47655f1e9fb34014c99ca2e16a8db8ef, type: 3}
       propertyPath: m_fontColor.r
-      value: 0.7137255
+      value: 0.32156864
       objectReference: {fileID: 0}
     - target: {fileID: 7384961292750152631, guid: 47655f1e9fb34014c99ca2e16a8db8ef, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4278209718
+      value: 4285229394
       objectReference: {fileID: 0}
     - target: {fileID: 8119674987768356577, guid: 47655f1e9fb34014c99ca2e16a8db8ef, type: 3}
       propertyPath: m_Name

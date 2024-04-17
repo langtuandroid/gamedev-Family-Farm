@@ -28,7 +28,7 @@ namespace _Project.Scripts_dev.Items
             _imageText.sprite = LevelMangament._sprite;
             if (LevelMangament == null) return;
 
-            _titleText.text = LevelMangament._titleId.ToString(); //TODO fix
+            _titleText.text = LevelMangament._goods.Name; 
             if (LevelMangament.transform.gameObject.activeInHierarchy)
             {
                 _levelText.text = "Level: " + (LevelMangament.Level + 1).ToString();
