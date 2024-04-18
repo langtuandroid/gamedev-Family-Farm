@@ -15,12 +15,7 @@ namespace _Project.Scripts_dev.Managers
         {
             AudioListener.volume = PlayerPrefs.GetInt("Audio", 1);
         }
-
-        private void Update()
-        {
-            _musicAudioSource.volume = PlayerPrefs.GetFloat("music", 1)==1?0.5f:0;
-            _soundAudioSource.volume = PlayerPrefs.GetFloat("sound", 1);
-        }
+        
         public void PlaySound(AudioClip clip)
         {
             _soundAudioSource.clip = clip;
