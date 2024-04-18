@@ -245,8 +245,15 @@ namespace _Project.Scripts_dev.UI
                 });
             });
         }
+
+        private int _currentOpenedTab = 0;
         public void OpenTab(int tabIndex)
         {
+            if (tabIndex == _currentOpenedTab)
+            {
+                return;
+            }
+            _currentOpenedTab = tabIndex;
             foreach (GameObject t in tabs)
             {
                 t.SetActive(false);
@@ -285,14 +292,7 @@ namespace _Project.Scripts_dev.UI
             yield return new WaitForSeconds(time);
             Action();
         }
-        public void OnClickInter()
-        {
-            if (_gameManager.InterTimer >= 45&&_gameManager.TotalPlayTime>60)
-            {
-            
-            }
-        }
-
+     
         public void NotEnoughMoney()
         {
             unlockRewardUI.SetActive(true);
