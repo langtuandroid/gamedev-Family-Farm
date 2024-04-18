@@ -329,6 +329,7 @@ namespace _Project.Scripts_dev.UI
         }
         public void ReloadGame()
         {
+            _dataManager.SaveData();
             SceneManager.LoadScene(0);
         }
         

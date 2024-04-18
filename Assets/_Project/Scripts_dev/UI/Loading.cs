@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,7 +9,12 @@ namespace _Project.Scripts_dev.UI
     {
         [SerializeField] private GameObject _startMenu;
         [SerializeField] private GameObject _optionsMenu;
-        
+
+        private void Start()
+        {
+            AudioListener.volume = PlayerPrefs.GetInt("Audio", 1);
+        }
+
         public void Play()
         {
             SceneManager.LoadSceneAsync(1);

@@ -13,7 +13,7 @@ namespace _Project.Scripts_dev.Managers
             GameData = LoadData();
         }
 
-        private void SaveData()
+        public void SaveData()
         {
             GameData gameData = new GameData(_gameManager);
             string gameDataJson = JsonUtility.ToJson(gameData);
