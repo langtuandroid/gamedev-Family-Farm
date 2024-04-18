@@ -21,7 +21,7 @@ namespace _Project.Scripts_dev.Managers
         [FormerlySerializedAs("shops")] public List<GameObject> _shops;
         private float _inactiveTime;
         private float _reward;
-        public float Money { get; set; } = 100000; //TODO Set to 0
+        public float Money { get; set; }
         public int MoneyInPack => 10;
         public int CurrentUnlocked { get; set; }
         public int MaxCart { get; private set; } = 40;

@@ -17412,14 +17412,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8537422804399398495, guid: 014eeb454e24b70429d83157101f235f, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 8537422804399398495, guid: 014eeb454e24b70429d83157101f235f, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18340,10 +18332,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: dc0b764317242dc438e628540970e0fc, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: dc0b764317242dc438e628540970e0fc, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: dc0b764317242dc438e628540970e0fc, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: a04921fed9284d54282dfb49140d7554, type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: f1ac5a018243c5b48b107031dda689cb, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: f1ac5a018243c5b48b107031dda689cb, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: f1ac5a018243c5b48b107031dda689cb, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 466a2b3553b5ae94bb6cc162dd740fd4, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
