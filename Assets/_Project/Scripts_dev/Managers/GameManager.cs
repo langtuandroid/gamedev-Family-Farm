@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Project.Scripts_dev.Control;
 using _Project.Scripts_dev.UI;
 using _Project.Scripts_dev.Сamera;
+using Integration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -12,11 +13,13 @@ namespace _Project.Scripts_dev.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        [Inject] private IAPService _iapService;
         [Inject] private SoundManager _soundManager;
         [Inject] private EffectManager _effectManager;
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
         [Inject] private UIManager _uiManager;
+        [Inject] private AdMobController _adMobController;
         [FormerlySerializedAs("unlockOrder")] public GameObject[] _unlockOrder;
         [FormerlySerializedAs("shops")] public List<GameObject> _shops;
         private float _inactiveTime;
@@ -45,8 +48,15 @@ namespace _Project.Scripts_dev.Managers
    
         private void Awake()
         {
+            _iapService.OnMoneyBuy += GetMoney;
+            _adMobController.ShowBanner(true);
             FreeSpinTime = 0;
             _shops = new List<GameObject>();
+        }
+
+        private void GetMoney(int money)
+        {
+            Money += money;
         }
         private void Start()
         {

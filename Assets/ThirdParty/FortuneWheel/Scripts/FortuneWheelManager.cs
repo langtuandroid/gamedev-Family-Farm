@@ -6,6 +6,7 @@ using System.Linq;
 using _Project.Scripts_dev.Additional;
 using _Project.Scripts_dev.Managers;
 using _Project.Scripts_dev.UI;
+using Integration;
 using UnityEngine.Events;
 using TMPro;
 using Zenject;
@@ -17,9 +18,11 @@ public class FortuneWheelManager : MonoBehaviour
     [Inject] private SoundManager _soundManager;
     [Inject] private UIManager _uiManager;
     [Inject] private GameManager _gameManager;
+    [Inject] private RewardedAdController _rewardedAdController;
     [Header("Game Objects for some elements")]
     public Button FreeTurnButton;              
     public Button btnClose;
+    [SerializeField] private Button _videoTurnButton;
     public GameObject Circle;                  
     private bool _isStarted;                
 
@@ -36,22 +39,31 @@ public class FortuneWheelManager : MonoBehaviour
 
     private void Start()
     {
-        if(spinReward.first) 
-            DisableButton(btnClose);
+        if (spinReward.first)
+            btnClose.interactable = false;
     }
 
   
     private void TurnWheelForFree()
     {
-        TurnWheel(true);
+        TurnWheel();
        
     }
-    private void TurnWheelForAds()
+    public void TurnWheelForAds()
     {
-        TurnWheel(false);
-       
+        _rewardedAdController.ShowAd();
+        _rewardedAdController.GetRewarded += TurnWheel;
+        _rewardedAdController.OnVideoClosed += OnAddClosed;
+        _gameManager.InterTimer = 0;
     }
-    private void TurnWheel(bool isFree)
+
+    private void OnAddClosed()
+    {
+        _rewardedAdController.GetRewarded -= TurnWheel;
+        _rewardedAdController.OnVideoClosed -= OnAddClosed;
+    }
+
+    private void TurnWheel()
     {
         _soundManager.CreateSound(_soundManager.Clips[10], transform.position);
         _currentLerpRotationTime = 0f;
@@ -60,6 +72,7 @@ public class FortuneWheelManager : MonoBehaviour
         {
             sectorsAngles[i - 1] = 360 / Sectors.Length * i;
         }
+
         double rndNumber = UnityEngine.Random.Range(0f, Sectors.Sum(sector => sector.Probability));
         float cumulativeProbability = 0;
         int randomFinalAngle = sectorsAngles[0];
@@ -73,7 +86,6 @@ public class FortuneWheelManager : MonoBehaviour
             {
                 randomFinalAngle = sectorsAngles[i];
                 _finalSector = Sectors[i];
-                Debug.Log(Sectors.Length);
                 break;
             }
         }
@@ -81,8 +93,10 @@ public class FortuneWheelManager : MonoBehaviour
         int fullTurnovers = 5;
         _finalAngle = fullTurnovers * 360 + randomFinalAngle - 20f;
         _isStarted = true;
-        DisableButton(FreeTurnButton);
-        DisableButton(btnClose);
+
+        _videoTurnButton.interactable = false;
+        FreeTurnButton.interactable = false;
+        btnClose.interactable = false;
     }
 
     public void TurnWheelButtonClick()
@@ -92,31 +106,19 @@ public class FortuneWheelManager : MonoBehaviour
             _gameManager.FreeSpinTime = 600;
             TurnWheelForFree();
         }
-        else
-        {
-            int price = 20;
-            if (_gameManager.Money >= price)
-            {
-                TurnWheelForAds();
-                _gameManager.Money -= 20;
-                _gameManager.InterTimer = 0;
-            }
-        }
     }
-
- 
-
+    
 
     private void Update()
     {
         if (_gameManager.FreeSpinTime > 0)
         {
             FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.FreeSpinTime);
-            DisableButton(FreeTurnButton);
+            FreeTurnButton.interactable = false;
         }
-        else
+        else if (!_isStarted)
         {
-            EnableButton(FreeTurnButton);
+            FreeTurnButton.interactable = true;
         }
         if (!_isStarted)
             return;
@@ -129,14 +131,14 @@ public class FortuneWheelManager : MonoBehaviour
             _isStarted = false;
             if (_gameManager.FreeSpinTime <= 0)
             {
-                EnableButton(FreeTurnButton);
+                FreeTurnButton.interactable = true;
             }
             else
             {
                 FreeTurnButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _uiManager.FormatTime(_gameManager.FreeSpinTime);
             }
             
-            EnableButton(btnClose);
+            btnClose.interactable = true;
             _startAngle = _finalAngle % 360;
             _finalSector.RewardCallback.Invoke();
         }
@@ -176,11 +178,7 @@ public class FortuneWheelManager : MonoBehaviour
     {
         button.interactable = true;
     }
-
-    private void DisableButton(Button button)
-    {
-        button.interactable = false;
-    }
+    
 }
 
 [Serializable]

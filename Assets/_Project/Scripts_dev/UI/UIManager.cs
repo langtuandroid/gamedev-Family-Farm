@@ -6,6 +6,7 @@ using _Project.Scripts_dev.Farm;
 using _Project.Scripts_dev.Items;
 using _Project.Scripts_dev.Managers;
 using DG.Tweening;
+using Integration;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +19,8 @@ namespace _Project.Scripts_dev.UI
     {
         [Inject] private DataManager _dataManager;
         [Inject] private GameManager _gameManager;
-
+        [Inject] private RewardedAdController _rewardedAdController;
+        [Inject] private IAPService _iapService;
         public bool sound;
         public bool music;
         public TextMeshProUGUI moneyText;
@@ -137,40 +139,51 @@ namespace _Project.Scripts_dev.UI
                 speedButton.interactable = true;
             }
         }
-        public void BoostReward(int type)
+        
+        public void RequestX2Booster()
         {
-            if (type == 1)
-            {
-                int price = 20;
-                if (_gameManager.Money >= price)
-                {
-                    _gameManager.Money -= 20;
-                    _gameManager.InterTimer = 0;
-                    StartCoroutine(Delay(() =>
-                    {
-                        _gameManager.SpeedBoostTime = 150;
-                        _gameManager.InterTimer = 0;
-                    }, 0.2f));
-                }
-                
-            }
-            if (type == 0)
-            {
-                int price = 20;
-                if (_gameManager.Money >= price)
-                {
-                    _gameManager.Money -= 20;
-                    _gameManager.InterTimer = 0;
-                    StartCoroutine(Delay(() =>
-                    {
-                        _gameManager.IncomeBoostTime = 150;
-                        _gameManager.InterTimer = 0;
-                    }, 0.2f));
-                }
-            }
-
+            ShowRewardedAdd();
+            _rewardedAdController.OnVideoClosed += CancelX2Booster;
+            _rewardedAdController.GetRewarded += GetX2Booster;
         }
-      
+        
+        private void CancelX2Booster()
+        {
+            _rewardedAdController.OnVideoClosed -= CancelX2Booster;
+            _rewardedAdController.GetRewarded -= GetX2Booster;
+        }
+        private void GetX2Booster()
+        {
+            _gameManager.InterTimer = 0;
+            StartCoroutine(Delay(() =>
+            {
+                _gameManager.IncomeBoostTime = 150;
+                _gameManager.InterTimer = 0;
+            }, 0.2f));
+        }
+        
+        public void RequestSpeedBooster()
+        {
+            _rewardedAdController.ShowAd();
+            _rewardedAdController.OnVideoClosed += CancelSpeedBooster;
+            _rewardedAdController.GetRewarded += GetSpeedBooster;
+        }
+        private void CancelSpeedBooster()
+        {
+            _rewardedAdController.OnVideoClosed -= CancelSpeedBooster;
+            _rewardedAdController.GetRewarded -= GetSpeedBooster;
+        }
+        private void GetSpeedBooster()
+        {
+            _gameManager.InterTimer = 0;
+            StartCoroutine(Delay(() =>
+            {
+                _gameManager.SpeedBoostTime = 150;
+                _gameManager.InterTimer = 0;
+            }, 0.2f));
+        }
+        
+        
         public void  UpdateLevelUpUI(int oldCart, int newCart,float reward,float bonusExp) {
             this.oldCart.text = oldCart.ToString();
             this.newCart.text = newCart.ToString();
@@ -183,7 +196,13 @@ namespace _Project.Scripts_dev.UI
         public void GetLevelUpRewardFree(RectTransform canvas)
         {
             StartCoroutine(_gameManager.LevelUpRoutine(oldReward, 1.3f * _gameManager.MaxExp / 10, false));
+            Invoke(nameof(ShowSubscription), 2f);
             TurnOffPopUp(canvas);
+        }
+
+        private void ShowSubscription()
+        {
+            _iapService.ShowSubscriptionPanel();
         }
    
         public string FormatNumber(float number)
@@ -307,18 +326,32 @@ namespace _Project.Scripts_dev.UI
             }, 0.2f));
         } 
         
-        public void RewardCar()
+        public void RequestRewardCar()
         {
-            int prise = 100;
-            if (_gameManager.Money >= prise)
+            ShowRewardedAdd();
+            _rewardedAdController.OnVideoClosed += CancelCarReward;
+            _rewardedAdController.GetRewarded += GetRewardCar;
+        }
+
+        private void CancelCarReward()
+        {
+            _rewardedAdController.OnVideoClosed -= CancelCarReward;
+            _rewardedAdController.GetRewarded -= GetRewardCar;
+        }
+
+        private void GetRewardCar()
+        {
+            StartCoroutine(Delay(() =>
             {
-                _gameManager.Money -= prise;
-                StartCoroutine(Delay(() =>
-                {
-                    GameObject.Find("Player").GetComponent<PlayerControl>().SitInCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
-                    _gameManager.InterTimer = 0; 
-                }, 0.2f));
-            }
+                GameObject.Find("Player").GetComponent<PlayerControl>().SitInCar(GameObject.Find("PlayerWithCar").GetComponent<Collider>());
+                _gameManager.InterTimer = 0; 
+            }, 0.2f));
+        }
+
+        
+        public void ShowRewardedAdd()
+        {
+            _rewardedAdController.ShowAd();
         }
 
         public string FormatTime(float seconds)

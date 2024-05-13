@@ -13,7 +13,6 @@ namespace _Project.Scripts_dev.Items
     {
         [Inject] private GameManager _gameManager;
         [Inject] private UIManager _uiManager;
-        [FormerlySerializedAs("bg")] [SerializeField] private GameObject _backgroundObject;
         [FormerlySerializedAs("title")] [SerializeField] private TextMeshProUGUI _titleText;
         [FormerlySerializedAs("price")] [SerializeField] private TextMeshProUGUI _priceText;
         [FormerlySerializedAs("level")] [SerializeField] private TextMeshProUGUI _levelText;
@@ -29,10 +28,10 @@ namespace _Project.Scripts_dev.Items
             if (LevelMangament == null) return;
 
             _titleText.text = LevelMangament._goods.Name; 
+            Debug.Log(LevelMangament.transform.gameObject.activeInHierarchy);
             if (LevelMangament.transform.gameObject.activeInHierarchy)
             {
                 _levelText.text = "Level: " + (LevelMangament.Level + 1).ToString();
-                _backgroundObject.SetActive(false);
                 _buttonIcon.sprite = _money;
                 if (LevelMangament.Level < 2)
                 {
@@ -57,7 +56,6 @@ namespace _Project.Scripts_dev.Items
                 _priceText.text = "Locked";
                 _upgradeButton.interactable = false;
                 _levelText.text = "Level: 0";
-                _backgroundObject.SetActive(true);
                 _buttonIcon.sprite = _lockedSprite;
 
             }
